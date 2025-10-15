@@ -1,0 +1,462 @@
+---
+title: Integrations
+description: Managing integration pages, partners, and self-service onboarding in EnSync
+---
+
+## What are Integrations?
+
+Integrations (also called Integration Pages) are self-service portals where external partners can connect to your EnSync platform. Each integration page is a unique URL you share with partners, allowing them to browse your event catalog, generate their own credentials, and subscribe to events—all without requiring engineering work from your team.
+
+Think of an integration page as a storefront for your events. Partners visit the page, see what's available, and connect themselves.
+
+---
+
+## Integration Components
+
+### Integration Name
+
+A descriptive identifier for the integration page. This helps you organize multiple integration pages for different partner types or use cases.
+
+Examples:
+- "Payment Partners Integration"
+- "Shipping Providers Portal"
+- "Analytics Partners Access"
+- "Public API Integration"
+
+### Integration URL
+
+A unique, shareable URL that partners use to access the integration page. The URL typically follows the format:
+```
+https://ensync.cloud/integrate/{integration-id}
+```
+
+Partners who visit this URL can:
+- Browse available events
+- Read event descriptions and schemas
+- Generate their own app credentials
+- Subscribe to events they need
+
+### Exposed Events (Send Permissions)
+
+The list of events you've chosen to make available on this integration page. These are events that partners can subscribe to and receive from you.
+
+When you expose events, partners see:
+- Event names
+- Event descriptions
+- Event schemas (data structure)
+- Example payloads
+
+You control exactly which events appear on each integration page, allowing you to create different pages for different partner types.
+
+### Callback Events (Receive Permissions)
+
+Events that partners connecting through this integration page can publish back to you. This enables bi-directional communication.
+
+For example, if you expose `order/created` to shipping partners, you might allow them to publish `shipment/updated` back to you.
+
+### Integration Webhook (Optional)
+
+A callback URL where EnSync sends notifications about integration activity, such as:
+- New partner connected
+- Partner subscribed to an event
+- Partner published an event
+- Partner disconnected
+
+This helps you track integration activity without constantly checking the dashboard.
+
+### Integration Metadata
+
+Optional JSON data for storing additional information about the integration:
+- Partner type
+- Integration purpose
+- Custom configuration
+- Internal notes
+
+This metadata is for your reference and isn't visible to partners.
+
+---
+
+## Creating an Integration Page
+
+When you create a new integration, you'll configure:
+
+**Integration Name:**
+A descriptive name to help you identify this integration page in your dashboard.
+
+**Description (Optional):**
+Internal notes about the purpose of this integration page.
+
+**Send Events:**
+Select which events partners can subscribe to. These events will be visible in the event catalog on the integration page.
+
+**Receive Events:**
+Select which events partners can publish back to you. This defines what data partners can send.
+
+**Webhook URL (Optional):**
+If you want to receive notifications about integration activity, provide a webhook URL.
+
+**Color and Logo (Optional):**
+Customize the appearance of the integration page for branding.
+
+**After creation:**
+The integration page is immediately available at its unique URL. You can copy this URL and share it with partners.
+
+---
+
+## Integration Dashboard
+
+The Integrations section shows metrics for your integration pages:
+
+### Total Integrators
+
+The total number of partners (integrators) who have connected through all your integration pages. This includes active, pending, and disabled integrators.
+
+### Active Integrators
+
+Partners who are currently connected and actively exchanging events. These integrators have:
+- Generated credentials
+- Established connections
+- Published or received events recently
+
+### Pending Integrators
+
+Partners who have started the connection process but haven't completed it. They may have:
+- Generated credentials but not connected yet
+- Connected but not subscribed to any events
+- Subscribed but not yet published or received events
+
+### Disabled Integrators
+
+Partners whose access has been disabled. They can no longer:
+- Publish events
+- Receive events
+- Establish new connections
+
+Disabled integrators retain their credentials but cannot use them until re-enabled.
+
+---
+
+## Managing Integrators
+
+Integrators are partners who have connected through your integration pages. Each integration page has its own list of integrators.
+
+### Viewing Integrators
+
+Click "Manage" on an integration to see all partners connected through that page. For each integrator, you'll see:
+
+**App Name:**
+The name the partner chose when generating their credentials.
+
+**Email:**
+The email address associated with the integrator (if provided).
+
+**Status:**
+- **Active**: Currently connected and exchanging events
+- **Pending**: Credentials generated but not fully active
+- **Inactive**: Not currently connected
+- **Disabled**: Access revoked by you
+
+**Last Active:**
+Timestamp of the last interaction with EnSync.
+
+**Created At:**
+When the integrator first connected.
+
+**Key:**
+A unique identifier for this integrator's credentials.
+
+### Integrator Analytics
+
+Select a specific integrator to view their activity:
+
+**Integrator Events Published:**
+Number of events this partner has published to you through EnSync.
+
+**Integrator Events Received:**
+Number of events this partner has received from you.
+
+**Traffic Chart:**
+Visual representation of the integrator's publish/receive activity over time. You can:
+- Set custom date ranges
+- Compare published vs. received trends
+- Identify activity patterns
+
+---
+
+## Integrator Actions
+
+### Editing Integrator Details
+
+You can update:
+- Integrator name (for your reference)
+- Description
+- Custom metadata
+
+**Note:** You cannot change which events an integrator can access. Event permissions are controlled at the integration page level, not per integrator.
+
+### Changing Integrator Status
+
+**Disabling an Integrator:**
+Temporarily revokes access without deleting the integrator. The partner:
+- Cannot publish or receive events
+- Cannot establish new connections
+- Retains their credentials (can be re-enabled later)
+
+Use this when:
+- A partner needs temporary suspension
+- You're troubleshooting issues
+- A partner's contract is on hold
+
+**Enabling an Integrator:**
+Restores access for a previously disabled integrator. They can immediately resume publishing and receiving events.
+
+### Removing an Integrator
+
+Permanently deletes the integrator and invalidates their credentials. The partner:
+- Loses all access immediately
+- Must reconnect through the integration page to regain access
+- Will receive new credentials if they reconnect
+
+**This action is permanent and cannot be undone.**
+
+Use this when:
+- A partnership has ended
+- Credentials are compromised
+- The integrator is no longer needed
+
+---
+
+## Integration Page Features
+
+### Event Catalog
+
+Partners visiting your integration page see a catalog of available events with:
+- Event names (organized by prefix)
+- Descriptions explaining what each event represents
+- Schemas showing the data structure
+- Example payloads
+
+The catalog is searchable and filterable, making it easy for partners to find relevant events.
+
+### Self-Service Credential Generation
+
+Partners can generate their own credentials directly from the integration page:
+
+1. Partner visits the integration URL
+2. Provides their email and app name
+3. Clicks "Generate Credentials"
+4. Receives app key, public key, and decrypt key
+5. Can immediately start integrating
+
+**You receive a notification** (via webhook if configured) when a new partner connects.
+
+### Event Subscription
+
+After generating credentials, partners can:
+- Browse the event catalog
+- Select events they want to receive
+- Subscribe with one click
+- Start receiving events immediately
+
+Partners can modify their subscriptions at any time through the integration page.
+
+---
+
+## Multiple Integration Pages
+
+You can create multiple integration pages for different purposes:
+
+**By Partner Type:**
+- Payment processors see payment-related events
+- Shipping providers see order and shipment events
+- Analytics partners see all events
+
+**By Access Level:**
+- Public integration page with limited events
+- Premium partner page with full event access
+- Internal testing page for development
+
+**By Region:**
+- North America partners
+- European partners
+- Asia-Pacific partners
+
+Each integration page has its own:
+- Unique URL
+- Event catalog
+- List of integrators
+- Analytics
+
+---
+
+## Integration Page Customization
+
+### Branding
+
+**Color:**
+Set a primary color for the integration page to match your brand.
+
+**Logo URL:**
+Provide a URL to your logo image. It appears at the top of the integration page.
+
+**Description:**
+Add a welcome message or instructions for partners visiting the page.
+
+### Event Organization
+
+Group related events with prefixes:
+- `order/*` - All order-related events
+- `payment/*` - All payment events
+- `user/*` - All user events
+
+Partners can filter by these prefixes to quickly find relevant events.
+
+---
+
+## Security and Access Control
+
+### Integration-Level Permissions
+
+Permissions are set at the integration page level, not per integrator. All partners connecting through the same integration page have access to the same events.
+
+If you need different permission levels, create separate integration pages.
+
+### Credential Security
+
+**Partners are responsible for:**
+- Storing their credentials securely
+- Not sharing credentials
+- Rotating credentials if compromised
+
+**You are responsible for:**
+- Monitoring integrator activity
+- Disabling suspicious integrators
+- Removing integrators when partnerships end
+
+### Audit Trail
+
+EnSync logs all integration activity:
+- When integrators connect
+- Which events they subscribe to
+- When they publish or receive events
+- When their status changes
+
+Access these logs in the Logs section for compliance and troubleshooting.
+
+---
+
+## Webhooks and Notifications
+
+If you configure a webhook URL for an integration, EnSync sends notifications for:
+
+**New Integrator Connected:**
+```json
+{
+  "event": "integrator.connected",
+  "integration_id": "...",
+  "integrator_id": "...",
+  "app_name": "Partner App",
+  "email": "partner@example.com",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+**Integrator Subscribed to Event:**
+```json
+{
+  "event": "integrator.subscribed",
+  "integration_id": "...",
+  "integrator_id": "...",
+  "event_name": "order/created",
+  "timestamp": "2024-01-15T10:35:00Z"
+}
+```
+
+**Integrator Status Changed:**
+```json
+{
+  "event": "integrator.status_changed",
+  "integration_id": "...",
+  "integrator_id": "...",
+  "old_status": "active",
+  "new_status": "disabled",
+  "timestamp": "2024-01-15T11:00:00Z"
+}
+```
+
+Use these webhooks to:
+- Notify your team when new partners connect
+- Trigger onboarding workflows
+- Update internal systems
+- Monitor integration health
+
+---
+
+## Troubleshooting
+
+**Partner can't access integration page:**
+- Verify the URL is correct
+- Check that the integration page hasn't been deleted
+- Ensure the page is active (not disabled)
+
+**Partner can't generate credentials:**
+- Check integration page limits (plan-based)
+- Verify the page allows new integrators
+- Look for error messages in browser console
+
+**Partner not receiving events:**
+- Verify they've subscribed to the events
+- Check that events are being published by your apps
+- Ensure the partner's connection is active
+- Review the integrator's receive permissions
+
+**Events not flowing to partner:**
+- Confirm the event is exposed on the integration page
+- Check that your apps have permission to publish the event
+- Verify the partner is actively connected
+- Review logs for delivery errors
+
+---
+
+## Integration Limits
+
+Depending on your EnSync plan, you may have limits on:
+- Number of integration pages
+- Number of integrators per page
+- Number of events per page
+- Total integrator connections
+
+Check your plan details in the dashboard. Upgrade prompts appear when you approach limits.
+
+---
+
+## Best Practices
+
+**Clear Event Descriptions:**
+Write descriptions that help partners understand when events are triggered and what data they contain.
+
+**Logical Event Grouping:**
+Use consistent prefixes to organize events by domain (order, payment, user, etc.).
+
+**Monitor New Integrators:**
+Review new connections regularly to ensure they're legitimate partners.
+
+**Regular Permission Audits:**
+Periodically review which events are exposed on each integration page and remove unused ones.
+
+**Webhook Monitoring:**
+Set up webhook handlers to track integration activity and respond to new connections promptly.
+
+**Partner Communication:**
+Provide documentation alongside your integration page URL explaining how to use your events effectively.
+
+---
+
+## Next Steps
+
+After creating integration pages:
+1. Share the integration URL with partners
+2. Monitor for new integrator connections
+3. Review integrator activity in the analytics dashboard
+4. Respond to webhook notifications
+5. Adjust exposed events based on partner feedback

@@ -1,0 +1,246 @@
+---
+title: Events
+description: Understanding events, schemas, and event lifecycle in EnSync
+---
+
+## What are Events?
+
+Events are the core building blocks of EnSync. They represent messages that flow between your systems and your partners. Each event carries specific information about something that happened in your business.
+
+Think of events as announcements:
+- When an order is placed, you publish an `order/created` event
+- When payment is confirmed, you publish a `payment/completed` event
+- When a partner ships an item, they publish a `shipment/updated` event back to you
+
+Events flow in both directions—you send events to partners, and partners send events back to you.
+
+---
+
+## Event Structure
+
+Every event in EnSync has three main components:
+
+### Event Name
+
+The event name identifies what type of message this is. Names use a path-like structure to organize related events:
+
+- `order/created`
+- `order/updated`
+- `order/shipped`
+- `payment/completed`
+- `user/registered`
+
+This structure helps partners quickly understand your event catalog and find the events they need.
+
+### Event Description
+
+A human-readable explanation of what this event represents and when it's triggered. This helps partners understand:
+- What business action triggered this event
+- What information they can expect to receive
+- How they might use this event in their systems
+
+The description is optional but highly recommended for clarity.
+
+### Event Schema
+
+The schema defines the structure of data this event carries. It's a map of field names to data types.
+
+**Schema is optional.** If you don't define a schema, the event can carry any data structure. However, defining a schema helps partners understand what to expect and makes integration easier.
+
+**Supported data types:**
+- **string** - Text values (names, descriptions, status codes)
+- **integer** - Whole numbers (IDs, quantities, amounts in cents)
+- **boolean** - True/false flags (is_paid, is_active, requires_signature)
+- **object** - Nested data structures with their own fields
+- **array** - Lists of items
+- **null** - Explicitly empty values
+
+**Example schema:**
+```json
+{
+  "order_id": "integer",
+  "customer_email": "string",
+  "total_amount": "integer",
+  "is_paid": "boolean",
+  "items": "array"
+}
+```
+
+When you publish an event with this schema, partners know exactly what fields to expect and what type of data each field contains.
+
+---
+
+## Creating Events
+
+When you create a new event, you'll see a form with fields for the event name, description, and schema.
+
+**After creation**, a modal displays showing:
+- The complete event name (including any path prefix)
+- The event ID (used internally by EnSync)
+- Code snippets showing how to publish this event from your systems
+- Instructions for partners on how to subscribe to this event
+
+You can copy these code snippets to quickly integrate the event into your applications.
+
+---
+
+## Viewing Event Details
+
+Click on any event in your event list to open its details modal. This modal shows:
+
+**Event Information:**
+- Full event name
+- Description (if provided)
+- Schema definition (if provided)
+- When the event was created
+
+**Code Snippets:**
+- Examples in multiple programming languages showing how to publish this event
+- Sample payload based on your schema
+- Authentication setup instructions
+
+**Actions:**
+- Edit the event description or schema
+- Delete the event (with warnings about dependent integrations)
+- Copy the event name for use in your code
+
+---
+
+## Editing Events
+
+When you click "Edit" on an event, you can modify:
+
+**Description:**
+Update the explanation of what this event represents. Changes are visible immediately to anyone viewing your event catalog.
+
+**Schema:**
+You can add, remove, or modify fields in the schema. The schema editor shows a visual interface where you can:
+- Add new fields with their data types
+- Change existing field types
+- Remove fields you no longer need
+- Nest objects for complex data structures
+
+**Important:** Changing a schema doesn't affect messages already sent. It only impacts how partners understand future messages and what they should expect.
+
+---
+
+## Deleting Events
+
+When you delete an event, a confirmation modal appears with important warnings:
+
+**What happens when you delete:**
+- The event is removed from your event catalog
+- Partners can no longer subscribe to this event
+- Apps can no longer publish this event
+- Existing integrations using this event will stop working
+
+**Before deleting:**
+- Check which partners are subscribed to this event
+- Notify partners that this event will be discontinued
+- Update any apps that publish this event
+- Consider deprecating the event first (update description to mark as deprecated) before fully removing it
+
+---
+
+## Event Naming Best Practices
+
+**Use clear, descriptive names:**
+- Good: `order/shipped`, `payment/failed`, `user/updated`
+- Avoid: `event1`, `data`, `msg`
+
+**Group related events with prefixes:**
+- All order events: `order/created`, `order/updated`, `order/cancelled`
+- All payment events: `payment/initiated`, `payment/completed`, `payment/refunded`
+
+**Use consistent verb tenses:**
+- Past tense for completed actions: `order/created`, `payment/completed`
+- Present tense for ongoing states: `inventory/low`, `system/healthy`
+
+**Keep names concise:**
+- Partners will type these names in their code
+- Shorter names are easier to remember and less error-prone
+
+---
+
+## Schema Best Practices
+
+**Start simple:**
+Begin with basic fields and add complexity only when needed. A simple schema is easier for partners to implement.
+
+**Use consistent field names:**
+If you use `customer_email` in one event, use it in all events. Don't switch between `customer_email`, `user_email`, and `email`.
+
+**Document units and formats:**
+In the description, clarify:
+- Currency amounts (are they in cents or dollars?)
+- Date formats (ISO 8601 timestamps?)
+- ID formats (integers or UUIDs?)
+
+**Consider optional vs required:**
+While EnSync doesn't enforce required fields, document in your description which fields will always be present and which might be absent.
+
+---
+
+## Event Versioning
+
+If you need to make breaking changes to an event (like changing field types or removing fields), consider creating a new version:
+
+- Current: `order/created`
+- New version: `order/created/v2`
+
+This allows:
+- Existing partners to continue using the old version
+- New partners to adopt the improved version
+- Gradual migration without breaking existing integrations
+
+Document the differences between versions in each event's description.
+
+---
+
+## Events and Integration Pages
+
+When you create an integration page for partners, you select which events to include in the catalog. Partners browsing your integration page will see:
+
+- All events you've chosen to expose
+- Their descriptions and schemas
+- The ability to subscribe to events they need
+
+You can create multiple integration pages with different event sets for different partner types. For example:
+- Payment partners see payment-related events
+- Shipping partners see order and shipment events
+- Analytics partners see all events
+
+---
+
+## Monitoring Event Usage
+
+From the Events page, you can see:
+- How many partners are subscribed to each event
+- How many messages have been published for each event
+- Which apps are publishing each event
+
+This helps you:
+- Identify your most popular events
+- Find unused events that might be candidates for removal
+- Understand which events drive the most integration value
+
+---
+
+## Event Idempotency
+
+Every message published to an event receives a unique idempotency key (Idem). This key:
+- Ensures the same message isn't processed twice
+- Helps trace message flow through your systems
+- Enables request-response patterns (partners can correlate responses to requests)
+
+The Idem is automatically generated by EnSync—you don't need to create it yourself.
+
+---
+
+## Next Steps
+
+Once you've defined your events:
+1. Create apps that will publish these events
+2. Set up integration pages to expose events to partners
+3. Invite partners to subscribe to your events
+4. Monitor event delivery through the dashboard

@@ -1,0 +1,138 @@
+---
+title: "API Automation"
+description: "Automate configuration management tasks with EnSync Config Manager APIs"
+icon: "robot"
+---
+
+## Overview
+
+EnSync Config Manager provides comprehensive API capabilities that enable automation of configuration management tasks. These APIs allow organizations to programmatically control all aspects of the EnSync ecosystem, reducing manual effort and enabling integration with existing tools and workflows.
+
+<Note>
+  This page demonstrates the types of automation possible with the Config Manager. By leveraging these APIs, you can integrate EnSync into your existing workflows and tools to create a seamless automation experience.
+</Note>
+
+## API Offerings
+
+<CardGroup cols={1}>
+  <Card title="REST API" icon="cloud">
+    The RESTful API provides HTTP-based access to all Config Manager functionality:
+    
+    - Standard HTTP Methods: Uses familiar GET, POST, PUT, DELETE operations
+    - JSON Payloads: Structured data exchange using standard JSON format
+    - OpenAPI Specification: Complete API documentation following [OpenAPI 3.0 standards](/config-manager/openapi-reference)
+    - Authentication: Secure access using Access Keys
+    - Pagination: Efficient handling of large result sets
+    - Filtering & Sorting: Powerful query capabilities
+  </Card>
+</CardGroup>
+
+## Automation Capabilities
+
+<AccordionGroup>
+  <Accordion icon="code" title="Configuration as Code">
+    - Infrastructure as Code Integration: Define EnSync configurations in version-controlled repositories
+    - CI/CD Pipeline Support: Automate configuration deployment through your CI/CD pipelines
+    - Environment Promotion: Easily promote configurations between environments
+    - Templating: Generate configurations from templates with variable substitution
+  </Accordion>
+  
+  <Accordion icon="diagram-project" title="Workflow Automation">
+    - Event-Driven Actions: Trigger automated workflows based on configuration changes
+    - Batch Operations: Perform bulk updates and changes
+    - Scheduled Tasks: Automate routine maintenance and updates
+    - Cross-System Orchestration: Coordinate configuration across multiple systems
+  </Accordion>
+  
+  <Accordion icon="shield-check" title="Monitoring & Governance">
+    - Automated Compliance Checks: Validate configurations against policy requirements
+    - Drift Detection: Identify unauthorized configuration changes
+    - Audit Trail: Programmatically access audit information
+    - Health Checks: Automate verification of system health and configuration status
+  </Accordion>
+</AccordionGroup>
+
+## Business Value
+
+<Tabs>
+  <Tab title="Operational Efficiency">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Reduced Manual Effort</strong> - Eliminate repetitive configuration tasks</li>
+        <li><strong>Faster Deployment</strong> - Accelerate configuration changes from hours to seconds</li>
+        <li><strong>Error Reduction</strong> - Minimize human error through automation</li>
+        <li><strong>Consistency</strong> - Ensure configurations are applied consistently across environments</li>
+      </ul>
+    </div>
+  </Tab>
+  
+  <Tab title="DevOps Enablement">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Self-Service Capabilities</strong> - Enable teams to manage their own configurations</li>
+        <li><strong>GitOps Workflows</strong> - Manage configurations through Git-based workflows</li>
+        <li><strong>Continuous Deployment</strong> - Automatically deploy configuration changes</li>
+        <li><strong>Testing Integration</strong> - Include configuration testing in automated test suites</li>
+      </ul>
+    </div>
+  </Tab>
+  
+  <Tab title="Enterprise Scalability">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-transparent dark:from-purple-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Bulk Management</strong> - Handle thousands of configurations efficiently</li>
+        <li><strong>Cross-Environment Consistency</strong> - Ensure alignment across development, testing, and production</li>
+        <li><strong>Multi-Team Support</strong> - Enable multiple teams to work independently</li>
+        <li><strong>Change Coordination</strong> - Orchestrate complex, multistep configuration changes</li>
+      </ul>
+    </div>
+  </Tab>
+</Tabs>
+
+## Integration Examples
+
+<CardGroup cols={2}>
+  <Card title="CI/CD Pipelines" icon="code-branch">
+    Integrate with tools like Jenkins, GitHub Actions, or GitLab CI to automatically deploy configuration changes when code is merged.
+  </Card>
+  
+  <Card title="Configuration Management Tools" icon="gears">
+    Connect with tools like Terraform, Ansible, or Puppet to include EnSync configuration in broader infrastructure management.
+  </Card>
+  
+  <Card title="Custom Dashboards" icon="gauge">
+    Build custom dashboards and management interfaces that leverage EnSync APIs to provide tailored user experiences.
+  </Card>
+  
+  <Card title="Monitoring Systems" icon="chart-line">
+    Integrate with monitoring platforms like Prometheus, Grafana, or Datadog to track configuration health and changes.
+  </Card>
+</CardGroup>
+
+## Getting Started with API Automation
+
+<Steps>
+  <Step title="Access Key Setup">
+    Create dedicated access keys for automation with appropriate permissions
+  </Step>
+  
+  <Step title="API Exploration">
+    Use the interactive API documentation to understand available endpoints
+  </Step>
+  
+  <Step title="Client Selection">
+    Choose from available client libraries or use standard HTTP clients
+  </Step>
+  
+  <Step title="Start Small">
+    Begin with simple automation tasks before implementing complex workflows
+  </Step>
+  
+  <Step title="Monitoring">
+    Implement logging and monitoring for your automation processes
+  </Step>
+</Steps>
+
+<Tip>
+  The EnSync APIs provide a powerful foundation for automating configuration management, enabling organizations to implement efficient, consistent, and scalable processes while reducing manual effort and human error.
+</Tip>

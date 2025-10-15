@@ -1,0 +1,441 @@
+---
+title: Logs
+description: Viewing, filtering, and troubleshooting with EnSync logs
+---
+
+## What are Logs?
+
+Logs are detailed records of all activity happening in your EnSync platform. They capture every event published, received, acknowledged, and any errors or connection changes. Logs are essential for:
+- Troubleshooting integration issues
+- Monitoring system health
+- Auditing event delivery
+- Understanding message flow
+- Compliance and reporting
+
+---
+
+## Log Components
+
+### Timestamp
+
+The exact date and time when the log entry was created. Timestamps are in UTC and help you:
+- Trace the sequence of events
+- Identify when issues occurred
+- Correlate logs across systems
+- Generate time-based reports
+
+### Log Level
+
+The severity or type of log entry:
+
+**DEBUG:**
+Detailed technical information useful for development and troubleshooting. Shows internal system operations.
+
+**INFO:**
+General informational messages about normal operations. Examples:
+- Event published successfully
+- Connection established
+- Subscription created
+
+**WARN:**
+Warning messages indicating potential issues that don't stop operations. Examples:
+- Slow event delivery
+- Retry attempts
+- Deprecated feature usage
+
+**ERROR:**
+Error messages indicating failures that prevented an operation. Examples:
+- Event delivery failed
+- Authentication error
+- Invalid event format
+
+**CONNECTION_ESTABLISHED:**
+Special log type indicating when apps or integrators successfully connect to EnSync.
+
+### Type Code
+
+A specific code identifying the type of operation or event. Common type codes:
+
+**EVENT_PUBLISHED:**
+An event was published to EnSync.
+
+**EVENT_DELIVERED:**
+An event was successfully delivered to a recipient.
+
+**EVENT_ACKNOWLEDGED:**
+A recipient confirmed receiving and processing an event.
+
+**CONNECTION_OPENED:**
+A new connection was established.
+
+**CONNECTION_CLOSED:**
+A connection was terminated.
+
+**SUBSCRIPTION_CREATED:**
+An app or integrator subscribed to an event.
+
+**AUTHENTICATION_FAILED:**
+An authentication attempt failed.
+
+**PERMISSION_DENIED:**
+An operation was blocked due to insufficient permissions.
+
+### Producer
+
+The entity that published or triggered the event. This could be:
+- An app name (for events published by your apps)
+- An integrator name (for events published by partners)
+- "System" (for internal EnSync operations)
+
+The producer field helps you identify the source of events and track which systems are most active.
+
+### Consumer
+
+The entity that received or should receive the event. This could be:
+- An app name (for events delivered to your apps)
+- An integrator name (for events delivered to partners)
+- "Multiple" (for events with multiple recipients)
+
+The consumer field helps you track event delivery and identify which systems are receiving data.
+
+### Event Name
+
+The name of the event being logged. Examples:
+- `order/created`
+- `payment/completed`
+- `shipment/updated`
+
+This helps you filter logs by specific event types.
+
+### Message
+
+A human-readable description of what happened. Examples:
+- "Event published successfully"
+- "Event delivered to consumer"
+- "Connection established from 192.168.1.100"
+- "Authentication failed: invalid credentials"
+
+Messages provide context about the log entry.
+
+### Metadata
+
+Additional structured data about the log entry. This might include:
+- Event payload (the actual data sent)
+- Error details
+- Connection information
+- Retry attempts
+- Delivery timestamps
+
+Metadata is displayed in JSON format and can be expanded to view details.
+
+---
+
+## Viewing Logs
+
+The Logs page displays a table with all log entries. Each row shows:
+- Expandable arrow (click to see full metadata)
+- Timestamp
+- Log level
+- Type code
+- Metadata preview
+- Producer
+- Consumer
+- Message
+
+### Expanding Log Details
+
+Click the arrow icon on the left of any log entry to expand it and see:
+- Full metadata in formatted JSON
+- Complete message text
+- All associated fields
+
+This is useful for debugging specific events or understanding exactly what data was sent.
+
+---
+
+## Filtering Logs
+
+### Time Range Filter
+
+**Start Date/Time:**
+Set the beginning of the time range you want to view. Default is 1 hour ago.
+
+**End Date/Time:**
+Set the end of the time range. Default is now.
+
+**Maximum Range:**
+You can view logs for up to 7 days in a single query. If you need older logs, adjust the date range accordingly.
+
+**Quick Tip:**
+For real-time monitoring, set the start time to a few minutes ago and keep the end time at "now."
+
+### Log Level Filter
+
+Filter by severity:
+- **ALL**: Show all log levels
+- **DEBUG**: Show only debug messages
+- **INFO**: Show only informational messages
+- **WARN**: Show only warnings
+- **ERROR**: Show only errors
+- **CONNECTION_ESTABLISHED**: Show only connection events
+
+Use this to focus on specific types of activity. For example:
+- Select ERROR to troubleshoot failures
+- Select CONNECTION_ESTABLISHED to monitor new connections
+- Select INFO for general activity overview
+
+### Search Query
+
+Enter text to search across all log fields:
+- Event names
+- Producer names
+- Consumer names
+- Messages
+- Metadata content
+
+The search is case-insensitive and matches partial text. Examples:
+- Search "order" to find all order-related events
+- Search "failed" to find all failures
+- Search a specific app name to see all its activity
+
+### Applying Filters
+
+After setting your filters:
+1. Click "Search" or press Enter to apply them
+2. The logs table updates to show matching entries
+3. Pagination resets to page 1
+
+**Clear Filters:**
+Click "Clear" to reset all filters to defaults.
+
+---
+
+## Pagination
+
+### Page Size
+
+Choose how many log entries to display per page:
+- 50 (default)
+- 100
+- 200
+
+Larger page sizes load more data but may be slower.
+
+### Page Navigation
+
+Use the pagination controls at the bottom to:
+- Go to the first page
+- Go to the previous page
+- Jump to a specific page number
+- Go to the next page
+- Go to the last page
+
+The current page and total pages are displayed.
+
+---
+
+## Refreshing Logs
+
+**Manual Refresh:**
+Click the refresh button to reload logs with current filters.
+
+**Auto-Refresh:**
+Logs don't auto-refresh by default. For real-time monitoring, manually refresh periodically or adjust your time range to include recent activity.
+
+**Last Refreshed:**
+The timestamp showing when logs were last loaded appears at the top of the page.
+
+---
+
+## Common Log Patterns
+
+### Successful Event Flow
+
+A typical successful event delivery shows these log entries in sequence:
+
+1. **EVENT_PUBLISHED** (INFO)
+   - Producer: Your app
+   - Message: "Event published successfully"
+
+2. **EVENT_DELIVERED** (INFO)
+   - Consumer: Partner/integrator
+   - Message: "Event delivered to consumer"
+
+3. **EVENT_ACKNOWLEDGED** (INFO)
+   - Consumer: Partner/integrator
+   - Message: "Event acknowledged by consumer"
+
+### Failed Event Delivery
+
+When event delivery fails, you'll see:
+
+1. **EVENT_PUBLISHED** (INFO)
+   - Event was published successfully
+
+2. **EVENT_DELIVERY_FAILED** (ERROR)
+   - Consumer: Intended recipient
+   - Message: Reason for failure (e.g., "Consumer offline", "Connection timeout")
+
+3. **EVENT_QUEUED_FOR_RETRY** (WARN)
+   - Message: "Event queued for automatic retry"
+
+EnSync automatically retries failed deliveries. Check logs later to see if retry succeeded.
+
+### Authentication Issues
+
+Authentication failures appear as:
+
+**AUTHENTICATION_FAILED** (ERROR)
+- Message: "Invalid credentials" or "Expired token"
+- Metadata: Details about the authentication attempt
+
+If you see repeated authentication failures:
+- Verify the app or integrator is using correct credentials
+- Check if credentials were regenerated
+- Ensure the app/integrator hasn't been deleted
+
+### Permission Errors
+
+When an app tries to publish an event it doesn't have permission for:
+
+**PERMISSION_DENIED** (ERROR)
+- Producer: The app attempting to publish
+- Event Name: The event they tried to publish
+- Message: "App does not have permission to publish this event"
+
+**Resolution:**
+Edit the app's send permissions to include the event.
+
+---
+
+## Troubleshooting with Logs
+
+### Event Not Delivered
+
+**Steps:**
+1. Filter logs by the event name
+2. Look for EVENT_PUBLISHED entries
+3. Check if EVENT_DELIVERED appears after it
+4. If not delivered, look for ERROR logs explaining why
+
+**Common causes:**
+- Consumer is offline (will retry automatically)
+- Consumer doesn't have receive permission
+- Network issues (will retry automatically)
+
+### App Can't Publish Events
+
+**Steps:**
+1. Search logs for the app name
+2. Look for PERMISSION_DENIED or AUTHENTICATION_FAILED errors
+3. Check the error message for details
+
+**Common causes:**
+- App doesn't have send permission for the event
+- Invalid or expired credentials
+- Event name typo (case-sensitive)
+
+### Partner Not Receiving Events
+
+**Steps:**
+1. Filter by the partner's integrator name
+2. Check for EVENT_DELIVERED logs
+3. Look for CONNECTION_ESTABLISHED to verify they're connected
+4. Search for ERROR logs related to that partner
+
+**Common causes:**
+- Partner hasn't subscribed to the event
+- Partner's connection is inactive
+- Event not exposed on their integration page
+
+### High Error Rate
+
+**Steps:**
+1. Filter by ERROR level
+2. Group errors by type code
+3. Identify patterns (same producer, same consumer, same event)
+
+**Common causes:**
+- System-wide issue (many different errors)
+- Specific app misconfigured (errors from one producer)
+- Partner system down (errors to one consumer)
+
+---
+
+## Log Retention
+
+Logs are retained for **90 days** by default. After 90 days, logs are automatically archived and may not be accessible through the dashboard.
+
+For long-term log retention:
+- Export logs regularly
+- Set up log forwarding to external systems
+- Contact support about extended retention options
+
+---
+
+## Exporting Logs
+
+While there's no built-in export button, you can:
+- Copy log data from the table
+- Use the API to fetch logs programmatically
+- Set up log forwarding to external logging systems (Datadog, Splunk, etc.)
+
+For bulk exports or automated log collection, contact support for API access details.
+
+---
+
+## Log Limits
+
+Depending on your EnSync plan, you may have limits on:
+- Log retention period
+- Number of log queries per day
+- Log detail level (some plans may not show DEBUG logs)
+
+Check your plan details in the dashboard. If you need more logging capabilities, upgrade prompts appear when you approach limits.
+
+---
+
+## Best Practices
+
+**Regular Monitoring:**
+Check logs daily for ERROR entries to catch issues early.
+
+**Use Specific Filters:**
+Instead of viewing all logs, filter by:
+- Specific apps or integrators
+- Specific event types
+- Error level only
+
+**Correlate with Analytics:**
+If analytics show a drop in activity, check logs for errors during that time period.
+
+**Document Patterns:**
+Keep notes on common error patterns and their resolutions for faster troubleshooting.
+
+**Set Up Alerts:**
+If your plan supports it, configure alerts for critical errors so you're notified immediately.
+
+**Time Zone Awareness:**
+Logs are in UTC. Convert to your local time zone when correlating with external systems.
+
+---
+
+## Understanding Idempotency Keys (Idem)
+
+Many log entries include an idempotency key (Idem) in the metadata. This unique identifier:
+- Ensures the same event isn't processed twice
+- Helps trace an event through the entire system
+- Enables request-response correlation
+
+If you're troubleshooting a specific event, search logs by its Idem to see its complete journey through EnSync.
+
+---
+
+## Next Steps
+
+Use logs to:
+1. Monitor system health daily
+2. Troubleshoot integration issues
+3. Verify event delivery
+4. Audit compliance requirements
+5. Optimize app and integration performance

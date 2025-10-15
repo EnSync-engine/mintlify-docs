@@ -1,0 +1,148 @@
+---
+title: "Access Keys"
+description: "Secure credentials that control how applications, services, and users interact with the EnSync ecosystem"
+icon: "key"
+---
+
+## Overview
+
+Access Keys are a fundamental security and integration feature of the EnSync platform. They serve as secure credentials that control how applications, services, and users interact with the EnSync ecosystem.
+
+<Frame>
+  <img src="/images/access-keys-diagram.png" alt="Access Keys Diagram" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">How Access Keys control interactions within the EnSync ecosystem</figcaption>
+</Frame>
+
+## Types of Access Keys
+
+<CardGroup cols={2}>
+  <Card title="Account Keys" icon="user-gear">
+    Designed for administrative and management purposes:
+    
+    - Administrative Control: Manage resources, configurations, and settings
+    - Resource Management: Create, read, update, and delete EnSync resources
+    - Permission-based: Can be configured with specific permissions for different resources
+    - UI Integration: Used by dashboard applications and administrative tools
+  </Card>
+  
+  <Card title="Service Keys" icon="server">
+    Enable secure service-to-service communication:
+    
+    - Event Streaming: Allow services to send and receive events
+    - Automated Processes: Used by background processes and automated workflows
+    - Specialized Access: Typically limited to specific event types or operations
+    - System Integration: Connect external systems to the EnSync ecosystem
+  </Card>
+</CardGroup>
+
+## Key Benefits
+
+<Tabs>
+  <Tab title="Enhanced Security">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Granular Permissions</strong> - Define exactly what each key can access</li>
+        <li><strong>Revocable Access</strong> - Instantly revoke access when needed</li>
+        <li><strong>Audit Trail</strong> - Track which keys are accessing which resources</li>
+        <li><strong>Reduced Attack Surface</strong> - Limit exposure by providing only necessary permissions</li>
+      </ul>
+    </div>
+  </Tab>
+  
+  <Tab title="Simplified Integration">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Standardized Authentication</strong> - Consistent authentication method across all EnSync services</li>
+        <li><strong>Easy Implementation</strong> - Simple to implement in any programming language</li>
+        <li><strong>Self-Service</strong> - Teams can manage their own keys without central IT involvement</li>
+        <li><strong>Flexible Usage</strong> - Works with both REST and gRPC APIs</li>
+      </ul>
+    </div>
+  </Tab>
+  
+  <Tab title="Operational Excellence">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-transparent dark:from-purple-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Reduced Overhead</strong> - Eliminate complex authentication schemes</li>
+        <li><strong>Scalable Management</strong> - Easily manage thousands of keys across your organization</li>
+        <li><strong>Environment Isolation</strong> - Create separate keys for development, testing, and production</li>
+        <li><strong>Rotation Policies</strong> - Implement key rotation for enhanced security</li>
+      </ul>
+    </div>
+  </Tab>
+  
+  <Tab title="Governance & Compliance">
+    <div className="p-4 border rounded-lg bg-gradient-to-r from-amber-50 to-transparent dark:from-amber-900/30 dark:to-transparent">
+      <ul className="pl-6">
+        <li><strong>Access Control</strong> - Enforce the principle of least privilege</li>
+        <li><strong>Compliance Support</strong> - Help meet regulatory requirements for access control</li>
+        <li><strong>Visibility</strong> - Clear overview of who has access to what resources</li>
+        <li><strong>Centralized Management</strong> - Single point of control for all access credentials</li>
+      </ul>
+    </div>
+  </Tab>
+</Tabs>
+
+## Real-World Use Cases
+
+<AccordionGroup>
+  <Accordion icon="users-gear" title="Multi-Team Development">
+    When multiple teams are developing against EnSync, each team can have their own access keys with appropriate permissions, preventing accidental interference between teams.
+    
+    <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">
+      <strong>Example:</strong> Team A works on payment processing while Team B works on inventory management. Each team has access keys that limit their access to only the events and resources relevant to their domain.
+    </div>
+  </Accordion>
+  
+  <Accordion icon="cubes" title="Microservice Architecture">
+    In a microservice architecture, each service can have its own access key with precisely the permissions it needs, enhancing security and reducing potential blast radius of compromised credentials.
+    
+    <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">
+      <strong>Example:</strong> A payment processing microservice has an access key that only allows it to publish payment events and subscribe to account verification events.
+    </div>
+  </Accordion>
+  
+  <Accordion icon="handshake" title="Third-Party Integration">
+    When integrating with third-party services, provide them with limited-scope access keys that only grant access to the specific resources they need.
+    
+    <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">
+      <strong>Example:</strong> A shipping provider integration receives an access key that only allows it to subscribe to order fulfillment events.
+    </div>
+  </Accordion>
+  
+  <Accordion icon="gears" title="CI/CD Pipelines">
+    Automated deployment pipelines can use service keys to securely deploy and configure EnSync resources without requiring human intervention.
+    
+    <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded">
+      <strong>Example:</strong> A CI/CD pipeline uses a service key to automatically update event definitions when new code is deployed.
+    </div>
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Steps>
+  <Step title="Follow Least Privilege">
+    Only grant the permissions that are absolutely necessary for each key's intended purpose.
+  </Step>
+  
+  <Step title="Regular Rotation">
+    Implement a key rotation schedule for sensitive environments to limit the impact of potentially compromised keys.
+  </Step>
+  
+  <Step title="Environment Separation">
+    Use different keys for development, testing, and production environments to prevent accidental cross-environment actions.
+  </Step>
+  
+  <Step title="Monitoring">
+    Set up alerts for unusual access key usage patterns to quickly detect potential security incidents.
+  </Step>
+  
+  <Step title="Documentation">
+    Maintain clear documentation of what each key is used for, who owns it, and when it was last rotated.
+  </Step>
+</Steps>
+
+<Note>
+  Access Keys are a cornerstone of EnSync's security model, providing both protection and flexibility while enabling seamless integration across your technology ecosystem.
+</Note>

@@ -1,0 +1,161 @@
+---
+title: "Components of EnSync"
+description: "Learn about the key components that make up the EnSync platform and how they work together"
+---
+
+EnSync is a powerful real-time event delivery and integration engine designed to connect systems seamlessly. This document provides an overview of the key components that make up the EnSync platform and how they work together to enable reliable, structured message exchange between systems.
+
+## Core Components
+
+EnSync's architecture consists of several interconnected components that work together to provide a complete event delivery and integration solution:
+
+<CardGroup cols={2}>
+  <Card title="Node Engine" icon="server" href="/node-engine">
+    The central component responsible for managing the flow of events between producers and consumers.
+  </Card>
+  <Card title="Config Manager" icon="gears" href="/config-manager">
+    Provides essential configuration and access management features for the EnSync platform.
+  </Card>
+  <Card title="Client Libraries" icon="code" href="/sdks">
+    Lightweight SDKs for various programming languages to easily integrate with EnSync.
+  </Card>
+  <Card title="Database Layer" icon="database">
+    Persistent storage for message retention, system configuration, and event history.
+  </Card>
+  <Card title="Cache Layer" icon="bolt">
+    High-performance caching for improved system performance and throughput.
+  </Card>
+</CardGroup>
+
+## Detailed Component Breakdown
+
+<AccordionGroup>
+  <Accordion icon="server" title="Node Engine">
+    The Node Engine is the central component of the EnSync system, responsible for managing the flow of events between producers and consumers. It acts as the backbone of the entire event distribution system, ensuring reliable and efficient communication.
+
+    **Key Capabilities:**
+
+    - Event management and delivery
+    - Queue management with prioritization
+    - Client connection handling via WebSockets
+    - Reliability features with at-least-once delivery guarantees
+    - Horizontal scaling for high performance
+
+    The Node Engine handles the complexities of event distribution so that your applications can focus on business logic.
+  </Accordion>
+  
+  <Accordion icon="gears" title="Config Manager">
+    The Config Manager provides essential configuration and access management features for the EnSync platform. It serves as the control center for managing how different parts of the EnSync ecosystem communicate and access resources.
+
+    **Key Capabilities:**
+
+    - Access key management for secure authentication
+    - Permission control with fine-grained access rules
+    - Workspace management for environment separation
+    - Event definition management
+    - API access through RESTful endpoints
+    - Comprehensive security features
+
+    The Config Manager gives you centralized control over your EnSync ecosystem, ensuring secure and controlled communication between components.
+  </Accordion>
+
+  <Accordion icon="code" title="Client Libraries (SDKs)">
+    EnSync provides lightweight SDKs for various programming languages, making it easy to integrate with the platform:
+
+    - [Node.js SDK](/sdk/nodejs)
+    - More SDKs coming soon
+
+    These libraries handle the complexities of connecting to EnSync, including authentication, encryption, and message formatting.
+  </Accordion>
+
+  <Accordion icon="database" title="Database Layer">
+    The persistent storage layer for EnSync that handles:
+
+    - Message retention (configurable up to 30 days)
+    - System configuration storage
+    - Event history for replay capability
+    - Audit logging
+  </Accordion>
+
+  <Accordion icon="bolt" title="Cache Layer">
+    A high-performance caching layer that improves system performance by:
+
+    - Reducing database load
+    - Providing fast access to frequently used data
+    - Supporting high-throughput message processing
+  </Accordion>
+</AccordionGroup>
+
+## How Components Work Together
+
+<Steps>
+  <Step title="Configuration Phase">
+    - Administrators use the Config Manager to define event structures, create access keys, and set permissions
+    - Services register with EnSync using the provided access keys
+  </Step>
+  
+  <Step title="Event Publishing">
+    - Producer services use client SDKs to publish events
+    - Events are authenticated and validated by the Config Manager
+    - Valid events are routed to the Node Engine for processing
+  </Step>
+  
+  <Step title="Event Delivery">
+    - The Node Engine manages event queues and delivery
+    - Consumer services receive events through persistent WebSocket connections
+    - Delivery acknowledgments ensure reliable processing
+  </Step>
+  
+  <Step title="Monitoring and Management">
+    - Administrators can monitor system health and performance
+    - Event logs provide visibility into message flow
+    - Configuration can be adjusted as needs evolve
+  </Step>
+</Steps>
+
+## Getting Started
+
+To begin working with EnSync:
+
+<CardGroup cols={3}>
+  <Card title="Introduction" icon="book-open" href="/">
+    Complete overview of EnSync's capabilities
+  </Card>
+  <Card title="Config Manager" icon="gears" href="/config-manager">
+    Learn about system configuration
+  </Card>
+  <Card title="Node Engine" icon="server" href="/node-engine">
+    Optimize your event delivery
+  </Card>
+</CardGroup>
+
+## Benefits of EnSync's Architecture
+
+<Note>
+EnSync's component-based architecture provides significant advantages for businesses looking to build robust integration solutions.
+</Note>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div className="p-4 border rounded-lg">
+    <h3 className="font-bold">Modularity</h3>
+    <p>Components can be scaled independently based on load</p>
+  </div>
+  <div className="p-4 border rounded-lg">
+    <h3 className="font-bold">Resilience</h3>
+    <p>Fault tolerance is built into each component</p>
+  </div>
+  <div className="p-4 border rounded-lg">
+    <h3 className="font-bold">Security</h3>
+    <p>End-to-end encryption with granular access control</p>
+  </div>
+  <div className="p-4 border rounded-lg">
+    <h3 className="font-bold">Performance</h3>
+    <p>Optimized for high-throughput message processing</p>
+  </div>
+  <div className="p-4 border rounded-lg">
+    <h3 className="font-bold">Flexibility</h3>
+    <p>Adaptable to various integration scenarios</p>
+  </div>
+</div>
+
+By understanding how these components work together, you can leverage the full power of EnSync to create robust, real-time integrations for your business applications.

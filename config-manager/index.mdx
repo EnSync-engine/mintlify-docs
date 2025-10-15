@@ -1,0 +1,138 @@
+---
+title: "Overview"
+description: "EnSync Config Manager is a central component of the EnSync platform that provides essential configuration and access management features. It serves as the backbone for controlling how different parts of the EnSync ecosystem communicate and access resources."
+icon: "gears"
+---
+
+<Note>
+Config Manager is the control center for your EnSync ecosystem, providing the tools you need to manage access, permissions, and configurations securely.
+</Note>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Access Key Management" icon="key">
+    Create and manage access keys that control which applications and services can interact with EnSync resources.
+  </Card>
+  <Card title="Permission Control" icon="lock">
+    Fine-grained permissions to control exactly what each application or service can do.
+  </Card>
+  <Card title="Workspace Management" icon="folder-tree">
+    Logical separation between different environments or projects.
+  </Card>
+  <Card title="Event Definition Management" icon="code-branch">
+    Define and manage standardized event structures across your ecosystem.
+  </Card>
+  <Card title="API Access" icon="cloud">
+    Comprehensive REST API for programmatic access to all functionality.
+  </Card>
+  <Card title="Security Features" icon="shield-halved">
+    Built-in security features to protect your data and resources.
+  </Card>
+</CardGroup>
+
+## Feature Details
+
+<AccordionGroup>
+  <Accordion icon="key" title="Access Key Management">
+    The Config Manager allows you to create and manage access keys that control which applications and services can interact with EnSync resources. These keys come in two types:
+
+    - **Account Keys**: Used by administrative applications to manage EnSync resources
+    - **Service Keys**: Used by services to send and receive events within the EnSync ecosystem
+
+    For detailed information on creating and managing access keys, see the [Access Keys Documentation](/config-manager/access-keys).
+  </Accordion>
+
+  <Accordion icon="lock" title="Permission Control">
+    Fine-grained permissions let you control exactly what each application or service can do:
+
+    - Control access to specific resources like events, logs, and integrations
+    - Set read, write, and update permissions for different resources
+    - Define hierarchical permission paths for precise access control
+  </Accordion>
+
+  <Accordion icon="folder-tree" title="Workspace Management">
+    Workspaces provide logical separation between different environments or projects:
+
+    - Create and manage workspaces to organize your resources
+    - Control access to resources within specific workspaces
+    - Maintain separation between development, testing, and production environments
+  </Accordion>
+
+  <Accordion icon="code-branch" title="Event Definition Management">
+    Config Manager allows you to define and manage event structures:
+
+    - Create standardized event definitions that services can use
+    - Ensure consistency in event data across your ecosystem
+    - Update event definitions as your needs evolve
+
+    Learn more about working with event definitions in the [Event Definitions Guide](/config-manager/event-definitions).
+  </Accordion>
+
+  <Accordion icon="cloud" title="API Access">
+    All functionality is accessible through a comprehensive REST API:
+
+    - RESTful API for standard HTTP-based integration
+    - Complete [OpenAPI specification](/config-manager/openapi-reference) documentation
+    - Authentication using secure access keys
+
+    For information on automating tasks using the API, see the [API Automation Guide](/config-manager/api-automation).
+  </Accordion>
+
+  <Accordion icon="shield-halved" title="Security Features">
+    Built with security in mind:
+
+    - Cryptographic verification of access keys
+    - Service key pair management for secure communication
+    - Permission validation to prevent unauthorized access
+  </Accordion>
+</AccordionGroup>
+
+## Benefits
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+  <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+    <h3 className="font-bold text-lg">Centralized Control</h3>
+    <p>Manage all EnSync configuration from a single place</p>
+  </div>
+  <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+    <h3 className="font-bold text-lg">Secure Access</h3>
+    <p>Ensure only authorized services can access your resources</p>
+  </div>
+  <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+    <h3 className="font-bold text-lg">Flexible Integration</h3>
+    <p>RESTful API makes integration easy across various platforms</p>
+  </div>
+  <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+    <h3 className="font-bold text-lg">Comprehensive Documentation</h3>
+    <p>Complete OpenAPI specification for all endpoints</p>
+  </div>
+  <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-transparent dark:from-green-900/30 dark:to-transparent">
+    <h3 className="font-bold text-lg">Scalable Architecture</h3>
+    <p>Designed to support enterprise-scale deployments</p>
+  </div>
+</div>
+
+<Tip>
+The EnSync Config Manager provides the foundation for secure, controlled, and efficient communication within your EnSync ecosystem, allowing you to focus on building applications rather than managing infrastructure.
+</Tip>
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Workspace">
+    Start by creating a workspace to organize your resources and control access.
+  </Step>
+  <Step title="Generate Access Keys">
+    Create the necessary access keys for your applications and services.
+  </Step>
+  <Step title="Define Event Structures">
+    Set up standardized event definitions for your ecosystem.
+  </Step>
+  <Step title="Configure Permissions">
+    Establish fine-grained permissions for your access keys.
+  </Step>
+  <Step title="Integrate with Your Applications">
+    Use the REST API or SDKs to integrate Config Manager with your applications.
+  </Step>
+</Steps>
