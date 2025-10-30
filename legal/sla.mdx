@@ -1,0 +1,170 @@
+---
+title: "Service Level Agreement (SLA)"
+description: "EnSync service level commitments and guarantees"
+---
+
+## Overview
+
+This Service Level Agreement (SLA) describes EnSync's commitments regarding platform availability, performance, and support for our cloud-hosted service.
+
+## Uptime Guarantee
+
+### 99.99% Uptime Commitment
+
+EnSync commits to **99.99% uptime** for our platform, measured monthly. This applies to:
+- Event publishing and delivery
+- SDK connections
+- Dashboard access
+- API availability
+
+### Plan-Specific SLA Coverage
+
+| Plan | SLA Coverage | Uptime Guarantee |
+|------|-------------|------------------|
+| **Starter** | No formal SLA | Best effort - we aim for high availability |
+| **Startup** | No formal SLA | Best effort - we aim for high availability |
+| **Scaleup** | ✅ Covered | 99.99% uptime |
+| **Enterprise** | ✅ Covered | 99.99% uptime |
+
+<Note>
+While Starter and Startup plans don't have formal SLA coverage, we maintain the same infrastructure and aim to provide high availability at all times.
+</Note>
+
+## Performance Commitments
+
+### Event Delivery Latency
+
+EnSync targets **50ms per message** for event delivery latency (publish to delivery).
+
+<Info>
+In practice, latency is typically much lower. The 50ms target accounts for our alpha stage with multi-region hosting as we continue to optimize performance.
+</Info>
+
+### High Throughput
+
+EnSync delivers high throughput optimized for partner integration workloads, with horizontal scaling to handle growing partner ecosystems.
+
+## Data Retention
+
+Data retention varies by plan tier:
+
+| Plan | Event Retention | Log Retention |
+|------|----------------|---------------|
+| **Starter** | 3 days | 3 days |
+| **Startup** | 30 days | 30 days |
+| **Scaleup** | 90 days | 90 days |
+| **Enterprise (Cloud)** | Up to 1 year | Up to 1 year |
+| **Enterprise (Self-Hosted)** | Unlimited | Unlimited |
+
+## Maintenance Windows
+
+### Scheduled Maintenance
+
+EnSync performs scheduled maintenance to ensure platform reliability and security.
+
+**Advance Notice:**
+- **Starter**: No advance notice required
+- **Startup**: 1 week advance notice
+- **Scaleup**: 1 week advance notice
+- **Enterprise**: 1 month advance notice
+
+**Maintenance Impact:**
+- Scheduled maintenance windows are excluded from uptime calculations
+- We aim to minimize disruption during maintenance
+- Critical security updates may require shorter notice periods
+
+## Service Credits
+
+### SLA Breach Compensation
+
+If EnSync fails to meet the 99.99% uptime commitment for Scaleup or Enterprise plans, we provide service credits in the form of **additional event bandwidth**.
+
+**Credit Calculation:**
+
+| Monthly Uptime | Service Credit |
+|----------------|----------------|
+| < 99.99% but ≥ 99.9% | 10% of monthly event bandwidth |
+| < 99.9% but ≥ 99.0% | 25% of monthly event bandwidth |
+| < 99.0% | 50% of monthly event bandwidth |
+
+**To Request Credits:**
+1. Contact support@ensync.cloud within 30 days of the incident
+2. Provide details of the service disruption
+3. Credits will be applied to your next billing cycle
+
+## Support Channels
+
+### Available Support
+
+All plans have access to email support:
+- **Email**: support@ensync.cloud
+
+**Enterprise Plan Benefits:**
+- Direct access to EnSync founders
+- Priority support response
+- Dedicated support for critical issues
+
+## SLA Exclusions
+
+This SLA does not apply to service unavailability caused by:
+
+### Customer-Related Issues
+- Customer misconfigurations
+- Incorrect SDK usage
+- Invalid credentials or permissions
+- Using unofficial SDKs or tools
+- Client-side network issues
+
+### External Factors
+- DDoS attacks or other malicious activities
+- Acts of God (natural disasters, extreme weather, etc.)
+- Third-party service failures
+- Infrastructure provider outages (AWS, GCP, etc.)
+- Internet backbone failures
+
+### Planned Events
+- Scheduled maintenance (with proper notice)
+- Emergency security patches
+- Customer-requested changes or migrations
+
+## Measuring Uptime
+
+### Calculation Method
+
+Uptime is calculated as:
+```
+Uptime % = (Total Minutes in Month - Downtime Minutes) / Total Minutes in Month × 100
+```
+
+### Monitoring
+
+EnSync continuously monitors:
+- Platform availability
+- Event delivery success rates
+- API response times
+- SDK connection health
+
+### Incident Reporting
+
+Customers can check platform status and report incidents:
+- Status page: status.ensync.cloud (if available)
+- Email: support@ensync.cloud
+- Dashboard notifications for ongoing incidents
+
+## SLA Updates
+
+EnSync reserves the right to update this SLA with:
+- 30 days notice for material changes
+- Immediate updates for clarifications or non-material changes
+
+Updated SLA terms apply from the effective date specified in the update notice.
+
+## Contact
+
+For SLA-related questions or to report service issues:
+- **Email**: support@ensync.cloud
+- **Enterprise Customers**: Direct founder access via your dedicated channel
+
+---
+
+*Last Updated: October 2025*

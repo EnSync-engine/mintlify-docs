@@ -21,7 +21,7 @@
             ]
           },
           {
-            "group": "Guides:",
+            "group": "Guides",
             "pages": [
               "guides/connect",
               "guides/publish",
@@ -94,6 +94,13 @@
             "pages": [
               "sdk/node",
               "sdk/python"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "legal/sla",
+              "legal/support-policy"
             ]
           }
         ]
