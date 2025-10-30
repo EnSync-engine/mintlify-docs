@@ -34,12 +34,12 @@ subscription.on(async (event) => {
 
 ## Getting Your appId
 
-You receive your appId when creating a SERVICE access key in the EnSync Dashboard or via the API.
+You receive your appId when creating an app in the EnSync Dashboard or via the API.
 
-The response includes:
-- `accessKey` (your appKey)
-- `service_key_pair.public_key` (your appId)
-- `service_key_pair.private_key` (your appSecret)
+You receive:
+- appKey (for authentication)
+- appId (public identifier)
+- appSecret (for decryption)
 
 See [Create Access Key](/api-reference/endpoint/access-keys/create) for details.
 
@@ -87,7 +87,7 @@ await client.publish(
 
 ## Multiple Apps
 
-You can create multiple apps (SERVICE keys) for different purposes:
+You can create multiple apps for different purposes:
 
 ```
 production-app-id     → Production environment
