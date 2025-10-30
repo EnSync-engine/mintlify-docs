@@ -71,12 +71,13 @@ const engine = new EnSyncEngine(url, options);
 
 **Options Object:**
 
-| Option                   | Type     | Default | Description                                |
-| ------------------------ | -------- | ------- | ------------------------------------------ |
-| `heartbeatInterval`      | `number` | `30000` | Heartbeat interval in ms (gRPC)            |
-| `pingInterval`           | `number` | `30000` | Ping interval in ms (WebSocket)            |
-| `reconnectInterval`      | `number` | `5000`  | Reconnection interval in ms                |
-| `maxReconnectAttempts`   | `number` | `5`     | Maximum reconnection attempts              |
+| Option                   | Type      | Default | Description                                |
+| ------------------------ | --------- | ------- | ------------------------------------------ |
+| `heartbeatInterval`      | `number`  | `30000` | Heartbeat interval in ms (gRPC)            |
+| `pingInterval`           | `number`  | `30000` | Ping interval in ms (WebSocket)            |
+| `reconnectInterval`      | `number`  | `5000`  | Reconnection interval in ms                |
+| `maxReconnectAttempts`   | `number`  | `5`     | Maximum reconnection attempts              |
+| `enableLogging`          | `boolean` | `false` | Enable/disable SDK console logs            |
 
 ---
 
@@ -91,6 +92,12 @@ const engine = new EnSyncEngine("grpcs://node.gms.ensync.cloud");
 
 // Create a client
 const client = await engine.createClient("your-app-key");
+
+// With options (e.g., enable logging for debugging)
+const engineWithLogs = new EnSyncEngine("grpcs://node.gms.ensync.cloud", {
+  enableLogging: true  // Enable SDK console logs for debugging
+});
+const clientWithLogs = await engineWithLogs.createClient("your-app-key");
 ```
 
 #### Client Creation Parameters
@@ -268,6 +275,24 @@ Common error types:
 | `EnSyncPublishError`        | Problems publishing events           |
 | `EnSyncSubscriptionError`   | Subscription-related errors          |
 | `EnSyncGenericError`        | Other errors                         |
+
+### Debugging with Logs
+
+Enable SDK logging to get detailed information about errors:
+
+```javascript
+const engine = new EnSyncEngine("grpcs://node.gms.ensync.cloud", {
+  enableLogging: true  // Enable detailed SDK logs for debugging
+});
+
+try {
+  const client = await engine.createClient("your-app-key");
+  // Your code here
+} catch (e) {
+  console.error("Error:", e.message);
+  // SDK logs will show detailed connection and error information
+}
+```
 
 ---
 

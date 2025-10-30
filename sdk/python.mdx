@@ -27,7 +27,7 @@ pip install ensync-sdk
 from ensync_sdk import EnSyncEngine
 
 # Production - uses secure TLS on port 443 by default
-engine = EnSyncEngine("node.gms.ensync.cloud")
+engine = EnSyncEngine("node.ensync.cloud")
 
 # Development - uses insecure connection on port 50051 by default
 # engine = EnSyncEngine("localhost")
@@ -43,7 +43,7 @@ client = await engine.create_client("your-app-key")
 from ensync_sdk import EnSyncWebSocketEngine
 
 # Initialize WebSocket client
-engine = EnSyncWebSocketEngine("wss://node.gms.ensync.cloud")
+engine = EnSyncWebSocketEngine("wss://node.ensync.cloud")
 client = await engine.create_client("your-app-key")
 ```
 
@@ -53,7 +53,7 @@ Both clients provide the same API for publishing and subscribing to events.
 - Production URLs automatically use secure TLS (port 443)
 - `localhost` automatically uses insecure connection (port 50051)
 - Explicit protocols: `grpcs://` (secure) or `grpc://` (insecure)
-- Custom ports: `node.gms.ensync.cloud:9090`
+- Custom ports: `node.ensync.cloud:9090`
 
 ---
 
@@ -82,6 +82,7 @@ engine = EnSyncEngine(url, options=None)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `enableLogging` | `bool` | `False` | Set to true to enable debug logging |
 | `disable_tls` | `bool` | `False` | Set to true to disable TLS |
 | `reconnect_interval` | `int` | `5000` | Reconnection interval in ms |
 | `max_reconnect_attempts` | `int` | `10` | Maximum reconnection attempts |
@@ -96,6 +97,11 @@ engine = EnSyncEngine(url, options=None)
 ```python
 # Initialize the engine (gRPC with TLS)
 engine = EnSyncEngine("grpcs://node.gms.ensync.cloud")
+
+# Enable logs for debugging
+engine_verbose = EnSyncEngine("grpcs://node.gms.ensync.cloud", {
+    "enableLogging": True
+})
 
 # Create a client
 client = await engine.create_client("your-app-key")
@@ -294,6 +300,23 @@ Common error types:
 | `EnSyncSubscriptionError` | Subscription-related errors |
 | `EnSyncGenericError` | Other errors |
 
+### Debugging with Logs
+
+Enable SDK logging to get detailed information about errors:
+
+```python
+engine = EnSyncEngine("grpcs://node.gms.ensync.cloud", {
+    "enableLogging": True  # Enable detailed SDK logs for debugging
+})
+
+try:
+    client = await engine.create_client("your-app-key")
+    # Your code here
+except EnSyncError as e:
+    print(f"Error: {e}")
+    # SDK logs will show detailed connection and error information
+```
+
 ---
 
 ## Complete Examples
@@ -312,7 +335,7 @@ load_dotenv()
 async def quick_start():
     try:
         # 1. Initialize engine and create client
-        engine = EnSyncEngine("wss://node.gms.ensync.cloud")
+        engine = EnSyncEngine("wss://node.ensync.cloud")
         client = await engine.create_client(
             os.environ.get("ENSYNC_APP_KEY"),
             {
@@ -372,7 +395,7 @@ load_dotenv()
 
 async def publishing_example():
     # Create client
-    engine = EnSyncEngine("wss://node.gms.ensync.cloud")
+    engine = EnSyncEngine("wss://node.ensync.cloud")
     client = await engine.create_client(os.environ.get("ENSYNC_APP_KEY"))
 
     # Basic publish - returns event ID
