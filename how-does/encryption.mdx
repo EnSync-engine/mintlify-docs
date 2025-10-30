@@ -1,0 +1,27 @@
+---
+title: 'Handle Encryption'
+description: 'How EnSync encrypts messages'
+---
+
+## Asymmetric Encryption (Single Recipient)
+
+When publishing to a single partner, EnSync uses **asymmetric encryption**:
+
+- Your message is encrypted with the recipient's public key
+- Only the recipient can decrypt it with their private key
+- Fast and efficient for one-to-one communication
+
+## Hybrid Encryption (Multiple Recipients)
+
+When publishing to multiple partners, EnSync uses **hybrid encryption**:
+
+- Message is encrypted once with a symmetric key (AES)
+- The symmetric key is encrypted separately for each recipient using their public key
+- Each recipient decrypts their copy of the symmetric key, then decrypts the message
+- Efficient for one-to-many: message encrypted once, not per recipient
+
+## Key Management
+
+- Partners receive `appSecret` (decryption key) during onboarding
+- Service providers receive partner's `appId` (public identifier)
+- EnSync handles key generation and distribution automatically

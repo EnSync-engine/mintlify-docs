@@ -1,0 +1,175 @@
+---
+title: 'Tips'
+description: 'App management best practices'
+---
+
+## Deleting Apps
+
+To delete an app, remove it via the EnSync Dashboard or Config Manager API.
+
+<Warning>
+**Before deleting, ensure no apps are running with that appKey!**
+
+Deleting an app is **permanent** and will:
+- Invalidate the appKey (clients can't connect)
+- Delete all queued events for that app
+- Remove the app from EnSync Dashboard
+- Break any publishers sending events to this appId
+</Warning>
+
+### Before Deleting
+
+1. **Stop all running instances**: Ensure no workers are using this appKey
+2. **Notify publishers**: Tell partners to stop sending events to this appId
+3. **Process remaining events**: Ensure all queued events are processed
+4. **Update integrations**: Remove references to this app from your code
+5. **Backup credentials**: Save appKey/appSecret if you need to reference them later
+
+### Deletion Process
+
+You can delete apps in the EnSync Dashboard or via the API. See [API Reference](/api-reference/endpoint/access-keys/list) for programmatic deletion.
+
+## Changing appSecret
+
+You cannot directly change an appSecret. Instead, you need to create a new SERVICE access key and migrate.
+
+### Migration Process
+
+1. **Create new app**: Generate new SERVICE access key (see [Create Access Key](/api-reference/endpoint/access-keys/create))
+
+2. **Update your service**: Deploy with new appKey and appSecret
+
+```javascript
+const client = await EnSyncClient.create({
+  appKey: "new-app-key",
+  appSecret: "new-app-secret"
+});
+```
+
+3. **Notify publishers**: Share your new appId
+
+4. **Monitor old app**: Watch for remaining events in old queue
+
+5. **Deprecate old app**: After transition period, delete old app
+
+### Zero-Downtime Migration
+
+Run both apps simultaneously during migration:
+
+```javascript
+// Old app - processes remaining events
+const oldClient = await EnSyncClient.create({
+  appKey: "old-app-key",
+  appSecret: "old-app-secret"
+});
+
+// New app - receives new events
+const newClient = await EnSyncClient.create({
+  appKey: "new-app-key",
+  appSecret: "new-app-secret"
+});
+
+// Both subscribe to same events
+await oldClient.subscribe("payment/*");
+await newClient.subscribe("payment/*");
+```
+
+## App Organization
+
+### Environment Separation
+
+Create separate apps per environment:
+
+```
+my-service-production
+my-service-staging
+my-service-development
+```
+
+Benefits:
+- Isolated event queues
+- Different permissions per environment
+- Easier debugging and testing
+- Prevents production incidents from dev/staging
+
+### Service Separation
+
+Create separate apps per microservice:
+
+```
+order-service
+payment-service
+inventory-service
+notification-service
+```
+
+Benefits:
+- Clear ownership and responsibilities
+- Granular permissions
+- Independent scaling
+- Better monitoring and logs
+
+### Permission Scoping
+
+Grant minimal permissions to each app:
+
+```javascript
+// Order service - only needs to publish orders
+{
+  "send": ["order/*"],
+  "receive": []
+}
+
+// Payment service - only needs to receive orders and publish payments
+{
+  "send": ["payment/*"],
+  "receive": ["order/*"]
+}
+```
+
+## Monitoring Apps
+
+### Check Connection Status
+
+```javascript
+client.on('connected', () => {
+  console.log('Connected to EnSync');
+});
+
+client.on('disconnected', () => {
+  console.log('Disconnected from EnSync');
+});
+
+client.on('error', (error) => {
+  console.error('EnSync error:', error);
+});
+```
+
+### Track Event Metrics
+
+Monitor in EnSync Dashboard:
+- **Events published**: How many events your app sends
+- **Events received**: How many events your app gets
+- **Queue depth**: How many events are waiting
+- **Processing time**: How long events take to process
+- **Error rate**: How many events fail
+
+### Use Logs Dashboard
+
+The Logs dashboard shows:
+- Connection events
+- Publish/subscribe activity
+- Errors and failures
+- Permission denials
+
+## Getting Help
+
+For app management issues:
+
+1. Check the **Logs** dashboard for error messages
+2. Verify permissions in EnSync Dashboard
+3. Contact support at **support@ensync.cloud** with:
+   - App name
+   - Description of the issue
+   - Error messages from logs
+   - Timestamp of the issue

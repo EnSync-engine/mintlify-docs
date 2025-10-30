@@ -1,0 +1,89 @@
+---
+title: Event Types
+description: Understanding event types and naming conventions in EnSync
+icon: "tag"
+---
+
+## Event Types Overview
+
+Events in EnSync follow a structured naming convention that helps organize and categorize different types of messages flowing through the system. A well-designed event naming system makes your integration ecosystem more intuitive and easier to manage.
+
+## Event Naming Structure
+
+Event names use a path-like structure to organize related events:
+
+- `order/created`
+- `order/updated`
+- `order/shipped`
+- `payment/completed`
+- `user/registered`
+
+This hierarchical structure helps quickly understand your event catalog and find specific events.
+
+## Event Naming Best Practices
+
+<AccordionGroup>
+  <Accordion icon="pen" title="Use clear, descriptive names">
+    **Good examples:**
+    - `order/shipped`
+    - `payment/failed`
+    - `user/updated`
+    
+    **Avoid:**
+    - `event1`
+    - `data`
+    - `msg`
+  </Accordion>
+  
+  <Accordion icon="folder-tree" title="Group related events with prefixes">
+    **Order events:**
+    - `order/created`
+    - `order/updated`
+    - `order/cancelled`
+    
+    **Payment events:**
+    - `payment/initiated`
+    - `payment/completed`
+    - `payment/refunded`
+  </Accordion>
+  
+  <Accordion icon="clock" title="Use consistent verb tenses">
+    **Past tense for completed actions:**
+    - `order/created`
+    - `payment/completed`
+    
+    **Present tense for ongoing states:**
+    - `inventory/low`
+    - `system/healthy`
+  </Accordion>
+  
+  <Accordion icon="text-width" title="Keep names concise">
+    Partners will type these names in their code. Shorter names are easier to remember and less error-prone.
+  </Accordion>
+</AccordionGroup>
+
+## Event Versioning
+
+If you need to make breaking changes to an event (like changing field types or removing fields), consider creating a new version:
+
+- Current: `order/created`
+- New version: `order/created/v2`
+
+This allows:
+- Existing partners to continue using the old version
+- New partners to adopt the improved version
+- Gradual migration without breaking existing integrations
+
+Document the differences between versions in each event's description.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="App Permissions" icon="shield-check" href="/apps/management">
+    Learn how to control app access to events
+  </Card>
+  
+  <Card title="Event Management" icon="gear" href="/events/management">
+    Create and manage events in your catalog
+  </Card>
+</CardGroup>

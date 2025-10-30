@@ -1,0 +1,146 @@
+---
+title: Overview
+description: Understanding and using logs in EnSync for monitoring and troubleshooting
+icon: "file-lines"
+---
+
+## What are Logs?
+
+Logs in EnSync provide a detailed record of all activity in your workspace, including events, apps, integrations, and system operations. They help you monitor system health, troubleshoot issues, and maintain an audit trail for compliance purposes.
+
+<Frame>
+  <img src="/images/logs-overview.png" alt="Logs Overview" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">The Logs section provides comprehensive visibility into all EnSync activity</figcaption>
+</Frame>
+
+## Key Features
+
+<CardGroup cols={3}>
+  <Card title="Real-time Monitoring" icon="clock">
+    View activity as it happens across your EnSync workspace
+  </Card>
+  
+  <Card title="Advanced Filtering" icon="filter">
+    Filter logs by type, source, status, and time period
+  </Card>
+  
+  <Card title="Error Tracking" icon="triangle-exclamation">
+    Quickly identify and troubleshoot issues in your integrations
+  </Card>
+  
+  <Card title="Audit Trail" icon="clipboard-check">
+    Maintain a complete record of all actions for compliance
+  </Card>
+  
+  <Card title="Search" icon="magnifying-glass">
+    Find specific log entries with powerful search capabilities
+  </Card>
+  
+  <Card title="Export" icon="download">
+    Download logs for offline analysis or record-keeping
+  </Card>
+</CardGroup>
+
+## Log Types
+
+EnSync logs are categorized into several types to help you quickly find the information you need:
+
+### Event Logs
+
+Records of event publishing and delivery:
+- When events are published
+- Which apps or integrators published them
+- When events are delivered to subscribers
+- Delivery failures and reasons
+
+### App Logs
+
+Activity related to your internal apps:
+- App creation and configuration
+- Permission changes
+- Key regeneration
+- Connection status changes
+
+### Integration Logs
+
+Activity related to integration pages and partners:
+- Integration page creation and updates
+- Partner connections and disconnections
+- Partner subscription changes
+- Partner authentication events
+
+### System Logs
+
+Platform-level operations and status:
+- System maintenance
+- Service status changes
+- Configuration updates
+- Performance metrics
+
+## Log Structure
+
+Each log entry contains:
+
+<AccordionGroup>
+  <Accordion icon="clock" title="Timestamp">
+    When the activity occurred, in your workspace's configured timezone
+  </Accordion>
+  
+  <Accordion icon="tag" title="Log Type">
+    The category of log (Event, App, Integration, or System)
+  </Accordion>
+  
+  <Accordion icon="circle-info" title="Level">
+    The severity level (Info, Warning, Error, or Critical)
+  </Accordion>
+  
+  <Accordion icon="message" title="Message">
+    A human-readable description of what happened
+  </Accordion>
+  
+  <Accordion icon="id-card" title="Source">
+    Which component generated the log (app name, integration name, etc.)
+  </Accordion>
+  
+  <Accordion icon="code" title="Details">
+    Additional technical information, often in JSON format
+  </Accordion>
+</AccordionGroup>
+
+## Using the Logs Interface
+
+The Logs section provides powerful tools for monitoring and troubleshooting:
+
+### Filtering Logs
+
+Use the filter controls to narrow down logs:
+- **Type**: Filter by Event, App, Integration, or System logs
+- **Level**: Show only Info, Warning, Error, or Critical logs
+- **Source**: Filter by specific apps, integrations, or system components
+- **Time Range**: Set a custom date and time range
+- **Search**: Find logs containing specific text
+
+### Viewing Log Details
+
+Click on any log entry to expand it and see full details:
+- Complete message text
+- Technical details in JSON format
+- Related entities (apps, events, integrations)
+- Stack traces for errors
+
+### Exporting Logs
+
+Export logs for offline analysis or record-keeping:
+- Click the "Export" button to download filtered logs
+- Choose CSV or JSON format
+- Set a date range for the export
+
+## Accessing Logs
+
+Access the Logs section in the EnSync Dashboard to:
+- View real-time activity across your workspace
+- Filter and search logs by type, level, source, and time range
+- Export logs for offline analysis or compliance
+- Monitor system health and troubleshoot issues
+
+The dashboard provides an intuitive interface for all log management tasks.

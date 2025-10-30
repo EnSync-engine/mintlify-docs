@@ -1,0 +1,111 @@
+---
+title: Overview
+description: Managing integration pages, partners, and self-service onboarding in EnSync
+icon: "handshake"
+---
+
+## What are Integrations?
+
+Integrations (also called Integration Pages) are self-service portals where external partners can connect to your EnSync platform. Each integration page is a unique URL you share with partners, allowing them to browse your event catalog, generate their own credentials, and subscribe to events—all without requiring engineering work from your team.
+
+Think of an integration page as a storefront for your events. Partners visit the page, see what's available, and connect themselves.
+
+<Frame>
+  <img src="/images/integration-overview.png" alt="Integration Overview" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">Integration pages provide self-service access for partners</figcaption>
+</Frame>
+
+## Key Features
+
+<CardGroup cols={3}>
+  <Card title="Self-Service" icon="user-gear">
+    Partners can generate credentials and subscribe to events without your intervention
+  </Card>
+  
+  <Card title="Event Catalog" icon="book-open">
+    Automatically generated documentation for your exposed events
+  </Card>
+  
+  <Card title="Access Control" icon="shield-check">
+    Fine-grained control over which events partners can access
+  </Card>
+  
+  <Card title="Partner Management" icon="users">
+    Monitor and manage partner connections and activity
+  </Card>
+  
+  <Card title="Customization" icon="palette">
+    Brand the integration page with your colors and logo
+  </Card>
+  
+  <Card title="Analytics" icon="chart-line">
+    Track partner activity and event usage
+  </Card>
+</CardGroup>
+
+## Integration Components
+
+### Integration Name
+
+A descriptive identifier for the integration page. This helps you organize multiple integration pages for different partner types or use cases.
+
+Examples:
+- "Payment Partners Integration"
+- "Shipping Providers Portal"
+- "Analytics Partners Access"
+- "Public API Integration"
+
+### Integration URL
+
+A unique, shareable URL that partners use to access the integration page. The URL typically follows the format:
+```
+https://ensync.cloud/integrate/{integration-id}
+```
+
+Partners who visit this URL can:
+- Browse available events
+- Read event descriptions and schemas
+- Generate their own app credentials
+- Subscribe to events they need
+
+### Exposed Events (Send Permissions)
+
+The list of events you've chosen to make available on this integration page. These are events that partners can subscribe to and receive from you.
+
+When you expose events, partners see:
+- Event names
+- Event descriptions
+- Event schemas (data structure)
+- Example payloads
+
+You control exactly which events appear on each integration page, allowing you to create different pages for different partner types.
+
+### Callback Events (Receive Permissions)
+
+Events that partners connecting through this integration page can publish back to you. This enables bi-directional communication.
+
+For example, if you expose `order/created` to shipping partners, you might allow them to publish `shipment/updated` back to you.
+
+## Events and Integration Pages
+
+When you create an integration page for partners, you select which events to include in the catalog. Partners browsing your integration page will see:
+
+- All events you've chosen to expose
+- Their descriptions and schemas
+- The ability to subscribe to events they need
+
+You can create multiple integration pages with different event sets for different partner types. For example:
+- Payment partners see payment-related events
+- Shipping partners see order and shipment events
+- Analytics partners see all events
+
+## Managing Integrations
+
+Create and manage integration pages in the EnSync Dashboard. The dashboard provides an intuitive interface for:
+- Creating integration pages
+- Selecting which events to expose
+- Customizing branding and appearance
+- Monitoring partner connections
+- Viewing integration analytics
+
+For programmatic management, see the [Config Manager API](/api-reference/introduction).

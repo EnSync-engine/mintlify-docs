@@ -1,0 +1,278 @@
+---
+title: Troubleshooting
+description: Solving common issues with EnSync apps
+icon: "wrench"
+---
+
+## Common App Issues
+
+This guide helps you diagnose and resolve common issues with EnSync apps in the management console.
+
+<Frame>
+  <img src="/images/troubleshooting-flow.png" alt="Troubleshooting Flow" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">General troubleshooting flow for EnSync app issues</figcaption>
+</Frame>
+
+## App Permission Issues
+
+<AccordionGroup>
+  <Accordion icon="ban" title="App permission errors">
+    ### App Permission Errors
+    
+    If you're experiencing permission errors with your app, check the following:
+    
+    <Steps>
+      <Step title="Verify Send Permissions">
+        Ensure the app has the correct send permissions configured. Go to the app's details page in the management console and check the "Send Permissions" section.
+      </Step>
+      
+      <Step title="Verify Receive Permissions">
+        Ensure the app has the correct receive permissions configured. Go to the app's details page and check the "Receive Permissions" section.
+      </Step>
+      
+      <Step title="Check for Recent Changes">
+        If permissions were working before, check if someone recently modified the app's permissions. Look at the audit logs to see when changes were made.
+      </Step>
+      
+      <Step title="Verify Event Names">
+        Ensure the event names in your permissions match exactly what you need. Event names are case-sensitive and must match the format used in your systems.
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion icon="triangle-exclamation" title="Events not showing in analytics">
+    ### Events Not Showing in Analytics
+    
+    If events aren't appearing in your app analytics:
+    
+    <Steps>
+      <Step title="Check Time Range">
+        Verify you're looking at the correct time range in the analytics dashboard. The default view might not include your recent activity.
+      </Step>
+      
+      <Step title="Verify App Selection">
+        Make sure you've selected the correct app in the analytics dashboard filters.
+      </Step>
+      
+      <Step title="Check Event Type Filters">
+        Ensure you haven't applied filters that might be excluding the events you're looking for.
+      </Step>
+      
+      <Step title="Allow for Processing Time">
+        Analytics data might have a slight delay before appearing. Wait a few minutes and refresh the dashboard.
+      </Step>
+      
+      <Step title="Verify App Status">
+        Check that the app is active and hasn't been disabled or deleted.
+      </Step>
+    </Steps>
+  </Accordion>
+</AccordionGroup>
+
+## App Credential Issues
+
+<AccordionGroup>
+  <Accordion icon="key" title="App key problems">
+    ### App Key Problems
+    
+    If you're having issues with your app keys:
+    
+    <Steps>
+      <Step title="Verify App Key Visibility">
+        Remember that app keys are only shown once when created or regenerated. If you didn't save it, you'll need to regenerate it from the app management interface.
+      </Step>
+      
+      <Step title="Check App Status">
+        Ensure the app hasn't been deleted or disabled. If an app is deleted, all its credentials become invalid.
+      </Step>
+      
+      <Step title="Regenerate Key if Needed">
+        If you suspect the key might be compromised or lost, regenerate it from the app management interface.
+      </Step>
+      
+      <Step title="Update Systems After Regeneration">
+        After regenerating a key, remember to update all systems using that key. The old key will immediately stop working.
+      </Step>
+    </Steps>
+    
+    <Warning>
+      Regenerating a key immediately invalidates the old one. Make sure you're ready to update all systems using that key before regenerating it.
+    </Warning>
+  </Accordion>
+  
+  <Accordion icon="lock" title="Encryption key issues">
+    ### Encryption Key Issues
+    
+    If you're having problems with encryption keys:
+    
+    <Steps>
+      <Step title="Understand Key Types">
+        Remember that EnSync uses two types of encryption keys:
+        - Public Key: Used by others to send encrypted messages to your app
+        - Decrypt Key (Private Key): Used by your app to decrypt incoming messages
+      </Step>
+      
+      <Step title="Verify Key Storage">
+        Ensure you've stored your decrypt key securely. Like app keys, decrypt keys are only shown once when created or regenerated.
+      </Step>
+      
+      <Step title="Check Key Format">
+        Verify that you're using the keys in their correct format without any modifications or truncations.
+      </Step>
+      
+      <Step title="Regenerate Keys if Needed">
+        If you've lost your decrypt key or suspect it's compromised, you can regenerate both your app key and encryption keys from the app management interface.
+      </Step>
+    </Steps>
+  </Accordion>
+</AccordionGroup>
+
+## App Management Issues
+
+<AccordionGroup>
+  <Accordion icon="gear" title="App configuration problems">
+    ### App Configuration Problems
+    
+    If you're experiencing issues with app configuration:
+    
+    <Steps>
+      <Step title="Check App Details">
+        Verify that the app name and other details are correctly configured in the management console.
+      </Step>
+      
+      <Step title="Review App Status">
+        Ensure the app hasn't been disabled or deleted. Check the app list to confirm it's still active.
+      </Step>
+      
+      <Step title="Verify Event Permissions">
+        Double-check that the app has the correct send and receive permissions configured for the events it needs to work with.
+      </Step>
+      
+      <Step title="Check for Duplicate Apps">
+        Sometimes issues occur because multiple apps with similar names or purposes exist. Verify you're managing the correct app.
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion icon="shield-exclamation" title="App access issues">
+    ### App Access Issues
+    
+    If you're having problems accessing or managing apps:
+    
+    <Steps>
+      <Step title="Check User Permissions">
+        Verify that your user account has the necessary permissions to manage apps in the workspace.
+      </Step>
+      
+      <Step title="Review Workspace Access">
+        Ensure you're in the correct workspace where the app is located.
+      </Step>
+      
+      <Step title="Clear Browser Cache">
+        Sometimes browser caching can cause management console issues. Try clearing your browser cache or using a private/incognito window.
+      </Step>
+      
+      <Step title="Contact Workspace Admin">
+        If you still can't access or manage apps, contact your workspace administrator to verify your permissions.
+      </Step>
+    </Steps>
+  </Accordion>
+</AccordionGroup>
+
+## App Analytics Issues
+
+<AccordionGroup>
+  <Accordion icon="chart-line" title="Analytics data issues">
+    ### Analytics Data Issues
+    
+    If you're experiencing problems with app analytics data:
+    
+    <Steps>
+      <Step title="Check Data Timeframes">
+        Verify you're looking at the correct time period. Use the date range selector to adjust the timeframe you're analyzing.
+      </Step>
+      
+      <Step title="Verify App Selection">
+        Make sure you've selected the correct app in the analytics dashboard. The "All Apps" view might be hiding app-specific patterns.
+      </Step>
+      
+      <Step title="Check for Data Processing Delays">
+        Analytics data can sometimes take a few minutes to process. If you're looking for very recent activity, try refreshing after a short wait.
+      </Step>
+      
+      <Step title="Export Data if Needed">
+        If you need to analyze the data more deeply, use the export options to download the data as CSV for further analysis.
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion icon="chart-mixed" title="Unexpected analytics patterns">
+    ### Unexpected Analytics Patterns
+    
+    If you see unusual patterns in your app analytics:
+    
+    <Steps>
+      <Step title="Look for App Changes">
+        Check if there have been recent changes to the app's permissions or configuration that might explain the pattern.
+      </Step>
+      
+      <Step title="Compare with Other Apps">
+        Use the comparison view to see if the pattern affects multiple apps or just one specific app.
+      </Step>
+      
+      <Step title="Check for System Maintenance">
+        Verify if there was any system maintenance or downtime that might have affected the data collection.
+      </Step>
+      
+      <Step title="Review Event Volume">
+        Look at the event volume metrics to see if there are unusual spikes or drops that might indicate issues.
+      </Step>
+      
+      <Step title="Establish Regular Monitoring">
+        Set up a regular schedule to check analytics so you can more easily spot when patterns change.
+      </Step>
+    </Steps>
+  </Accordion>
+</AccordionGroup>
+
+## Getting Help
+
+If you've tried the troubleshooting steps above and still can't resolve your app management issue:
+
+<CardGroup cols={3}>
+  <Card title="Documentation" icon="book">
+    Review our [Apps documentation](/apps/index) for detailed information on app management features.
+  </Card>
+  
+  <Card title="Support Portal" icon="headset">
+    Submit a ticket through our [Support Portal](https://support.ensync.cloud) with details about your issue.
+  </Card>
+  
+  <Card title="Status Page" icon="signal">
+    Check our [Status Page](https://status.ensync.cloud) to see if there are any known service disruptions.
+  </Card>
+</CardGroup>
+
+### Information to Include When Getting Support
+
+When contacting support about app management issues, include the following information to help us resolve your issue faster:
+
+<Check>
+  App ID and name (but never share your app key or decrypt key)
+</Check>
+
+<Check>
+  Specific error messages you're seeing in the management console
+</Check>
+
+<Check>
+  Steps to reproduce the issue
+</Check>
+
+<Check>
+  Screenshots of any error messages or unexpected behavior
+</Check>
+
+<Check>
+  Browser and operating system you're using to access the management console
+</Check>

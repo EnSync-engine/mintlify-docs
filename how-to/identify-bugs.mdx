@@ -1,0 +1,133 @@
+---
+title: "Identify Bugs Using Logs"
+description: "Use the Logs dashboard to troubleshoot issues and identify bugs"
+---
+
+## Overview
+
+The Logs dashboard provides comprehensive visibility into all EnSync activity, making it easy to identify and diagnose issues.
+
+## Quick Diagnosis
+
+### 1. Filter by Error Level
+
+In the Logs dashboard:
+- Set **Level** filter to "Error" or "Critical"
+- Review recent errors
+- Look for patterns or repeated failures
+
+### 2. Check Event Delivery Failures
+
+Filter by **Type**: "Event Logs"
+- Look for delivery failures
+- Check error messages for reasons:
+  - Invalid appId
+  - Permission denied
+  - Partner offline/disconnected
+  - Schema validation failure
+
+### 3. Review Connection Issues
+
+Filter by **Type**: "App Logs"
+- Look for connection/disconnection events
+- Check authentication failures
+- Identify credential issues
+
+## Common Issues
+
+### Events Not Being Delivered
+
+**Symptoms**: Partner reports missing events
+
+**Diagnosis**:
+1. Filter logs by event name
+2. Check if events were published
+3. Look for delivery errors
+4. Verify recipient appId is correct
+
+**Common Causes**:
+- Wrong appId in publish call
+- Partner's receive permissions don't include event
+- Partner disconnected
+
+### Schema Validation Errors
+
+**Symptoms**: Publish calls failing
+
+**Diagnosis**:
+1. Filter logs by "Error" level
+2. Look for "Schema validation failed" messages
+3. Check error details for which fields failed
+
+**Common Causes**:
+- Payload doesn't match event definition
+- Missing required fields
+- Wrong data types (e.g., string instead of number)
+
+### Permission Denied Errors
+
+**Symptoms**: "Permission denied" errors in logs
+
+**Diagnosis**:
+1. Filter by error level
+2. Find permission denied messages
+3. Check which app and event path
+
+**Common Causes**:
+- App doesn't have send permission for event
+- Partner doesn't have receive permission
+- Event path typo
+
+### High Error Rate
+
+**Symptoms**: Many errors in short time period
+
+**Diagnosis**:
+1. Set time range to last hour
+2. Filter by "Error" level
+3. Look for common error messages
+4. Check if errors are from specific app or event
+
+**Common Causes**:
+- Deployment issue (bad code pushed)
+- Partner system down
+- Schema change without updating publishers
+
+## Advanced Debugging
+
+### Search for Specific Events
+
+Use the search box to find:
+- Specific event IDs (idem)
+- Event names
+- App names
+- Error messages
+
+### Export Logs for Analysis
+
+For complex issues:
+1. Set appropriate filters
+2. Click "Export"
+3. Choose JSON format
+4. Analyze offline or share with support
+
+### Monitor Real-Time
+
+Keep Logs dashboard open to:
+- Watch events flow in real-time
+- Catch errors as they happen
+- Verify fixes immediately after deployment
+
+## Getting Help
+
+If you can't identify the issue:
+
+1. Export relevant logs (last hour with errors)
+2. Note the timestamp when issue started
+3. Identify which app or integration is affected
+4. Contact support at **support@ensync.cloud** with:
+   - App name
+   - Event name (if applicable)
+   - Timestamp range
+   - Exported logs
+   - Description of expected vs actual behavior

@@ -1,0 +1,50 @@
+---
+title: "vs. Cloud Message Queues"
+description: "Compare EnSync with SQS and Google Pub/Sub"
+---
+
+## EnSync vs. Cloud Message Queues (SQS / Google Pub/Sub)
+
+| **Criteria** | **SQS / Google Pub/Sub** | **EnSync** |
+|-------------|------------------------|------------|
+| **Primary Use Case** | Internal async messaging between microservices | B2B partner ecosystem integration |
+| **Target Audience** | Your internal engineering team | External partners + your team |
+| **Partner Onboarding** | N/A (not designed for external partners) | Self-service in 15 minutes |
+| **Access Control** | IAM policies (cloud account level) | Workspace isolation per partner |
+| **Message Retention** | 14 days max (SQS), 7 days default (Pub/Sub) | 90 days (configurable) |
+| **Replay Capability** | No native replay | Built-in 90-day replay |
+| **Message Ordering** | FIFO queues (limited throughput) | Ordered delivery per event type |
+| **Schema Management** | No schema enforcement | Structured events with versioning |
+| **Partner Visibility** | CloudWatch/Stackdriver (your account only) | Per-partner observability dashboard |
+| **Bidirectional Communication** | Requires separate queues | Native bidirectional events |
+| **Multi-Tenancy** | Requires separate AWS/GCP accounts | Workspace isolation built-in |
+| **Event Naming** | Queue names (flat structure) | Path-like hierarchy (`payment/authorized`) |
+| **Best For** | Internal microservices communication | External partner integrations |
+| **Partner Self-Service** | N/A | Embedded onboarding page |
+| **Compliance/Audit** | CloudTrail/Cloud Logging (your view only) | Full audit trails per partner |
+
+## Bottom Line
+
+**SQS/Pub/Sub connects your microservices. EnSync connects your business partners.**
+
+## When to Choose SQS/Pub/Sub
+
+- You need internal microservices messaging within your own infrastructure
+- You're building event-driven architecture for your own services
+- All consumers are within your AWS/GCP account
+
+## When to Choose EnSync
+
+- You're integrating with external business partners
+- You need high throughput for partner integration workloads
+- You need partner-specific isolation and visibility
+- You want partners to self-onboard and manage their integration
+- You need long-term message retention and replay
+
+<Note>
+While EnSync can be used for internal messaging, our focus is on B2B partner integration where workspace isolation, partner observability, and self-service onboarding provide the most value.
+</Note>
+
+## Sales Positioning
+
+*"SQS connects your microservices. EnSync connects your business partners."*

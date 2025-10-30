@@ -1,0 +1,32 @@
+---
+title: "Verify Access Key"
+api: "GET /access/verify/{accessKey}"
+description: "Verifies if an access key is valid"
+---
+
+### Path Parameters
+
+<ParamField path="accessKey" type="string" required>
+  The access key to verify
+</ParamField>
+
+### Response
+
+<ResponseField name="status" type="boolean">
+  `true` if the access key is valid, `false` otherwise
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://config.gms.ensync.cloud/v1/access/verify/ensk_prod_xxxxx" \
+  -H "X-API-KEY: your-api-key"
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "status": true
+}
+```
+</ResponseExample>

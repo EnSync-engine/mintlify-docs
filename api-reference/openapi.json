@@ -1,21 +1,45 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "EnSync Config Manager API",
+    "description": "API documentation for the EnSync Config Manager, providing capabilities for managing access keys, event definitions, workspaces, and other configuration elements in the EnSync ecosystem.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "EnSync Support",
+      "email": "support@ensync.io",
+      "url": "https://docs.ensync.io"
+    }
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.ensync.io/v1",
+      "description": "Production server"
+    },
+    {
+      "url": "https://api.staging.ensync.io/v1",
+      "description": "Staging server"
+    },
+    {
+      "url": "http://localhost:8080/v1",
+      "description": "Local development"
     }
   ],
-  "security": [
+  "tags": [
     {
-      "bearerAuth": []
+      "name": "Access Keys",
+      "description": "Operations for managing access keys"
+    },
+    {
+      "name": "Event Definitions",
+      "description": "Operations for managing event definitions"
+    },
+    {
+      "name": "Workspaces",
+      "description": "Operations for managing workspaces"
+    },
+    {
+      "name": "Service Key Pairs",
+      "description": "Operations for managing service key pairs"
     }
   ],
   "paths": {

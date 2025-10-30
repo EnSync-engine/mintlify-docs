@@ -1,0 +1,95 @@
+---
+title: Overview
+description: Understanding events, schemas, and event lifecycle in EnSync
+icon: "bolt"
+---
+
+## What are Events?
+
+Events are the core building blocks of EnSync. They represent messages that flow between your systems and your partners. Each event carries specific information about something that happened in your business.
+
+Think of events as announcements:
+- When an order is placed, you publish an `order/created` event
+- When payment is confirmed, you publish a `payment/completed` event
+- When a partner ships an item, they publish a `shipment/updated` event back to you
+
+Events flow in both directions—you send events to partners, and partners send events back to you.
+
+## Key Features
+
+<CardGroup cols={3}>
+  <Card title="Event Types" icon="tag">
+    Structured naming conventions for organizing related events
+  </Card>
+  
+  <Card title="Event Schemas" icon="table-list">
+    Define the structure and data types for event payloads
+  </Card>
+  
+  <Card title="Permissions" icon="shield-check">
+    Control which apps and integrators can publish or receive events
+  </Card>
+  
+  <Card title="Versioning" icon="code-branch">
+    Support for evolving event structures without breaking existing integrations
+  </Card>
+  
+  <Card title="Monitoring" icon="chart-line">
+    Track event usage, delivery, and performance
+  </Card>
+  
+  <Card title="Documentation" icon="book">
+    Self-documenting event catalog for partners and developers
+  </Card>
+</CardGroup>
+
+## Event Structure
+
+Every event in EnSync has three main components:
+
+### Event Name
+
+The event name identifies what type of message this is. Names use a path-like structure to organize related events:
+
+- `order/created`
+- `order/updated`
+- `order/shipped`
+- `payment/completed`
+- `user/registered`
+
+This structure helps partners quickly understand your event catalog and find the events they need.
+
+### Event Description
+
+A human-readable explanation of what this event represents and when it's triggered. This helps partners understand:
+- What business action triggered this event
+- What information they can expect to receive
+- How they might use this event in their systems
+
+The description is optional but highly recommended for clarity.
+
+### Event Schema
+
+The schema defines the structure of data this event carries. It's a map of field names to data types.
+
+**Schema is optional.** If you don't define a schema, the event can carry any data structure. However, defining a schema helps partners understand what to expect and makes integration easier.
+
+## Next Steps
+
+<Steps>
+  <Step title="Explore Event Types">
+    Learn about [event naming conventions and types](/events/types)
+  </Step>
+  
+  <Step title="Understand Event Permissions">
+    See how to [control access to events](/events/permissions)
+  </Step>
+  
+  <Step title="Create Your First Event">
+    Follow the guide to [create and manage events](/events/management)
+  </Step>
+  
+  <Step title="Connect with Integrations">
+    Learn how events work with [integration pages](/integrations/index)
+  </Step>
+</Steps>

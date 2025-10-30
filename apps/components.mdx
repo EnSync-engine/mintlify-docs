@@ -1,0 +1,143 @@
+---
+title: Components
+description: Understanding the key components and credentials of EnSync apps
+icon: "puzzle-piece"
+---
+
+## Components Overview
+
+Each app in EnSync consists of several key components that define its identity, permissions, and security credentials. Understanding these components is essential for effective app management.
+
+<CardGroup cols={2}>
+  <Card title="Identity" icon="id-card">
+    App name and descriptive information that helps you identify the app in your dashboard
+  </Card>
+  
+  <Card title="Authentication" icon="key">
+    App key for authenticating with the EnSync platform
+  </Card>
+  
+  <Card title="Encryption" icon="lock">
+    Public and private keys for secure message encryption and decryption
+  </Card>
+  
+  <Card title="Permissions" icon="shield-check">
+    Send and receive permissions that control which events the app can interact with
+  </Card>
+</CardGroup>
+
+## App Name
+
+A descriptive identifier for your app. This helps you quickly recognize which system or service the app represents in your dashboard.
+
+Examples:
+- "Order Management System"
+- "Payment Processor"
+- "Inventory Service"
+- "Customer Notifications"
+
+<Tip>
+  Choose clear, descriptive names that indicate the app's purpose and make it easy to identify in your dashboard.
+</Tip>
+
+## App Key (Access Key)
+
+A unique authentication credential generated when you create an app. This key is used by your system to authenticate with EnSync when publishing or subscribing to events.
+
+<Warning>
+  The app key is shown only once when the app is created. Store it securely—you won't be able to see it again. If you lose it, you'll need to regenerate the key.
+</Warning>
+
+## Encryption Keys
+
+EnSync uses a hybrid encryption system to secure messages between apps and integrators. Each app has two encryption keys:
+
+<AccordionGroup>
+  <Accordion icon="key" title="Public Key">
+    Part of EnSync's hybrid encryption system. Your app's public key is shared with other apps and integrators who want to send encrypted messages to your app. 
+
+    **Important:** You only need your app's public key if you plan to receive encrypted messages. When sending messages to other apps or integrators, you'll use *their* public key to encrypt the message, not your own. Your app's public key is only used by others who want to send messages to you.
+  </Accordion>
+  
+  <Accordion icon="key-skeleton" title="Decrypt Key (Private Key)">
+    The private half of the encryption key pair. This key is used by your app to decrypt incoming messages that were encrypted with your app's public key.
+
+    **Critical:** Store this key securely. Anyone with access to this key can decrypt messages intended for your app. Like the app key, it's shown only once during creation.
+
+    **When to use:** You only need the decrypt key when receiving encrypted messages. When sending messages, you'll use the recipient's public key for encryption, not your decrypt key.
+  </Accordion>
+</AccordionGroup>
+
+<Frame>
+  <img src="/images/encryption-flow.png" alt="Encryption Flow" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">How encryption keys are used when sending messages between apps</figcaption>
+</Frame>
+
+## Permission Types
+
+Apps have two types of permissions that control which events they can interact with:
+
+<CardGroup cols={2}>
+  <Card title="Send Permissions" icon="paper-plane">
+    A list of events this app is authorized to publish to EnSync. When you configure send permissions, you're defining which event types this app can trigger.
+
+    For example, if your order management app has send permission for:
+    - `order/created`
+    - `order/updated`
+    - `order/shipped`
+
+    It can publish these events to EnSync, and any partners subscribed to these events will receive them.
+
+    **Apps cannot publish events they don't have permission for.** Attempting to do so will result in an authorization error.
+  </Card>
+  
+  <Card title="Receive Permissions" icon="inbox">
+    A list of events this app is authorized to subscribe to and receive from EnSync. When you configure receive permissions, you're defining which event types this app will be notified about.
+
+    For example, if your shipping service has receive permission for:
+    - `payment/completed`
+    - `order/ready_to_ship`
+
+    It will receive notifications whenever these events are published by other apps or partners.
+
+    **Apps only receive events they have permission for.** Even if an event is published to EnSync, your app won't receive it unless it's in the receive permissions list.
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<Check>
+  **Use descriptive app names** that clearly indicate the app's purpose and owner
+</Check>
+
+<Check>
+  **Store credentials securely** in a password manager or secrets management system
+</Check>
+
+<Check>
+  **Follow the principle of least privilege** by only granting permissions the app actually needs
+</Check>
+
+<Check>
+  **Rotate keys periodically** to maintain security, especially after team member changes
+</Check>
+
+<Check>
+  **Document key usage** so your team knows which systems use which credentials
+</Check>
+
+## Next Steps
+
+<Steps>
+  <Step title="Create Your First App">
+    Learn how to [create and manage apps](/apps/management) in EnSync
+  </Step>
+  
+  <Step title="Implement Security Best Practices">
+    Follow our [security recommendations](/apps/security) to protect your app credentials
+  </Step>
+  
+  <Step title="Integrate with Your Systems">
+    Use our [API integration guide](/apps/api-integration) to implement app authentication
+  </Step>
+</Steps>

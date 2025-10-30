@@ -1,0 +1,312 @@
+---
+title: Security
+description: Best practices for securing your EnSync apps and credentials
+icon: "shield-check"
+---
+
+## Security Overview
+
+Securing your EnSync apps is critical for protecting your event data and maintaining the integrity of your integration ecosystem. This guide covers best practices for managing app credentials, implementing proper permissions, and monitoring for security issues.
+
+<Frame>
+  <img src="/images/app-security-overview.png" alt="App Security Overview" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">Key components of EnSync app security</figcaption>
+</Frame>
+
+## Credential Management
+
+<AccordionGroup>
+  <Accordion icon="key" title="Secure Storage">
+    ### Secure Credential Storage
+    
+    App credentials (app key, public key, and decrypt key) should be stored securely:
+    
+    - Use a secrets management system like HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault
+    - Never store credentials in code repositories, even private ones
+    - Use environment variables for local development, but ensure they're not logged or exposed
+    - Consider using a service like Doppler or 1Password for Teams to manage secrets across your organization
+    
+    <Warning>
+      Hardcoded credentials in application code are a common source of security breaches. Even if your repository is private, credentials should never be committed to version control.
+    </Warning>
+  </Accordion>
+  
+  <Accordion icon="arrows-rotate" title="Key Rotation">
+    ### Regular Key Rotation
+    
+    Periodically rotating your app credentials reduces the risk of compromise:
+    
+    - Establish a regular rotation schedule (e.g., quarterly)
+    - Rotate keys immediately when team members with access leave
+    - Rotate keys if you suspect they may have been compromised
+    - Have a process for quickly updating all systems that use the credentials
+    
+    <Steps>
+      <Step title="Create a Rotation Plan">
+        Document which systems use the credentials and how they'll be updated
+      </Step>
+      
+      <Step title="Regenerate Keys">
+        Use the [key regeneration process](/apps/management#regenerating-app-keys) to create new credentials
+      </Step>
+      
+      <Step title="Update Systems">
+        Deploy the new credentials to all systems that use them
+      </Step>
+      
+      <Step title="Verify Functionality">
+        Confirm that all systems are working with the new credentials
+      </Step>
+      
+      <Step title="Document the Rotation">
+        Record when the rotation occurred and when the next one is scheduled
+      </Step>
+    </Steps>
+  </Accordion>
+  
+  <Accordion icon="user-lock" title="Access Control">
+    ### Access Control for Credentials
+    
+    Limit who has access to app credentials:
+    
+    - Only share credentials with team members who absolutely need them
+    - Use role-based access control in your secrets management system
+    - Audit who has access to credentials regularly
+    - Consider using just-in-time access for sensitive credentials
+    
+    <Tip>
+      Some secrets management systems allow temporary access to credentials, reducing the risk of long-term exposure.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+## Principle of Least Privilege
+
+Implementing the principle of least privilege is essential for app security:
+
+<CardGroup cols={2}>
+  <Card title="Send Permissions" icon="paper-plane">
+    Only grant send permissions for events the app actually publishes. Review and remove unnecessary permissions regularly.
+  </Card>
+  
+  <Card title="Receive Permissions" icon="inbox">
+    Only grant receive permissions for events the app actually needs. Limit access to sensitive events.
+  </Card>
+</CardGroup>
+
+### Permission Audit Process
+
+<Steps>
+  <Step title="Review Current Permissions">
+    List all send and receive permissions for each app
+  </Step>
+  
+  <Step title="Compare with Actual Usage">
+    Check analytics to see which events are actually being used
+  </Step>
+  
+  <Step title="Identify Unnecessary Permissions">
+    Note permissions that haven't been used in the last 30-90 days
+  </Step>
+  
+  <Step title="Remove Unused Permissions">
+    Edit the app to remove permissions that aren't needed
+  </Step>
+  
+  <Step title="Document Changes">
+    Record what permissions were removed and why
+  </Step>
+  
+  <Step title="Monitor Impact">
+    Watch analytics to ensure removing permissions didn't break anything
+  </Step>
+</Steps>
+
+<Note>
+  Schedule regular permission audits (e.g., quarterly) to maintain security hygiene.
+</Note>
+
+## Security Monitoring
+
+Active monitoring is key to identifying security issues early:
+
+<AccordionGroup>
+  <Accordion icon="chart-line" title="Activity Monitoring">
+    ### Monitor App Activity
+    
+    Regularly check app analytics for unusual patterns:
+    
+    - Unexpected spikes in event volume
+    - Events being published at unusual times
+    - New event types suddenly appearing
+    - Changes in the ratio of published to received events
+    
+    <Frame>
+      <img src="/images/security-monitoring-dashboard.png" alt="Security Monitoring Dashboard" />
+    </Frame>
+  </Accordion>
+  
+  <Accordion icon="eye" title="Security Monitoring">
+    ### Implement Security Monitoring
+    
+    Regularly review logs for potential security issues:
+    
+    - Authentication failures
+    - Permission denied errors
+    - Unusual geographic access patterns
+    - Sudden changes in event volume
+    - Apps publishing events outside business hours
+    
+    <Tip>
+      Establish a regular schedule for reviewing logs and analytics to identify security issues early.
+    </Tip>
+  </Accordion>
+  
+  <Accordion icon="magnifying-glass" title="Audit Logs">
+    ### Review Audit Logs
+    
+    EnSync maintains detailed audit logs of all app activity:
+    
+    - Who created or modified apps
+    - When credentials were regenerated
+    - Permission changes
+    - Authentication attempts
+    
+    Review these logs regularly for suspicious activity.
+  </Accordion>
+</AccordionGroup>
+
+## Network Security
+
+<CardGroup cols={2}>
+  <Card title="IP Restrictions" icon="globe">
+    Consider restricting app access to specific IP addresses or ranges if your systems have static IPs. This adds an extra layer of security beyond credentials.
+  </Card>
+  
+  <Card title="TLS/SSL" icon="lock">
+    Always use GRPCS/WSS for all communications with EnSync APIs. Never send credentials or event data over unencrypted connections.
+  </Card>
+  
+  <Card title="Firewall Rules" icon="shield-halved">
+    Configure your firewall to only allow outbound connections to EnSync from systems that need it. This limits the attack surface.
+  </Card>
+  
+  <Card title="VPC/Private Networking" icon="network-wired">
+    For high-security environments, consider using VPC endpoints or private networking options if available in your EnSync plan.
+  </Card>
+</CardGroup>
+
+## Encryption Best Practices
+
+<AccordionGroup>
+  <Accordion icon="lock" title="End-to-End Encryption">
+    ### Using End-to-End Encryption
+    
+    EnSync's public/private key system enables end-to-end encryption for sensitive data:
+    
+    - Use the recipient's public key to encrypt sensitive fields in your event payload
+    - Only the intended recipient with the matching private key can decrypt the data
+    - EnSync itself cannot access the encrypted content
+    
+    <CodeGroup>
+      ```javascript JavaScript
+      // Example of encrypting a field before sending an event
+      const encryptedPayment = encryptWithPublicKey(
+        recipientPublicKey,
+        paymentDetails
+      );
+      
+      await ensync.publish('payment/processed', {
+        orderId: '12345',
+        paymentInfo: encryptedPayment, // Encrypted field
+        status: 'completed' // Unencrypted field
+      });
+      ```
+      
+      ```python Python
+      # Example of encrypting a field before sending an event
+      encrypted_payment = encrypt_with_public_key(
+        recipient_public_key,
+        payment_details
+      )
+      
+      await ensync.publish('payment/processed', {
+        'orderId': '12345',
+        'paymentInfo': encrypted_payment, # Encrypted field
+        'status': 'completed' # Unencrypted field
+      })
+      ```
+    </CodeGroup>
+  </Accordion>
+  
+  <Accordion icon="key" title="Key Management">
+    ### Encryption Key Management
+    
+    Properly manage your encryption keys:
+    
+    - Store private keys (decrypt keys) in a secure, access-controlled location
+    - Never share private keys across multiple apps
+    - Consider using a hardware security module (HSM) for high-security environments
+    - Have a secure process for backing up private keys
+  </Accordion>
+  
+  <Accordion icon="shield" title="Data Classification">
+    ### Data Classification
+    
+    Not all data needs encryption. Classify your data and apply appropriate protection:
+    
+    - **High Sensitivity**: Payment information, personal identifiable information (PII), credentials - always encrypt
+    - **Medium Sensitivity**: Business metrics, order details without PII - encrypt based on context
+    - **Low Sensitivity**: Status updates, non-sensitive metadata - encryption optional
+  </Accordion>
+</AccordionGroup>
+
+## Security Checklist
+
+<Check>
+  Store app credentials in a secure secrets management system
+</Check>
+
+<Check>
+  Implement regular key rotation schedules
+</Check>
+
+<Check>
+  Apply the principle of least privilege to app permissions
+</Check>
+
+<Check>
+  Monitor app activity for unusual patterns
+</Check>
+
+<Check>
+  Regularly review logs for potential security issues
+</Check>
+
+<Check>
+  Use TLS/SSL for all communications
+</Check>
+
+<Check>
+  Encrypt sensitive data using end-to-end encryption
+</Check>
+
+<Check>
+  Conduct regular security audits of your apps
+</Check>
+
+<Check>
+  Document security procedures and incident response plans
+</Check>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Integration" icon="code" href="/apps/api-integration">
+    Learn how to securely integrate your systems with EnSync
+  </Card>
+  
+  <Card title="Troubleshooting" icon="wrench" href="/apps/troubleshooting">
+    Solve common security-related issues
+  </Card>
+</CardGroup>

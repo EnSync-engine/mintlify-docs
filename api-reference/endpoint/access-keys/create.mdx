@@ -1,0 +1,88 @@
+---
+title: "Create Access Key"
+api: "POST /access-key"
+description: "Creates a new access key with specified permissions"
+---
+
+## Key Types
+
+| Type | Purpose | Usage |
+|------|---------|-------|
+| **SERVICE** | Connect to EnSync broker | SDK clients use these to publish and subscribe to events. Corresponds to apps in EnSync's UI. |
+| **ACCOUNT** | Administrative access | Used to manage your EnSync configuration via this Config Manager API. |
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  Name for the access key
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  Key type: `ACCOUNT` or `SERVICE`
+</ParamField>
+
+<ParamField body="permissions" type="object" required>
+  Access key permissions
+  <Expandable title="Permissions Object">
+    <ParamField body="send" type="array">
+      Array of event paths this key can publish to
+    </ParamField>
+    <ParamField body="receive" type="array">
+      Array of event paths this key can subscribe to
+    </ParamField>
+    <ParamField body="resources" type="object">
+      Resource-specific permissions
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Response
+
+<ResponseField name="accessKey" type="string">
+  The generated access key
+</ResponseField>
+
+<ResponseField name="accessKeyId" type="string">
+  The access key ID
+</ResponseField>
+
+<ResponseField name="service_key_pair" type="object">
+  Service key pair for encryption (if SERVICE type)
+  <Expandable title="Key Pair">
+    <ResponseField name="public_key" type="string">
+      Public key for encryption
+    </ResponseField>
+    <ResponseField name="private_key" type="string">
+      Private key for decryption
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X POST "https://config.gms.ensync.cloud/v1/access-key" \
+  -H "X-API-KEY: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Production Service Key",
+    "type": "SERVICE",
+    "permissions": {
+      "send": ["order/*", "inventory/*"],
+      "receive": ["payment/*"]
+    }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "accessKey": "ensk_prod_xxxxxxxxxxxxx",
+  "accessKeyId": "ak_123456",
+  "service_key_pair": {
+    "public_key": "base64-encoded-public-key",
+    "private_key": "base64-encoded-private-key"
+  }
+}
+```
+</ResponseExample>

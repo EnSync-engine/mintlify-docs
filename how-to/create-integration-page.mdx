@@ -1,0 +1,63 @@
+---
+title: "Create an Integration Page"
+description: "Set up a self-service portal for partners to connect to your platform"
+---
+
+## Overview
+
+Integration pages allow partners to self-onboard to your platform without engineering involvement. Partners can browse your event catalog, generate credentials, and subscribe to events—all through a branded portal.
+
+## Steps
+
+### 1. Navigate to Integrations
+
+Open the EnSync Dashboard and go to the **Integrations** section.
+
+### 2. Create New Integration Page
+
+Click **"Create Integration Page"** and provide:
+- **Name**: Descriptive identifier (e.g., "Payment Partners Portal")
+- **Description**: What this integration is for
+
+### 3. Select Events to Expose
+
+Choose which events partners can subscribe to:
+- Browse your event catalog
+- Select events relevant to this partner type
+- Partners will see these events with their schemas and descriptions
+
+### 4. Configure Callback Events
+
+Optionally, allow partners to publish events back to you:
+- Select which event types partners can publish
+- Enables bidirectional communication
+
+### 5. Customize Branding
+
+Personalize the integration page:
+- Upload your logo
+- Set brand colors
+- Add custom welcome message
+
+### 6. Generate Integration URL
+
+The dashboard generates a unique URL:
+```
+https://ensync.cloud/integrate/{integration-id}
+```
+
+Share this URL with partners for self-service onboarding.
+
+## Use Cases
+
+**Payment Partners**: Expose `order/created`, `order/updated` events; allow `payment/completed` callbacks
+
+**Shipping Providers**: Expose `order/shipped` events; allow `shipment/updated` callbacks
+
+**Analytics Partners**: Expose all events; no callback events needed
+
+## Next Steps
+
+- Share the integration URL with partners
+- Monitor partner connections in the Dashboard
+- View integration analytics to track usage

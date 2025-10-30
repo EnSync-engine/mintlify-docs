@@ -1,0 +1,48 @@
+---
+title: 'Handle Event Replay'
+description: 'How EnSync replays historical events'
+---
+
+## Event Retention
+
+EnSync stores events for **90 days**, allowing you to replay them for debugging, reconciliation, or recovering from missed events.
+
+## Replay Metadata
+
+Replayed events include `replay_info` in metadata:
+
+```javascript
+{
+  eventName: "order/created",
+  idem: "event-idem-123",
+  payload: { /* your data */ },
+  metadata: {
+    $internal: {
+      replay_info: {
+        isReplayed: true,
+        replayTimestamp: 1758410511179,
+        wasAcknowledged: false
+      }
+    }
+  }
+}
+```
+
+## Replay Info Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `isReplayed` | `boolean` | `true` if this is a replayed event |
+| `replayTimestamp` | `number` | When the replay was triggered |
+| `wasAcknowledged` | `boolean` | Whether event was previously acknowledged |
+
+## Use Cases
+
+- **Debugging**: Replay events to reproduce issues
+- **Data reconciliation**: Reprocess events after fixing bugs
+- **Missed events**: Recover events if your system was down
+- **Testing**: Replay production events in staging
+
+<Note>
+Check `isReplayed` flag to handle replayed events differently (e.g., skip duplicate processing).
+</Note>

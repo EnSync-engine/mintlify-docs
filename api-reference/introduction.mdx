@@ -1,33 +1,51 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'Overview'
+description: 'Automate EnSync configuration with the Config Manager API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+The Config Manager API enables service providers and self-hosted EnSync users to programmatically manage their EnSync configuration.
 
-## Welcome
+## Use Cases
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+- **Automation**: Script workspace, event, and access key creation
+- **CI/CD Integration**: Configure EnSync as part of deployment pipelines
+- **Self-Hosted Management**: Manage your own EnSync instance programmatically
+- **Multi-Environment Setup**: Replicate configurations across dev/staging/production
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints require authentication using an **ACCOUNT** type access key in the `X-API-KEY` header. ACCOUNT keys are used for administrative purposes to manage your EnSync configuration.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```bash
+curl -X GET https://config.gms.ensync.cloud/v1/workspace \
+  -H "X-API-KEY: your-account-access-key"
 ```
+
+## Base URL
+
+```
+https://config.gms.ensync.cloud/v1
+```
+
+## API Resources
+
+- **Access Keys**: Manage authentication keys and permissions
+  - **SERVICE** keys: Connect to the EnSync broker (apps in EnSync Dashboard)
+  - **ACCOUNT** keys: Administrative access to this Config Manager API
+- **Event Definitions**: Define and update event schemas
+- **Workspaces**: Organize resources in hierarchical workspaces
+- **Service Key Pairs**: Manage encryption key pairs for SERVICE access keys
+
+## OpenAPI Specification
+
+The full OpenAPI specification is available for download:
+
+<Card
+  title="Download OpenAPI Spec"
+  icon="download"
+  href="/api-reference/openapi.yaml"
+>
+  Use with Postman, Insomnia, or other API clients
+</Card>
+
+Import the spec into your preferred API client to explore and test endpoints interactively.

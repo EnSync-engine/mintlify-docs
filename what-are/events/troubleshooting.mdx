@@ -1,0 +1,149 @@
+---
+title: 'Troubleshooting'
+description: 'Common event issues and solutions'
+---
+
+## Events Not Being Received
+
+### Check Subscription
+
+Verify your subscription is active:
+
+```javascript
+const subscription = await client.subscribe("order/*");
+console.log("Subscribed to order/*");
+```
+
+### Check Event Name
+
+Ensure the published event name matches your subscription pattern:
+
+```javascript
+// Publisher
+await client.publish("order/created", ["partner-id"], data);
+
+// Subscriber - ✅ Will receive
+await client.subscribe("order/*");
+
+// Subscriber - ❌ Won't receive
+await client.subscribe("payment/*");
+```
+
+### Check Recipient AppId
+
+Verify you're publishing to the correct recipient:
+
+```javascript
+// Use the partner's appId, not your own
+await client.publish("order/created", ["partner-app-id"], data);
+```
+
+### Check Permissions
+
+Ensure your access key has the right permissions:
+- Publisher needs `send` permission for the event path
+- Subscriber needs `receive` permission for the event path
+
+## Events Processing Slowly
+
+### Check Worker Count
+
+Scale horizontally by adding more workers:
+
+```javascript
+// Run multiple instances with the same appKey
+// Each worker processes events in parallel
+```
+
+### Check Processing Time
+
+If processing takes >1 minute, the event will be redelivered:
+
+```javascript
+subscription.on(async (event) => {
+  // ❌ Long processing blocks other events
+  await longRunningTask(event.payload);
+  await event.ack();
+});
+
+// ✅ Defer if processing will take time
+subscription.on(async (event) => {
+  if (needsLongProcessing(event.payload)) {
+    await event.defer(60000, "Needs background processing");
+    // Process in background job
+  } else {
+    await processQuickly(event.payload);
+    await event.ack();
+  }
+});
+```
+
+## Duplicate Events
+
+### Use Idempotency
+
+Always check if you've already processed an event:
+
+```javascript
+subscription.on(async (event) => {
+  if (await isProcessed(event.idem)) {
+    await event.ack();
+    return;
+  }
+  
+  await processEvent(event);
+  await markProcessed(event.idem);
+  await event.ack();
+});
+```
+
+### Check for Multiple Workers
+
+If running multiple workers, ensure they share the same appKey to avoid duplicates.
+
+## Events Stuck in Queue
+
+### Check ACK/Defer/Discard
+
+Events must be acknowledged, deferred, or discarded:
+
+```javascript
+subscription.on(async (event) => {
+  try {
+    await processEvent(event);
+    await event.ack();  // ✅ Event removed from queue
+  } catch (error) {
+    await event.defer(5000);  // ✅ Retry later
+  }
+});
+
+// ❌ Missing ack/defer/discard - event will be redelivered
+subscription.on(async (event) => {
+  await processEvent(event);
+  // Missing ack!
+});
+```
+
+### Check autoAck Setting
+
+If using `autoAck: true`, events are automatically acknowledged:
+
+```javascript
+// Auto-ack enabled
+await client.subscribe("order/*", { autoAck: true });
+
+// Manual ack required
+await client.subscribe("order/*", { autoAck: false });
+```
+
+## Getting Help
+
+If you're still experiencing issues:
+
+1. Check the **Logs** dashboard in EnSync Dashboard for error messages
+2. Review the **Monitoring** dashboard for event metrics
+3. Contact support at **support@ensync.cloud** with:
+   - Event name
+   - AppId
+   - Timestamp of the issue
+   - Error messages from logs

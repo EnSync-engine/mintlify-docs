@@ -1,0 +1,52 @@
+---
+title: "vs. Traditional Partner Integration"
+description: "Compare EnSync with traditional partner integration approaches"
+---
+
+## EnSync vs. Traditional Partner Integration
+
+| **Criteria** | **Traditional Partner Integration** | **EnSync** |
+|-------------|-----------------------------------|------------|
+| **Integration Model** | Custom API per partner | One implementation, infinite partners |
+| **Partner Onboarding Time** | 3-6 weeks per partner (custom development) | 15 minutes (self-service embedded page) |
+| **Scalability** | Linear cost: 1 engineer per 5-10 partners | Same team handles 100+ partners |
+| **Message Delivery** | Webhooks (unreliable) or polling (expensive) | Guaranteed delivery + automatic retries |
+| **Real-Time Capability** | Polling (minutes delay) or unreliable webhooks | True real-time (milliseconds) |
+| **Message Ordering** | Not guaranteed | Ordered delivery per event type |
+| **Access Control** | Custom implementation per integration | Workspace-based + granular permissions |
+| **Partner Visibility** | None (black box for partners) | Full observability dashboard per partner |
+| **Message Retention** | Not applicable | 90 days (configurable) with replay |
+| **Replay Capability** | Manual re-processing required | Built-in 90-day replay for compliance |
+| **Schema Management** | Per-partner negotiation and documentation | Structured events with versioning |
+| **Bidirectional Communication** | Requires separate integrations | Native bidirectional events |
+| **Partner Self-Service** | None - requires your engineering team | Embedded onboarding page |
+| **Offline Resilience** | Messages lost during downtime | Automatic retry + queue when partner offline |
+| **Maintenance Burden** | High (update each partner separately) | Low (centralized updates) |
+| **Time to First Integration** | 3-6 weeks | Minutes |
+| **Cost Model** | Per-partner development + maintenance | Platform fee (scales with usage) |
+| **Compliance/Audit** | Manual logging per integration | Full audit trails + searchable logs |
+| **Partner Ecosystem** | Siloed integrations | Connected ecosystem with network effects |
+
+## Bottom Line
+
+**Traditional integration doesn't scale. EnSync does.**
+
+## When to Choose Traditional Integration
+
+- You have 1-3 stable partners and no plans to scale
+- Partners have unique, non-standard requirements
+- Integration is a one-time project, not ongoing
+
+## When to Choose EnSync
+
+- You're building a B2B platform with partner integrations
+- You plan to scale partner integrations (even starting with 1 partner)
+- You need high throughput for real-time partner messaging
+- You want partners to self-onboard
+- You need reliable messaging with guaranteed delivery
+- You want to reduce engineering overhead
+- You're thinking integration-first from day one
+
+## Sales Positioning
+
+*"Stop building custom integrations for every partner. Build once, scale infinitely."*

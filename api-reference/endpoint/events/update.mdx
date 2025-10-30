@@ -1,0 +1,47 @@
+---
+title: "Update Event Definition"
+api: "PUT /event/{id}"
+description: "Updates an existing event definition"
+---
+
+### Path Parameters
+
+<ParamField path="id" type="string" required>
+  The ID of the event definition to update
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  Updated event name
+</ParamField>
+
+<ParamField body="payload" type="object" required>
+  Updated event payload schema
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X PUT "https://config.gms.ensync.cloud/v1/event/1" \
+  -H "X-API-KEY: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "order/created",
+    "payload": {
+      "orderId": "string",
+      "amount": "number",
+      "customerId": "string",
+      "items": "array",
+      "shippingAddress": "object"
+    }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "message": "Event definition updated successfully"
+}
+```
+</ResponseExample>

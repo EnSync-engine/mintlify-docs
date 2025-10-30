@@ -1,0 +1,46 @@
+---
+title: 'Discarding Events'
+description: 'Permanently reject invalid or unwanted events'
+---
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    subscription.on(async (event) => {
+      if (!isValidOrder(event.payload)) {
+        await subscription.discard(event.idem, "Invalid order data");
+        return;
+      }
+
+      await processOrder(event.payload);
+      await subscription.ack(event.idem, event.block);
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    async def handle_order(event):
+        if not is_valid_order(event.payload):
+            await subscription.discard(event.idem, "Invalid order data")
+            return
+
+        await process_order(event.payload)
+        await subscription.ack(event.idem, event.block)
+
+    subscription.on(handle_order)
+    ```
+  </Tab>
+</Tabs>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `idem` | `string` | Yes | Unique event ID |
+| `reason` | `string` | No | Optional reason for discarding |
+
+<Warning>
+Discarded events cannot be recovered. Use defer for temporary failures.
+</Warning>

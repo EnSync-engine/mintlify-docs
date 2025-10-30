@@ -1,0 +1,93 @@
+---
+title: Overview
+description: Managing internal apps in the EnSync platform
+icon: "window-restore"
+---
+
+## What are Apps?
+
+Apps represent your internal systems, services, or applications that connect to EnSync to publish or receive events. Each app is an authenticated entity with specific permissions controlling what events it can send and receive.
+
+Think of apps as your own services that need to communicate through EnSync:
+- Your order management system
+- Your payment processing service
+- Your inventory tracking system
+- Your notification service
+- Your analytics platform
+
+<Frame>
+  <img src="/images/apps-overview.png" alt="Apps Overview" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">Apps connect your internal systems to the EnSync platform</figcaption>
+</Frame>
+
+## Apps vs. Integration Pages
+
+<CardGroup cols={2}>
+  <Card title="Apps" icon="window-restore">
+    - Systems you control
+    - You create and manage their credentials
+    - You define their permissions explicitly
+    - Used for your internal services
+  </Card>
+  
+  <Card title="Integration Pages" icon="handshake">
+    - Portals for external partners
+    - Partners generate their own credentials
+    - Partners choose which events to subscribe to (from what you expose)
+    - Used for external integrations
+  </Card>
+</CardGroup>
+
+An app can be used to power an integration page, but they serve different purposes.
+
+## Key Features
+
+<CardGroup cols={3}>
+  <Card title="Authentication" icon="key">
+    Secure app keys for authenticating your systems with EnSync
+  </Card>
+  
+  <Card title="Permissions" icon="shield-check">
+    Fine-grained control over which events apps can send and receive
+  </Card>
+  
+  <Card title="Encryption" icon="lock">
+    End-to-end encryption for sensitive data using public/private key pairs
+  </Card>
+  
+  <Card title="Analytics" icon="chart-line">
+    Track event publishing and consumption across your apps
+  </Card>
+  
+  <Card title="Management" icon="gear">
+    Create, edit, and delete apps through an intuitive interface
+  </Card>
+  
+  <Card title="API Integration" icon="code">
+    Integrate with EnSync using RESTful APIs and SDKs
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Steps>
+  <Step title="Understand App Components">
+    Learn about the [components and keys](/apps/components) that make up an app
+  </Step>
+  
+  <Step title="Create Your First App">
+    Follow the guide to [create and manage apps](/apps/management)
+  </Step>
+  
+  <Step title="Monitor App Activity">
+    Use the [analytics dashboard](/apps/analytics) to track app performance
+  </Step>
+  
+  <Step title="Implement Security Best Practices">
+    Follow our [security recommendations](/apps/security) to protect your apps
+  </Step>
+  
+  <Step title="Integrate with Your Systems">
+    Use our [API integration guide](/apps/api-integration) to connect your systems
+  </Step>
+</Steps>

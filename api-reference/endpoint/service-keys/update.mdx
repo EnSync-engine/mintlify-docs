@@ -1,0 +1,41 @@
+---
+title: "Update Service Key Pair"
+api: "PUT /access/service-key-pair"
+description: "Updates a service key pair"
+---
+
+### Body Parameters
+
+<ParamField body="access_key" type="string" required>
+  The access key to update the service key pair for
+</ParamField>
+
+### Response
+
+<ResponseField name="public_key" type="string">
+  The public key for encryption
+</ResponseField>
+
+<ResponseField name="private_key" type="string">
+  The private key for decryption
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X PUT "https://config.gms.ensync.cloud/v1/access/service-key-pair" \
+  -H "X-API-KEY: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "access_key": "ensk_prod_xxxxx"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "public_key": "base64-encoded-public-key",
+  "private_key": "base64-encoded-private-key"
+}
+```
+</ResponseExample>

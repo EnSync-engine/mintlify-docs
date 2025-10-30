@@ -1,0 +1,80 @@
+---
+title: 'App Key'
+description: 'Understanding appKey credentials'
+---
+
+## What is appKey?
+
+The **appKey** is a secret credential used to authenticate your SDK client connections to the EnSync broker. It's returned as `accessKey` when you create a SERVICE type access key.
+
+## Usage
+
+Pass the appKey when creating your EnSync client:
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const client = await EnSyncClient.create({
+      appKey: "ensk_prod_xxxxxxxxxxxxx",
+      appSecret: "your-app-secret"
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    client = await EnSyncClient.create(
+        app_key="ensk_prod_xxxxxxxxxxxxx",
+        app_secret="your-app-secret"
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## Security
+
+<Warning>
+**Keep your appKey secret!** Anyone with your appKey can:
+- Publish events as your app
+- Subscribe to events sent to your app
+- Consume events from your queue
+</Warning>
+
+### Best Practices
+
+- **Never commit to version control**: Use environment variables
+- **Rotate regularly**: Create new keys and deprecate old ones
+- **Use different keys per environment**: Separate dev/staging/production
+- **Limit permissions**: Only grant necessary send/receive permissions
+
+```bash
+# ✅ Use environment variables
+export ENSYNC_APP_KEY="ensk_prod_xxxxx"
+export ENSYNC_APP_SECRET="xxxxx"
+
+# ❌ Don't hardcode
+const appKey = "ensk_prod_xxxxx"; // Bad!
+```
+
+## Sharing appKey
+
+Multiple workers can share the same appKey to scale horizontally:
+
+```javascript
+// Worker 1
+const client1 = await EnSyncClient.create({ appKey, appSecret });
+
+// Worker 2 (same appKey)
+const client2 = await EnSyncClient.create({ appKey, appSecret });
+```
+
+EnSync coordinates which worker receives which event, preventing duplicates.
+
+## Permissions
+
+Each appKey has associated permissions that control:
+- Which events it can publish (`send`)
+- Which events it can subscribe to (`receive`)
+
+You can view and update permissions in the EnSync Dashboard or via the API. See:
+- [Get Access Key Permissions](/api-reference/endpoint/access-keys/get-permissions)
+- [Update Access Key Permissions](/api-reference/endpoint/access-keys/update-permissions)

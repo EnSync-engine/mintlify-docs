@@ -1,0 +1,47 @@
+---
+title: 'Deferring Events'
+description: 'Postpone event processing with retry logic'
+---
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    subscription.on(async (event) => {
+      try {
+        await processPayment(event.payload);
+        await subscription.ack(event.idem, event.block);
+      } catch (error) {
+        // Defer for 5 seconds
+        await subscription.defer(event.idem, 5000, "Temporary error");
+      }
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    async def handle_payment(event):
+        try:
+            await process_payment(event.payload)
+            await subscription.ack(event.idem, event.block)
+        except Exception as error:
+            # Defer for 5 seconds
+            await subscription.defer(event.idem, 5000, "Temporary error")
+
+    subscription.on(handle_payment)
+    ```
+  </Tab>
+</Tabs>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `idem` | `string` | Yes | Unique event ID |
+| `delayMs` | `number` | Yes | Delay in milliseconds |
+| `reason` | `string` | No | Optional reason for deferring |
+
+<Note>
+Deferred events return to the queue after the delay. Any of your client instances sharing the same appKey can receive them.
+</Note>

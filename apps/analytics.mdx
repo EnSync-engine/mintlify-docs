@@ -1,0 +1,202 @@
+---
+title: Analytics
+description: Monitoring app performance and event traffic in the EnSync platform
+icon: "chart-line"
+---
+
+## Analytics Dashboard
+
+The Apps Analytics section provides valuable insights into how your apps are performing, what events they're publishing and receiving, and how they're being used by partners and other apps.
+
+<Frame>
+  <img src="/images/app-analytics-dashboard.png" alt="App Analytics Dashboard" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">The App Analytics Dashboard provides a comprehensive view of app activity</figcaption>
+</Frame>
+
+## Key Metrics
+
+<CardGroup cols={3}>
+  <Card title="Apps Published Events" icon="paper-plane">
+    The total number of events published by the selected app (or all apps if "All Apps" is selected). This shows how active your app is in sending data to EnSync.
+  </Card>
+  
+  <Card title="Apps Received Events" icon="inbox">
+    The total number of events received by the selected app. This shows how much data your app is consuming from EnSync.
+  </Card>
+  
+  <Card title="Active Subscribers" icon="users">
+    The number of active connections currently subscribed to events from this app. This indicates how many partners or other apps are actively listening to events from this app.
+  </Card>
+</CardGroup>
+
+## App Traffic Chart
+
+The App Traffic Chart visualizes event activity over time, helping you identify patterns, trends, and potential issues.
+
+<Frame>
+  <img src="/images/app-traffic-chart.png" alt="App Traffic Chart" />
+</Frame>
+
+### Chart Features
+
+<AccordionGroup>
+  <Accordion icon="chart-line" title="Event Visualization">
+    A line chart showing published vs. received events over time (default: last 5 days). The chart uses different colors to distinguish between published events (typically blue) and received events (typically green).
+  </Accordion>
+  
+  <Accordion icon="calendar" title="Date Range Selection">
+    You can customize the time period shown in the chart:
+    - Set a custom date range using the Start and End date pickers
+    - Clear the date range to return to the default view (last 5 days)
+    - Use preset ranges like "Last 24 hours," "Last 7 days," or "Last 30 days"
+  </Accordion>
+  
+  <Accordion icon="magnifying-glass" title="Zoom and Pan">
+    Interact with the chart to focus on specific time periods:
+    - Click and drag horizontally to zoom in on a specific time range
+    - Use the zoom buttons to zoom in or out
+    - Click and drag the chart to pan left or right
+  </Accordion>
+  
+  <Accordion icon="download" title="Export Options">
+    Export chart data for further analysis:
+    - Download as PNG image
+    - Download as CSV data
+    - Copy chart data to clipboard
+  </Accordion>
+</AccordionGroup>
+
+### Using the Chart
+
+The App Traffic Chart helps you:
+- Identify spikes in activity that might indicate unusual behavior
+- Spot when an app stops publishing or receiving, which could indicate a problem
+- Compare send vs. receive patterns to understand data flow
+- Correlate event activity with business events or system changes
+
+## Events Table
+
+Below the traffic chart, you'll find a detailed breakdown of event activity by event type.
+
+<Frame>
+  <img src="/images/events-table.png" alt="Events Table" />
+</Frame>
+
+### Table Columns
+
+The Events Table shows:
+- **Event Name**: The specific event type (e.g., `order/created`, `payment/completed`)
+- **Published**: How many times this app published this event
+- **Received**: How many times this app received this event
+- **Total**: Sum of published and received events
+
+### Table Features
+
+<AccordionGroup>
+  <Accordion icon="sort" title="Sorting">
+    Click any column header to sort the table by that column:
+    - Sort by event name (alphabetically)
+    - Sort by number of published events (highest or lowest)
+    - Sort by number of received events (highest or lowest)
+    - Sort by total events (highest or lowest)
+  </Accordion>
+  
+  <Accordion icon="filter" title="Filtering">
+    Use the search box above the table to filter events by name. This is useful when you have many events and want to focus on specific ones.
+  </Accordion>
+  
+  <Accordion icon="download" title="Export">
+    Export the events table data as a CSV file for further analysis in spreadsheet software or other tools.
+  </Accordion>
+</AccordionGroup>
+
+### Using the Table
+
+This table helps you understand:
+- Which events are most active for this app
+- Whether an app is primarily a publisher or consumer of events
+- If there are events configured but not being used
+- The overall distribution of event traffic
+
+## App Comparison
+
+You can compare activity across multiple apps to understand how they interact and identify patterns.
+
+<Steps>
+  <Step title="Select 'All Apps' from the dropdown">
+    This shows aggregate metrics across all your apps.
+  </Step>
+  
+  <Step title="Use the comparison view">
+    Click the "Compare Apps" button to view multiple apps side by side.
+  </Step>
+  
+  <Step title="Analyze the comparison chart">
+    The chart will show multiple lines, one for each selected app, allowing you to compare activity patterns.
+  </Step>
+</Steps>
+
+## Monitoring Best Practices
+
+<Note>
+  Regular monitoring of your app analytics is essential for maintaining system health and identifying issues early.
+</Note>
+
+Consider these monitoring practices:
+
+<AccordionGroup>
+  <Accordion icon="chart-line" title="Activity Monitoring">
+    Regularly check for:
+    - Apps that have stopped publishing events
+    - Apps that have stopped receiving events
+    - Unexpected drops in event volume
+  </Accordion>
+  
+  <Accordion icon="triangle-exclamation" title="Error Monitoring">
+    Periodically review logs for:
+    - Authentication errors
+    - Permission denied errors
+    - Connection failures
+  </Accordion>
+  
+  <Accordion icon="gauge-high" title="Volume Monitoring">
+    Keep an eye on:
+    - Unusual spikes in event volume
+    - Event volume approaching your plan limits
+    - Significant changes in subscriber count
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Check>
+  **Monitor regularly** - Check app analytics at least weekly to spot trends and issues
+</Check>
+
+<Check>
+  **Compare with business metrics** - Correlate event activity with business KPIs
+</Check>
+
+<Check>
+  **Monitor regularly** - Check analytics dashboard at least weekly for unusual activity or potential issues
+</Check>
+
+<Check>
+  **Look for patterns** - Regular patterns can help identify when something is wrong
+</Check>
+
+<Check>
+  **Track after changes** - Always check analytics after deploying changes to ensure everything is working
+</Check>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Implement Security Best Practices" icon="shield-check" href="/apps/security">
+    Learn how to secure your apps and their credentials
+  </Card>
+  
+  <Card title="Troubleshoot Common Issues" icon="wrench" href="/apps/troubleshooting">
+    Use analytics to identify and solve common problems
+  </Card>
+</CardGroup>

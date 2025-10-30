@@ -3,25 +3,97 @@
   "theme": "mint",
   "name": "EnSync Cloud",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#FF3300",
+    "light": "#CC2900",
+    "dark": "#CC2900"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Home:",
             "pages": [
               "index",
-              "components",
-              "components/events",
-              "components/apps",
-              "components/integrations",
-              "components/logs"
+              "introduction"
+            ]
+          },
+          {
+            "group": "Guides:",
+            "pages": [
+              "guides/connect",
+              "guides/publish",
+              "guides/subscribe",
+              "guides/acknowledge",
+              "guides/discard",
+              "guides/defer",
+              "guides/pause-continue",
+              "guides/unsubscribe",
+              "guides/error-handling"
+            ]
+          },
+          {
+            "group": "What Are:",
+            "pages": [
+              {
+                "group": "Events",
+                "pages": [
+                  "what-are/events/overview",
+                  "what-are/events/schemas",
+                  "what-are/events/naming-convention",
+                  "what-are/events/tips",
+                  "what-are/events/troubleshooting"
+                ]
+              },
+              {
+                "group": "Apps",
+                "pages": [
+                  "what-are/apps/overview",
+                  "what-are/apps/app-key",
+                  "what-are/apps/app-secret",
+                  "what-are/apps/app-id",
+                  "what-are/apps/tips",
+                  "what-are/apps/troubleshooting"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "How Does EnSync:",
+            "pages": [
+              "how-does/backpressure",
+              "how-does/encryption",
+              "how-does/event-ordering",
+              "how-does/event-replay"
+            ]
+          },
+          {
+            "group": "Compare EnSync:",
+            "pages": [
+              "compare-ensync/overview",
+              "compare-ensync/traditional-integration",
+              "compare-ensync/message-queues",
+              "compare-ensync/kafka",
+              "compare-ensync/solace",
+              "compare-ensync/ipaas"
+            ]
+          },
+          {
+            "group": "How To:",
+            "pages": [
+              "how-to/create-integration-page",
+              "how-to/integrate-partner",
+              "how-to/manual-onboard-partner",
+              "how-to/identify-bugs"
+            ]
+          },
+          {
+            "group": "Client SDKs",
+            "pages": [
+              "sdk/node",
+              "sdk/python"
             ]
           }
         ]
@@ -44,18 +116,41 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Config Manager API",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Access Keys",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/access-keys/list",
+              "api-reference/endpoint/access-keys/create",
+              "api-reference/endpoint/access-keys/get-permissions",
+              "api-reference/endpoint/access-keys/update-permissions",
+              "api-reference/endpoint/access-keys/verify"
+            ]
+          },
+          {
+            "group": "Event Definitions",
+            "pages": [
+              "api-reference/endpoint/events/list",
+              "api-reference/endpoint/events/create",
+              "api-reference/endpoint/events/get-by-name",
+              "api-reference/endpoint/events/update"
+            ]
+          },
+          {
+            "group": "Workspaces",
+            "pages": [
+              "api-reference/endpoint/workspaces/list",
+              "api-reference/endpoint/workspaces/create"
+            ]
+          },
+          {
+            "group": "Service Key Pairs",
+            "pages": [
+              "api-reference/endpoint/service-keys/update"
             ]
           }
         ]
@@ -94,7 +189,6 @@
      "view",
      "chatgpt",
      "claude",
-     "perplexity",
      "mcp",
      "cursor",
      "vscode"

@@ -1,0 +1,52 @@
+---
+title: 'Pause and Continue'
+description: 'Temporarily stop receiving events'
+---
+
+Pause temporarily stops your client from receiving new events while keeping the subscription active. Use this for maintenance windows or when you need to temporarily halt processing. Unlike unsubscribe, paused events remain queued and will be delivered when you continue.
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const subscription = await client.subscribe("inventory/updates");
+
+    // Pause when needed
+    await subscription.pause();
+    await performMaintenance();
+
+    // Resume receiving events
+    await subscription.continue();
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    subscription = await client.subscribe("inventory/updates")
+
+    # Pause when needed
+    await subscription.pause()
+    await perform_maintenance()
+
+    # Resume receiving events
+    await subscription.continue_subscription()
+    ```
+  </Tab>
+</Tabs>
+
+## Methods
+
+| Method | Description |
+|--------|-------------|
+| `pause()` | Stop receiving new events |
+| `continue()` | Resume receiving events |
+
+## When to Use
+
+- **Maintenance windows**: Pause during system updates or database migrations
+- **Temporary halt**: Stop processing while performing operations that require no new events
+- **Controlled restart**: Pause before restarting to avoid losing in-flight events
+
+<Note>
+Pause affects only this client instance. Your other client instances sharing the same appKey continue receiving events.
+</Note>

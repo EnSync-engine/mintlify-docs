@@ -1,0 +1,177 @@
+---
+title: 'Tips'
+description: 'Event best practices and versioning'
+---
+
+## Event Versioning
+
+When you need to make breaking changes to an event, use versioning in the event name:
+
+### Approach 1: Version Suffix
+
+```
+order/created/v1
+order/created/v2
+```
+
+**Pros**: Clear version indicator  
+**Cons**: Requires updating all subscribers
+
+### Approach 2: New Event Name
+
+```
+order/created
+order/created-v2
+order/placed  // Renamed for clarity
+```
+
+**Pros**: Old and new events coexist  
+**Cons**: Need to maintain both during transition
+
+### Approach 3: Additive Changes
+
+Add new fields without removing old ones:
+
+```json
+// v1
+{
+  "orderId": "123",
+  "amount": 99.99
+}
+
+// v2 (backward compatible)
+{
+  "orderId": "123",
+  "amount": 99.99,
+  "currency": "USD",  // New field
+  "tax": 8.99         // New field
+}
+```
+
+**Pros**: No version changes needed  
+**Cons**: Payload grows over time
+
+## Best Practices
+
+### Keep Payloads Small
+
+- Only include essential data
+- Reference IDs instead of embedding full objects
+- Use separate events for different concerns
+
+```javascript
+// ❌ Large payload
+{
+  "order": { /* full order object */ },
+  "customer": { /* full customer object */ },
+  "items": [ /* full item objects */ ]
+}
+
+// ✅ Lean payload
+{
+  "orderId": "123",
+  "customerId": "456",
+  "amount": 99.99
+}
+```
+
+### Use Idempotency
+
+Always check the `idem` field to avoid processing duplicates:
+
+```javascript
+subscription.on(async (event) => {
+  if (await isProcessed(event.idem)) {
+    await event.ack();
+    return;
+  }
+  
+  await processEvent(event);
+  await markProcessed(event.idem);
+  await event.ack();
+});
+```
+
+### Handle Replayed Events
+
+Check `metadata.$internal.replay_info.isReplayed` to detect replays:
+
+```javascript
+if (event.metadata.$internal?.replay_info?.isReplayed) {
+  // This is a replayed event
+  // Handle accordingly (e.g., skip side effects)
+}
+```
+
+### Design for Failure
+
+- Always use manual ACK mode for critical events
+- Implement retry logic with defer
+- Use discard for permanently invalid events
+- Monitor failed events in the Logs dashboard
+
+## Common Patterns
+
+### Event Chaining
+
+One event triggers another:
+
+```javascript
+// Service A publishes order/created
+await client.publish("order/created", ["service-b"], orderData);
+
+// Service B processes and publishes payment/requested
+subscription.on(async (event) => {
+  await processOrder(event.payload);
+  await client.publish("payment/requested", ["payment-service"], paymentData);
+  await event.ack();
+});
+```
+
+### Batch Processing
+
+**Option 1: Acknowledge and Collect**
+
+Process events in batches by acknowledging immediately:
+
+```javascript
+const batch = [];
+
+subscription.on(async (event) => {
+  // Acknowledge immediately to receive next event
+  await event.ack();
+  
+  // Add to batch
+  batch.push(event.payload);
+  
+  // Process batch when ready
+  if (batch.length >= 10) {
+    await processBatch(batch);
+    batch = [];
+  }
+});
+```
+
+**Option 2: Use Multiple Workers**
+
+Run multiple workers to process events in parallel:
+
+```javascript
+// Worker 1
+const client1 = await EnSyncClient.create({ appKey, appSecret });
+await client1.subscribe("order/*");
+
+// Worker 2
+const client2 = await EnSyncClient.create({ appKey, appSecret });
+await client2.subscribe("order/*");
+
+// Worker 3
+const client3 = await EnSyncClient.create({ appKey, appSecret });
+await client3.subscribe("order/*");
+
+// Each worker processes events independently and in parallel
+```
+
+<Note>
+You must ack/defer/discard each event to receive the next one. For high throughput, use multiple workers instead of holding events unacknowledged.
+</Note>

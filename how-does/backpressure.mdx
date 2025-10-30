@@ -1,0 +1,30 @@
+---
+title: 'Handle Backpressure'
+description: 'How EnSync handles automatic backpressure'
+---
+
+## Need-Based Push Model
+
+EnSync delivers events **one at a time**. The server only pushes the next event after you've processed the current one by calling `ack()`, `defer()`, or `discard()`.
+
+## Example
+
+If 50 events are published in 2 seconds:
+- You receive event 1
+- Process it and call `ack()`
+- Only then do you receive event 2
+- This continues at your processing speed
+
+## Scaling Throughput
+
+To receive events faster, create multiple workers with separate client instances. Each worker receives events independently:
+
+- 1 worker = 1 event at a time
+- 5 workers = 5 events at a time
+- Scale workers based on your processing capacity
+
+## Benefits
+
+- **Automatic flow control**: No manual rate limiting needed
+- **Horizontal scaling**: Add workers to increase throughput
+- **No buffering issues**: Events aren't queued in your application memory

@@ -1,162 +1,53 @@
 ---
-title: "Introduction"
-description: "A powerful real-time event delivery and integration engine designed to connect systems seamlessly"
+title: 'Quickstart'
+description: 'Find our guides, samples, blogs, and best practices to get started with EnSync'
 ---
 
-## What is EnSync?
-
-EnSync is a powerful real-time event delivery and integration engine designed to connect systems seamlessly. It enables businesses to build truly reactive applications by facilitating reliable, structured message exchange between internal and third-party systems. Unlike traditional integration platforms, EnSync doesn't disrupt existing architectures but rather enhances them by enabling applications to send and receive events as if they were native to the architecture.
-
-<Note>
-EnSync is designed for integration engineers and developers who need to connect systems reliably and securely at scale.
-</Note>
-
-## Core Capabilities
-
 <CardGroup cols={2}>
-  <Card title="High Performance" icon="bolt">
-    Process 1,000+ messages per second with horizontal scaling architecture
+  <Card
+    title="Introduction"
+    icon="book-open"
+    href="/introduction"
+  >
+    Learn the basics and core concepts of EnSync
   </Card>
-  <Card title="Reliability" icon="shield-check">
-    Guaranteed message delivery with built-in resilience
+  <Card
+    title="SDK Documentation"
+    icon="code"
+    href="/sdk"
+  >
+    Integrate EnSync using our official SDKs
   </Card>
-  <Card title="Security" icon="lock">
-    End-to-end data encryption for all messages
+  <Card
+    title="Deployments"
+    icon="rocket"
+    href="/deployments"
+  >
+    Self-host EnSync on your own infrastructure
   </Card>
-  <Card title="Structured Data" icon="table">
-    Defined yet flexible message structures
+  <Card
+    title="Partner Onboarding"
+    icon="handshake"
+    href="/partner-onboarding"
+  >
+    Get started as an EnSync partner
   </Card>
-  <Card title="Message Retention" icon="clock-rotate-left">
-    30-day configurable message retention with replay capability
+  <Card
+    title="API Reference"
+    icon="terminal"
+    href="/api-reference/introduction"
+  >
+    Explore our complete API documentation
   </Card>
-  <Card title="Access Control" icon="user-lock">
-    Workspace-based segregation with granular permissions
-  </Card>
-</CardGroup>
-
-## Key Features
-
-<AccordionGroup>
-  <Accordion icon="box" title="Event Configuration">
-    - **Event Catalog**: Comprehensive catalog of available event types
-    - **Selective Subscription**: Choose exactly which events to subscribe to
-    - **Structured Messages**: Well-defined yet flexible message structures
-    - **Path-based Naming**: Intuitive path-like message structure (e.g., `payment_intent.*`)
-  </Accordion>
-  
-  <Accordion icon="key" title="Access and Control">
-    - **Workspace Hierarchy**: Organize by partner workspaces (e.g., `GMS › stripe › integration`)
-    - **Key Management**: Generate and rotate public/private key pairs on demand
-    - **Selective Access**: Control which systems can access or publish messages
-    - **Tenant Isolation**: Ensure users only view and manage their own workspace data
-  </Accordion>
-  
-  <Accordion icon="chart-line" title="Monitoring and Analytics">
-    - **Real-Time Metrics**: Track throughput, latency, and error rates
-    - **Delivery Logs**: Searchable, filterable logs tagged by access key ID
-    - **System Health**: Comprehensive monitoring of the entire message ecosystem
-    - **Partner Integration Insights**: Analyze how partners interact with your systems
-  </Accordion>
-  
-  <Accordion icon="shield-halved" title="Security Framework">
-    - **No Key Storage**: Private keys are only shown once to users who must store them securely in their own systems
-    - **End-to-End Encryption**: Encryption happens at the SDK level with all connections to EnSync being encrypted
-    - **Audit Logging**: Track all sensitive actions with user identity and timestamp
-    - **Least Privilege Access**: New keys start with no event access until explicitly granted
-  </Accordion>
-</AccordionGroup>
-
-## Architecture Components
-
-EnSync's architecture consists of several key components:
-
-<CardGroup cols={3}>
-  <Card title="Master Node" icon="server">
-    Central message dispatcher handling routing and delivery
-  </Card>
-  <Card title="Config Manager" icon="gears">
-    Manages system configuration and event partitioning
-  </Card>
-  <Card title="Client Libraries" icon="code">
-    Lightweight SDKs for easy integration
-  </Card>
-  <Card title="Control Panel" icon="display">
-    Web interface for configuration and monitoring
-  </Card>
-  <Card title="Database Layer" icon="database">
-    Persistent storage for message retention and system configuration
-  </Card>
-  <Card title="Cache Layer" icon="bolt">
-    High-performance caching for improved performance
+  <Card
+    title="Blogs & Articles"
+    icon="newspaper"
+    href="/blogs"
+  >
+    Read our blogs and articles
   </Card>
 </CardGroup>
 
-## Industry Applications
+## Feedback
 
-EnSync excels in various industries by enabling ecosystem building:
-
-<Tabs>
-  <Tab title="Finance">
-    Build secure financial ecosystems where banks and fintech partners exchange structured messages with guaranteed delivery after implementing EnSync's SDK.
-  </Tab>
-  <Tab title="Healthcare">
-    Enable healthcare providers and medical device manufacturers to join a secure messaging network through EnSync implementation, ensuring HIPAA-compliant data exchange.
-  </Tab>
-  <Tab title="Commerce">
-    Create unified commerce networks where payment providers and fulfillment centers exchange standardized order data after implementing EnSync's protocols.
-  </Tab>
-  <Tab title="Manufacturing">
-    Enable manufacturing partners to join standardized production networks by implementing EnSync, ensuring reliable data exchange between systems.
-  </Tab>
-  <Tab title="Agriculture">
-    Create networks where agricultural IoT manufacturers can easily join ecosystems by implementing EnSync, enabling standardized data exchange across devices.
-  </Tab>
-  <Tab title="Security">
-    Build security networks where surveillance systems and monitoring devices communicate reliably once equipped with EnSync's message exchange capabilities.
-  </Tab>
-</Tabs>
-
-## Business Value
-
-<CardGroup cols={2}>
-  <Card title="Super-Charged Product Offerings" icon="rocket">
-    Enhance existing products with real-time capabilities
-  </Card>
-  <Card title="New Business Models" icon="lightbulb">
-    Enable innovative service offerings through integration
-  </Card>
-  <Card title="Reduced Development Time" icon="clock">
-    Standardized integration patterns accelerate development
-  </Card>
-  <Card title="Operational Visibility" icon="eye">
-    Gain insights across your entire ecosystem
-  </Card>
-  <Card title="Scalable Architecture" icon="arrow-up-right-dots">
-    Grow your integration capabilities alongside your business
-  </Card>
-  <Card title="Reliable Delivery" icon="check-double">
-    Ensure critical business events are never lost
-  </Card>
-</CardGroup>
-
-## Getting Started
-
-<Steps>
-  <Step title="Review Documentation">
-    Explore our comprehensive documentation to understand EnSync's capabilities and integration patterns.
-  </Step>
-  <Step title="Install Client Libraries">
-    Choose from our lightweight SDKs for various programming languages to begin integration.
-  </Step>
-  <Step title="Configure Your Workspace">
-    Set up your workspace hierarchy and access controls to match your organization's structure.
-  </Step>
-  <Step title="Define Event Structures">
-    Create structured event definitions that will be used across your integration ecosystem.
-  </Step>
-  <Step title="Deploy and Monitor">
-    Launch your integration and use our monitoring tools to ensure everything is running smoothly.
-  </Step>
-</Steps>
-
-By implementing EnSync, businesses can create truly reactive applications that respond to events in real-time, providing better customer experiences and more efficient operations.
+Found an issue or have suggestions? [Open an issue on GitHub](https://github.com/EnSync-engine/mintlify-docs/issues/new).

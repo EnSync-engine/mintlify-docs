@@ -1,0 +1,209 @@
+---
+title: Management
+description: Creating, editing, and deleting apps in the EnSync platform
+icon: "gear"
+---
+
+## Creating an App
+
+Creating a new app in EnSync is straightforward and only takes a few steps.
+
+<Steps>
+  <Step title="Navigate to Apps Section">
+    From the EnSync dashboard, click on "Apps" in the main navigation menu.
+  </Step>
+  
+  <Step title="Click Create New App">
+    Click the "Create New App" button in the top-right corner of the Apps page.
+  </Step>
+  
+  <Step title="Enter App Details">
+    In the modal that appears, enter the app details:
+    
+    **App Name Field:**
+    Enter a descriptive name for your app. This is required and helps you identify the app in your dashboard.
+    
+    <Frame>
+      <img src="/images/app-creation-form.png" alt="App Creation Form" />
+    </Frame>
+  </Step>
+  
+  <Step title="Configure Permissions">
+    **Send Events Section:**
+    A multi-select dropdown showing all available events in your workspace. Select which events this app should be allowed to publish. You can search for events by typing in the search box.
+    
+    **Receive Events Section:**
+    Another multi-select dropdown for choosing which events this app should be allowed to receive. These are the events your app will be notified about.
+  </Step>
+  
+  <Step title="Create the App">
+    Click the "Create App" button at the bottom of the modal to create your app.
+  </Step>
+  
+  <Step title="Save Your Credentials">
+    A success modal displays showing:
+    - App Name (confirmation of what you created)
+    - App Key (authentication credential - copy this immediately)
+    - Public Key (for encryption - copy this)
+    - Decrypt Key (private key for decryption - copy this immediately)
+    
+    Each field has a copy button. **Copy all three keys and store them securely.** You won't be able to view them again after closing this modal.
+    
+    <Warning>
+      These credentials are shown only once. If you don't save them now, you'll need to regenerate them later, which will invalidate the original credentials.
+    </Warning>
+  </Step>
+</Steps>
+
+## Editing Apps
+
+You can modify an app's name and permissions after creation. However, you cannot view or directly edit the app's credentials.
+
+<Steps>
+  <Step title="Navigate to the App">
+    From the Apps page, find the app you want to edit in the list.
+  </Step>
+  
+  <Step title="Open Edit Mode">
+    Click the three-dot menu next to the app and select "Edit".
+  </Step>
+  
+  <Step title="Modify App Details">
+    In the edit modal, you can change:
+    
+    **App Name:**
+    Change the display name of the app. This doesn't affect authentication or permissions.
+    
+    **Send Permissions:**
+    Add or remove events the app can publish. Changes take effect immediately:
+    - Adding an event: App can now publish it
+    - Removing an event: App can no longer publish it (attempts will fail)
+    
+    **Receive Permissions:**
+    Add or remove events the app can receive. Changes take effect immediately:
+    - Adding an event: App will start receiving it
+    - Removing an event: App will stop receiving it
+  </Step>
+  
+  <Step title="Save Changes">
+    Click "Save Changes" to apply your modifications.
+  </Step>
+</Steps>
+
+<Note>
+  You cannot view or change the app key, public key, or decrypt key when editing. These can only be regenerated (which creates new keys).
+</Note>
+
+## Regenerating App Keys
+
+If your app key is compromised or lost, you can regenerate it. This creates a new set of credentials and invalidates the old ones.
+
+<Warning>
+  Regenerating keys will immediately invalidate the old credentials. Any systems using the old credentials will stop working until updated with the new ones.
+</Warning>
+
+<Steps>
+  <Step title="Navigate to the App">
+    From the Apps page, find the app that needs new credentials.
+  </Step>
+  
+  <Step title="Select Regenerate Key">
+    Click the three-dot menu next to the app and select "Regenerate Key".
+  </Step>
+  
+  <Step title="Confirm Regeneration">
+    A confirmation modal appears warning that the old key will stop working. Click "Regenerate" to confirm.
+  </Step>
+  
+  <Step title="Save New Credentials">
+    A new modal displays the new keys:
+    - App Key
+    - Public Key
+    - Decrypt Key
+    
+    Copy these keys immediately—they won't be shown again.
+  </Step>
+  
+  <Step title="Update Your Systems">
+    Update all systems that use these credentials as soon as possible to restore functionality.
+  </Step>
+</Steps>
+
+## Deleting Apps
+
+When you no longer need an app, you can delete it. This is a permanent action that cannot be undone.
+
+<Warning>
+  Deleting an app permanently removes it from your workspace and invalidates all its credentials. Any systems using these credentials will immediately lose access.
+</Warning>
+
+<Steps>
+  <Step title="Navigate to the App">
+    From the Apps page, find the app you want to delete.
+  </Step>
+  
+  <Step title="Select Delete">
+    Click the three-dot menu next to the app and select "Delete".
+  </Step>
+  
+  <Step title="Confirm Deletion">
+    A confirmation modal appears asking you to confirm the deletion. Type the app name to confirm and click "Delete".
+  </Step>
+</Steps>
+
+### Before Deleting an App
+
+Before you delete an app, consider:
+
+<Check>
+  Ensure no systems are actively using this app's credentials
+</Check>
+
+<Check>
+  Check the analytics to see if the app is still active
+</Check>
+
+<Check>
+  Consider disabling the app first (by removing all permissions) to test impact
+</Check>
+
+## App Status Indicators
+
+Apps don't have explicit online/offline status, but you can infer their state from:
+
+<CardGroup cols={3}>
+  <Card title="Active Subscribers" icon="users">
+    If this number is greater than 0, the app has active connections listening for events.
+  </Card>
+  
+  <Card title="Recent Activity" icon="chart-line">
+    Check the traffic chart and events table:
+    - Recent published events: App is actively sending data
+    - Recent received events: App is actively consuming data
+    - No recent activity: App may be offline or idle
+  </Card>
+  
+  <Card title="Last Active Timestamp" icon="clock">
+    Shown in the apps list, this indicates when the app last interacted with EnSync.
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Monitor App Activity" icon="chart-line" href="/apps/analytics">
+    Learn how to use the analytics dashboard to track app performance
+  </Card>
+  
+  <Card title="Implement Security Best Practices" icon="shield-check" href="/apps/security">
+    Follow our security recommendations to protect your apps
+  </Card>
+  
+  <Card title="Integrate with Your Systems" icon="code" href="/apps/api-integration">
+    Use our API integration guide to connect your systems
+  </Card>
+  
+  <Card title="Troubleshoot Common Issues" icon="wrench" href="/apps/troubleshooting">
+    Solve common problems with app connections and permissions
+  </Card>
+</CardGroup>

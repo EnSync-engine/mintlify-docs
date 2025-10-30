@@ -1,0 +1,40 @@
+---
+title: "Create Event Definition"
+api: "POST /event"
+description: "Creates a new event definition"
+---
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  Event name (e.g., `order/created`, `payment/completed`)
+</ParamField>
+
+<ParamField body="payload" type="object" required>
+  Event payload schema defining expected fields and types
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST "https://config.gms.ensync.cloud/v1/event" \
+  -H "X-API-KEY: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "order/created",
+    "payload": {
+      "orderId": "string",
+      "amount": "number",
+      "customerId": "string",
+      "items": "array"
+    }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "message": "Event definition created successfully"
+}
+```
+</ResponseExample>

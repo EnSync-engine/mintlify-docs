@@ -1,0 +1,98 @@
+---
+title: 'Troubleshooting'
+description: 'Common app issues and solutions'
+---
+
+## Connection Issues
+
+### Can't Connect to EnSync
+
+**Symptoms**: Client fails to connect, timeout errors
+
+**Solutions**:
+
+1. **Verify credentials**: Check appKey and appSecret are correct
+2. **Check network connectivity**: Ensure you can reach EnSync broker
+3. **Verify firewall rules**: Allow outbound connections
+4. **Check app status**: Verify app hasn't been deleted
+
+### Frequent Disconnections
+
+**Symptoms**: Client connects but disconnects repeatedly
+
+**Solutions**:
+
+1. **Check network stability**: Unstable networks cause reconnections
+2. **Monitor connection events**: Log disconnect reasons
+3. **Implement reconnection logic**: SDK handles this automatically
+
+## Permission Errors
+
+### Can't Publish Events
+
+**Error**: `Permission denied: send not allowed for event path`
+
+**Solutions**:
+
+1. **Check send permissions**: View in EnSync Dashboard or via [Get Permissions API](/api-reference/endpoint/access-keys/get-permissions)
+
+2. **Update permissions**: Update in EnSync Dashboard or via [Update Permissions API](/api-reference/endpoint/access-keys/update-permissions)
+
+### Can't Subscribe to Events
+
+**Error**: `Permission denied: receive not allowed for event path`
+
+**Solutions**:
+
+1. **Check receive permissions**: Verify your app has `receive` permission for the event path
+2. **Update permissions**: Add the event path to `receive` array
+
+## Using Logs Dashboard
+
+The **Logs** dashboard in EnSync Dashboard shows:
+
+- **Connection events**: When your app connects/disconnects
+- **Publish activity**: Events your app publishes
+- **Subscribe activity**: Events your app receives
+- **Errors**: Failed operations with details
+- **Permission denials**: Unauthorized access attempts
+
+### Accessing Logs
+
+1. Log in to EnSync Dashboard
+2. Navigate to **Logs** section
+3. Filter by:
+   - AppKey
+   - Event name
+   - Time range
+   - Error type
+
+## Using Monitoring Dashboard
+
+The **Monitoring** dashboard provides metrics:
+
+- **Event throughput**: Events per second
+- **Queue depth**: Pending events
+- **Processing time**: Average time to process
+- **Error rate**: Failed events percentage
+- **Connection status**: Active/inactive workers
+
+### Setting Up Alerts
+
+Configure alerts for:
+- High queue depth (events backing up)
+- High error rate (processing failures)
+- Connection failures (app offline)
+
+## Getting Help
+
+If issues persist:
+
+1. **Check Logs dashboard**: Review error messages and timestamps
+2. **Check Monitoring dashboard**: Look for unusual metrics
+3. **Contact support**: Email **support@ensync.cloud** with:
+   - App name
+   - Description of the issue
+   - Error messages from logs
+   - Timestamp when issue occurred
+   - Steps to reproduce

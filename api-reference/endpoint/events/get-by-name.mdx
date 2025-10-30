@@ -1,0 +1,57 @@
+---
+title: "Get Event Definition by Name"
+api: "GET /event/{name}"
+description: "Retrieves a specific event definition by name"
+---
+
+### Path Parameters
+
+<ParamField path="name" type="string" required>
+  The name of the event definition (e.g., `order/created`)
+</ParamField>
+
+### Response
+
+<ResponseField name="id" type="integer">
+  Event definition ID
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Event name
+</ResponseField>
+
+<ResponseField name="payload" type="object">
+  Event payload schema
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Creation timestamp
+</ResponseField>
+
+<ResponseField name="updatedAt" type="string">
+  Last update timestamp
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://config.gms.ensync.cloud/v1/event/order%2Fcreated" \
+  -H "X-API-KEY: your-api-key"
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "id": 1,
+  "name": "order/created",
+  "payload": {
+    "orderId": "string",
+    "amount": "number",
+    "customerId": "string",
+    "items": "array"
+  },
+  "createdAt": "2024-01-15T10:30:00Z",
+  "updatedAt": "2024-01-15T10:30:00Z"
+}
+```
+</ResponseExample>

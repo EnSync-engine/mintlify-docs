@@ -1,0 +1,85 @@
+---
+title: "List Access Keys"
+api: "GET /access-key"
+description: "Retrieves a list of access keys with optional filtering"
+---
+
+### Query Parameters
+
+<ParamField query="accessKey" type="string">
+  The key to filter
+</ParamField>
+
+<ParamField query="pageIndex" type="integer" required>
+  Page index (minimum: 0)
+</ParamField>
+
+<ParamField query="limit" type="integer" required>
+  Number of results per page (1-100)
+</ParamField>
+
+<ParamField query="order" type="string" required>
+  Sort order: `ASC`, `DESC`, `asc`, or `desc`
+</ParamField>
+
+<ParamField query="orderBy" type="string" required>
+  Field to sort by: `name` or `createdAt`
+</ParamField>
+
+### Response
+
+<ResponseField name="resultsLength" type="integer">
+  Number of results returned
+</ResponseField>
+
+<ResponseField name="results" type="array">
+  Array of access key objects
+  <Expandable title="Access Key Object">
+    <ResponseField name="id" type="integer">
+      Access key ID
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Access key name
+    </ResponseField>
+    <ResponseField name="key" type="string">
+      The access key value
+    </ResponseField>
+    <ResponseField name="type" type="string">
+      Key type: `ACCOUNT` or `SERVICE`
+    </ResponseField>
+    <ResponseField name="permissions" type="object">
+      Access key permissions
+    </ResponseField>
+    <ResponseField name="createdAt" type="string">
+      Creation timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://config.gms.ensync.cloud/v1/access-key?pageIndex=0&limit=10&order=DESC&orderBy=createdAt" \
+  -H "X-API-KEY: your-api-key"
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "resultsLength": 2,
+  "results": [
+    {
+      "id": 1,
+      "name": "Production Key",
+      "key": "ensk_prod_xxxxx",
+      "type": "SERVICE",
+      "permissions": {
+        "send": ["order/*"],
+        "receive": ["payment/*"]
+      },
+      "createdAt": "2024-01-15T10:30:00Z"
+    }
+  ]
+}
+```
+</ResponseExample>

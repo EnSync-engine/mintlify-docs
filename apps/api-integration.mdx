@@ -1,0 +1,354 @@
+---
+title: API Integration
+description: Integrating your systems with EnSync using app credentials
+icon: "code"
+---
+
+## API Integration Overview
+
+EnSync provides robust APIs that allow you to integrate your systems with the platform. This guide covers how to authenticate, publish events, subscribe to events, and handle encryption using your app credentials.
+
+<Frame>
+  <img src="/images/api-integration-overview.png" alt="API Integration Overview" />
+  <figcaption className="text-center text-sm text-gray-500 mt-2">Overview of EnSync API integration points</figcaption>
+</Frame>
+
+## Authentication
+
+All API requests to EnSync require authentication using your app key.
+
+<Note>
+  EnSync node engine can only be accessed through the official SDKs. Direct REST API access via cURL is not available for the EnSync node engine. The Config Manager is the only component that supports direct REST API access.
+</Note>
+
+<CodeGroup>
+  ```javascript JavaScript
+  // Authentication using the EnSync JavaScript SDK
+  const ensync = new EnSync({
+    appKey: 'your-app-key-here',
+    // Optional: provide decrypt key if you need to receive encrypted events
+    decryptKey: 'your-decrypt-key-here'
+  });
+  ```
+  
+  ```python Python
+  # Authentication using the EnSync Python SDK
+  from ensync import EnSync
+  
+  ensync = EnSync(
+      app_key="your-app-key-here",
+      # Optional: provide decrypt key if you need to receive encrypted events
+      decrypt_key="your-decrypt-key-here"
+  )
+  ```
+</CodeGroup>
+
+<Note>
+  Your app key is a sensitive credential. Store it securely and never expose it in client-side code. See our [security best practices](/apps/security) for more information.
+</Note>
+
+## Publishing Events
+
+To publish events, your app must have send permission for the event type. You'll need to provide the event name and payload.
+
+<CodeGroup>
+  ```javascript JavaScript
+  // Publishing an event using the JavaScript SDK
+  await ensync.publish('order/created', {
+    orderId: '12345',
+    customerEmail: 'customer@example.com',
+    totalAmount: 9999, // $99.99
+    items: [
+      { productId: 'prod-1', quantity: 2, price: 4999 },
+      { productId: 'prod-2', quantity: 1, price: 0 }
+    ]
+  });
+  ```
+  
+  ```python Python
+  # Publishing an event using the Python SDK
+  await ensync.publish("order/created", {
+      "orderId": "12345",
+      "customerEmail": "customer@example.com",
+      "totalAmount": 9999,  # $99.99
+      "items": [
+          {"productId": "prod-1", "quantity": 2, "price": 4999},
+          {"productId": "prod-2", "quantity": 1, "price": 0}
+      ]
+  })
+  ```
+</CodeGroup>
+
+### Publishing Options
+
+<AccordionGroup>
+  <Accordion icon="bullseye" title="Targeting Specific Recipients">
+    You can target specific recipients when publishing an event:
+    
+    ```javascript
+    await ensync.publish('order/created', orderData, {
+      recipients: ['app-123', 'integrator-456']
+    });
+    ```
+    
+    This limits delivery to only the specified recipients, even if others are subscribed to this event type.
+  </Accordion>
+  
+  <Accordion icon="fingerprint" title="Idempotency Keys">
+    For critical events, you can provide an idempotency key to prevent duplicate processing:
+    
+    ```javascript
+    await ensync.publish('payment/processed', paymentData, {
+      idempotencyKey: 'payment-123-456'
+    });
+    ```
+    
+    If you retry this publish with the same idempotency key, it will be recognized as a duplicate and not processed again.
+  </Accordion>
+  
+  <Accordion icon="clock" title="Delayed Publishing">
+    You can schedule events to be published at a future time:
+    
+    ```javascript
+    await ensync.publish('reminder/send', reminderData, {
+      publishAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Subscribing to Events
+
+To receive events, your app must have receive permission for the event type. You can subscribe to events using the SDK:
+
+<CodeGroup>
+  ```javascript JavaScript
+  // Subscribe to events using the JavaScript SDK
+  const subscription = ensync.subscribe(['order/created', 'order/updated'], {
+    onEvent: (event) => {
+      console.log('Received event:', event.type, event.payload);
+      // Process the event
+      processOrder(event.payload);
+    },
+    onError: (error) => {
+      console.error('Subscription error:', error);
+    }
+  });
+  
+  // Later, when you want to stop receiving events:
+  subscription.unsubscribe();
+  ```
+  
+  ```python Python
+  # Subscribe to events using the Python SDK
+  async def handle_event(event):
+      print(f"Received event: {event['type']}")
+      # Process the event
+      await process_order(event['payload'])
+  
+  async def handle_error(error):
+      print(f"Subscription error: {error}")
+  
+  subscription = await ensync.subscribe(
+      ["order/created", "order/updated"],
+      on_event=handle_event,
+      on_error=handle_error
+  )
+  
+  # Later, when you want to stop receiving events:
+  await subscription.unsubscribe()
+  ```
+</CodeGroup>
+
+<Note>
+  The EnSync SDK handles connection management, reconnection, and message delivery guarantees automatically.
+</Note>
+
+## Encrypting & Decrypting Messages
+
+EnSync supports end-to-end encryption for sensitive data using public/private key pairs.
+
+<AccordionGroup>
+  <Accordion icon="lock" title="Sending Encrypted Messages">
+    When sending encrypted events:
+    
+    ```javascript
+    // Get the recipient's public key
+    const recipientPublicKey = 'recipient-public-key';
+    
+    // Encrypt sensitive data with the recipient's public key
+    const encryptedPayment = ensync.encrypt(recipientPublicKey, {
+      cardNumber: '4111111111111111',
+      expiryDate: '12/25',
+      cvv: '123'
+    });
+    
+    // Send the event with both encrypted and unencrypted data
+    await ensync.publish('payment/processed', {
+      orderId: '12345', // Unencrypted field
+      paymentInfo: encryptedPayment, // Encrypted field
+      status: 'completed' // Unencrypted field
+    });
+    ```
+    
+    **Important:** You use the recipient's public key to encrypt the message, not your own. Your app's public key is only used by others who want to send encrypted messages to you.
+  </Accordion>
+  
+  <Accordion icon="unlock" title="Receiving Encrypted Messages">
+    When receiving encrypted events:
+    
+    ```javascript
+    // If you provided your decrypt key during initialization,
+    // the SDK will automatically decrypt encrypted fields
+    
+    ensync.subscribe(['payment/processed'], {
+      onEvent: (event) => {
+        // paymentInfo is automatically decrypted if you provided your decrypt key
+        console.log('Received payment:', event.payload.paymentInfo);
+      }
+    });
+    
+    // If you need to manually decrypt:
+    const decryptedPayment = ensync.decrypt(
+      yourDecryptKey,
+      event.payload.paymentInfo
+    );
+    ```
+    
+    **Important:** You need your decrypt key (private key) to decrypt messages that were encrypted with your public key.
+  </Accordion>
+</AccordionGroup>
+
+## SDK Reference
+
+EnSync provides SDKs for various programming languages to simplify integration:
+
+<CardGroup cols={3}>
+  <Card title="JavaScript SDK" icon="js" href="/sdk/javascript">
+    For Node.js and browser applications
+  </Card>
+  
+  <Card title="Python SDK" icon="python" href="/sdk/python">
+    For Python applications and services
+  </Card>
+  
+  <Card title="Java SDK" icon="java" href="/sdk/java">
+    For Java applications and services
+  </Card>
+  
+  <Card title="Go SDK" icon="golang" href="/sdk/go">
+    For Go applications and services
+  </Card>
+  
+  <Card title="Ruby SDK" icon="gem" href="/sdk/ruby">
+    For Ruby applications and services
+  </Card>
+  
+  <Card title="PHP SDK" icon="php" href="/sdk/php">
+    For PHP applications and services
+  </Card>
+</CardGroup>
+
+## SDK Reference Details
+
+For more detailed information on the SDK methods and parameters, refer to our [API Reference](/api-reference/introduction) documentation.
+
+## Common Integration Patterns
+
+<AccordionGroup>
+  <Accordion icon="arrows-split-up-and-left" title="Publish-Subscribe">
+    The most common pattern is publish-subscribe:
+    
+    1. Publishers send events to EnSync without knowing who will receive them
+    2. Subscribers receive events they're interested in without knowing who sent them
+    
+    This decoupling allows systems to evolve independently.
+  </Accordion>
+  
+  <Accordion icon="arrow-right-arrow-left" title="Request-Response">
+    For synchronous interactions, you can implement a request-response pattern:
+    
+    1. System A publishes a "request" event with a unique correlation ID
+    2. System B receives the request, processes it, and publishes a "response" event with the same correlation ID
+    3. System A receives the response and correlates it with the original request
+    
+    ```javascript
+    // System A: Send request
+    const correlationId = generateUniqueId();
+    await ensync.publish('inventory/check', {
+      productId: '12345',
+      correlationId: correlationId
+    });
+    
+    // System A: Listen for response
+    ensync.subscribe(['inventory/check/response'], {
+      onEvent: (event) => {
+        if (event.payload.correlationId === correlationId) {
+          console.log('Received response:', event.payload);
+        }
+      }
+    });
+    
+    // System B: Process request and send response
+    ensync.subscribe(['inventory/check'], {
+      onEvent: async (event) => {
+        const inventory = await checkInventory(event.payload.productId);
+        await ensync.publish('inventory/check/response', {
+          productId: event.payload.productId,
+          available: inventory.available,
+          correlationId: event.payload.correlationId
+        });
+      }
+    });
+    ```
+  </Accordion>
+  
+  <Accordion icon="diagram-project" title="Saga Pattern">
+    For distributed transactions, you can implement the saga pattern:
+    
+    1. A coordinator publishes an initial event to start a process
+    2. Each service performs its part and publishes an event indicating completion
+    3. The next service in the chain reacts to that event
+    4. If any service fails, compensating events are published to roll back the process
+    
+    This pattern is useful for processes that span multiple services, like order processing.
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Check>
+  **Handle retries gracefully** - Events may be delivered multiple times, so design your handlers to be idempotent
+</Check>
+
+<Check>
+  **Implement error handling** - Add proper error handling in your event subscribers
+</Check>
+
+<Check>
+  **Monitor event delivery** - Use the analytics dashboard to track event delivery and processing
+</Check>
+
+<Check>
+  **Validate event schemas** - Validate incoming and outgoing events against expected schemas
+</Check>
+
+<Check>
+  **Use correlation IDs** - Include correlation IDs in related events to track flows across systems
+</Check>
+
+<Check>
+  **Implement circuit breakers** - Add circuit breakers to prevent cascading failures when downstream systems fail
+</Check>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/apps/troubleshooting">
+    Solve common integration issues
+  </Card>
+  
+  <Card title="API Reference" icon="book" href="/api-reference/introduction">
+    Explore the complete API documentation
+  </Card>
+</CardGroup>

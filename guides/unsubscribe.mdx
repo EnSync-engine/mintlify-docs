@@ -1,0 +1,45 @@
+---
+title: 'Unsubscribe'
+description: 'Stop receiving events and clean up subscriptions'
+---
+
+Unsubscribe stops the subscription and cleans up resources. Use this when you no longer need to receive events from a specific event path, such as when shutting down a service, removing a feature, or cleaning up temporary subscriptions.
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const subscription = await client.subscribe("order/created");
+
+    // Later, when done
+    await subscription.unsubscribe();
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    subscription = await client.subscribe("order/created")
+
+    # Later, when done
+    await subscription.unsubscribe()
+    ```
+  </Tab>
+</Tabs>
+
+## When to Use
+
+- **Service shutdown**: Clean up before stopping your application
+- **Feature removal**: Stop receiving events for deprecated features
+- **Temporary subscriptions**: End subscriptions created for one-time operations
+- **Resource cleanup**: Free up connections and memory
+
+## Pause vs Unsubscribe
+
+| Action | Events Queued | Reconnect | Use Case |
+|--------|---------------|-----------|----------|
+| **Pause** | Yes | `continue()` | Temporary stop, maintenance |
+| **Unsubscribe** | No | New subscription | Permanent stop, cleanup |
+
+<Note>
+After unsubscribing, you'll need to create a new subscription to receive events again.
+</Note>

@@ -1,0 +1,726 @@
+openapi: 3.0.0
+info:
+  title: EnSync Config Manager API
+  description: |
+    API documentation for the EnSync Config Manager, providing capabilities for managing access keys, 
+    event definitions, workspaces, and other configuration elements in the EnSync ecosystem.
+  version: 1.0.0
+  contact:
+    name: EnSync Support
+    email: support@ensync.io
+    url: https://docs.ensync.io
+
+servers:
+  - url: https://config.gms.ensync.cloud/v1
+    description: Production server
+
+tags:
+  - name: Access Keys
+    description: Operations for managing access keys
+  - name: Event Definitions
+    description: Operations for managing event definitions
+  - name: Workspaces
+    description: Operations for managing workspaces
+  - name: Service Key Pairs
+    description: Operations for managing service key pairs
+
+paths:
+  /access-key:
+    get:
+      summary: List access keys
+      description: Retrieves a list of access keys with optional filtering
+      tags:
+        - Access Keys
+      parameters:
+        - $ref: '#/components/parameters/accessKey'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/orderBy'
+      responses:
+        '200':
+          description: Access keys retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+    post:
+      summary: Create access key
+      description: Creates a new access key with specified permissions
+      tags:
+        - Access Keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAccessKey'
+      responses:
+        '200':
+          description: Access key created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /access-key/{accessKey}/permissions:
+    get:
+      summary: Get access key permissions
+      description: Retrieves permissions for a specific access key
+      tags:
+        - Access Keys
+      parameters:
+        - name: accessKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The access key to retrieve permissions for
+      responses:
+        '200':
+          description: Access key permissions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyPermissionsData'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+    post:
+      summary: Update access key permissions
+      description: Updates permissions for a specific access key
+      tags:
+        - Access Keys
+      parameters:
+        - name: accessKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The access key to update permissions for
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessKeyPermissionsRequest'
+      responses:
+        '200':
+          description: Access key permissions updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /access/verify/{accessKey}:
+    get:
+      summary: Verify access key
+      description: Verifies if an access key is valid
+      tags:
+        - Access Keys
+      parameters:
+        - name: accessKey
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The access key to verify
+      responses:
+        '200':
+          description: Access key verification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyVerificationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /event:
+    get:
+      summary: List event definitions
+      description: Retrieves a list of event definitions with optional filtering
+      tags:
+        - Event Definitions
+      parameters:
+        - $ref: '#/components/parameters/eventDefinitionName'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/orderBy'
+      responses:
+        '200':
+          description: Event definitions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDefinitionListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+    post:
+      summary: Create event definition
+      description: Creates a new event definition
+      tags:
+        - Event Definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostEventDefinition'
+      responses:
+        '200':
+          description: Event definition created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /event/{name}:
+    get:
+      summary: Get event definition by name
+      description: Retrieves a specific event definition by name
+      tags:
+        - Event Definitions
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the event definition
+      responses:
+        '200':
+          description: Event definition retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventDefinitionDetailedByName'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /event/{id}:
+    put:
+      summary: Update event definition
+      description: Updates an existing event definition
+      tags:
+        - Event Definitions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the event definition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutEventDefinition'
+      responses:
+        '200':
+          description: Event definition updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /workspace:
+    get:
+      summary: List workspaces
+      description: Retrieves a list of workspaces with optional filtering
+      tags:
+        - Workspaces
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Workspaces retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+    post:
+      summary: Create workspace
+      description: Creates a new workspace
+      tags:
+        - Workspaces
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostWorkSpace'
+      responses:
+        '200':
+          description: Workspace created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+  /access/service-key-pair:
+    put:
+      summary: Update service key pair
+      description: Updates a service key pair
+      tags:
+        - Service Key Pairs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostServiceKeyPair'
+      responses:
+        '200':
+          description: Service key pair updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceKeyPair'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+        - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+
+  parameters:
+    eventDefinitionName:
+      in: query
+      name: name
+      required: false
+      schema:
+        type: string
+      description: The name of the event to filter
+
+    accessKey:
+      in: query
+      name: accessKey
+      required: false
+      schema:
+        type: string
+      description: The key to filter
+
+    pageIndex:
+      in: query
+      name: pageIndex
+      required: true
+      schema:
+        type: integer
+        example: 1
+        minimum: 0
+
+    limit:
+      in: query
+      name: limit
+      required: true
+      schema:
+        type: integer
+        example: 10
+        minimum: 1
+        maximum: 100
+
+    order:
+      in: query
+      name: order
+      required: true
+      schema:
+        type: string
+        enum: [ASC, DESC, asc, desc]
+
+    orderBy:
+      in: query
+      name: orderBy
+      required: true
+      schema:
+        type: string
+        enum: [name, createdAt]
+
+    name:
+      in: query
+      name: name
+      required: false
+      schema:
+        type: string
+      description: The name of the workspace to filter
+
+    id:
+      in: query
+      name: id
+      required: false
+      schema:
+        type: string
+      description: The id of the workspace to filter
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      required:
+        - code
+        - message
+
+    KeyType:
+      type: string
+      enum: [ACCOUNT, SERVICE]
+
+    ServiceKeyPair:
+      type: object
+      required: [public_key]
+      properties:
+        public_key:
+          type: string
+        private_key:
+          type: string
+
+    AccessKeyPermissionsRequest:
+      type: object
+      properties:
+        resources:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                type: string
+        send:
+          type: array
+          items:
+            type: string
+        receive:
+          type: array
+          items:
+            type: string
+
+    PostAccessKey:
+      type: object
+      required: [type, permissions, name]
+      properties:
+        type:
+          $ref: '#/components/schemas/KeyType'
+        permissions:
+          $ref: '#/components/schemas/AccessKeyPermissionsRequest'
+        name:
+          type: string
+
+    AccessKeyVerificationResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: boolean
+
+    AccessKeyResponse:
+      type: object
+      required:
+        - accessKey
+        - accessKeyId
+      properties:
+        accessKey:
+          type: string
+        accessKeyId:
+          type: string
+        service_key_pair:
+          $ref: '#/components/schemas/ServiceKeyPair'
+
+    AccessKeyPermissionsData:
+      type: object
+      required: [name, key, type, permissions, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        key:
+          type: string
+        type:
+          $ref: '#/components/schemas/KeyType'
+        service_key_id:
+          type: string
+        permissions:
+          type: object
+          properties:
+            resources:
+              type: object
+              additionalProperties:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+            send:
+              type: array
+              items:
+                type: string
+            receive:
+              type: array
+              items:
+                type: string
+        service_key_pair:
+          $ref: '#/components/schemas/ServiceKeyPair'
+        createdAt:
+          type: string
+          format: date-time
+
+    AccessKeyListResponse:
+      type: object
+      required: [resultsLength, results]
+      properties:
+        resultsLength:
+          type: integer
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessKeyPermissionsData'
+
+    WorkspaceItem:
+      type: object
+      required: [id, name, path, parentId, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        path:
+          type: string
+          description: Full path of the created workspace
+        parentId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkspaceItem'
+          description: List of child workspaces  
+
+    WorkspaceListResponse:
+      type: object
+      required: [resultsLength, results]
+      properties:
+        resultsLength:
+          type: integer
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkspaceItem'
+
+    GetEventDefinitionDetailedByName:
+      type: object
+      required: [id, name, payload, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        payload:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    EventDefinitionItem:
+      type: object
+      required: [id, name, payload, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        payload:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    EventDefinitionListResponse:
+      type: object
+      required: [resultsLength, results]
+      properties:
+        resultsLength:
+          type: integer
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventDefinitionItem'
+
+    PutEventDefinition:
+      type: object
+      required: [name, payload]
+      properties:
+        name:
+          type: string
+        payload:
+          type: object
+          additionalProperties:
+            type: string
+
+    PostWorkSpace:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    PostServiceKeyPair:
+      type: object
+      required: [access_key]
+      properties:
+        access_key:
+          type: string
+
+    PostEventDefinition:
+      type: object
+      required: [name, payload]
+      properties:
+        name:
+          type: string
+        payload:
+          type: object
+          additionalProperties:
+            type: string

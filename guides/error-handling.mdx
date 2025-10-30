@@ -1,0 +1,50 @@
+---
+title: 'Error Handling'
+description: 'Handle SDK errors gracefully'
+---
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    try {
+      await client.publish("order/created", ["partner-id"], payload);
+    } catch (error) {
+      if (error instanceof EnSyncError) {
+        console.error("EnSync Error:", error.message);
+        
+        if (error.name === "EnSyncConnectionError") {
+          // Retry connection
+        } else if (error.name === "EnSyncPublishError") {
+          // Log and alert
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    try:
+        await client.publish("order/created", ["partner-id"], payload)
+    except EnSyncError as error:
+        print(f"EnSync Error: {error}")
+        
+        if isinstance(error, EnSyncConnectionError):
+            # Retry connection
+            pass
+        elif isinstance(error, EnSyncPublishError):
+            # Log and alert
+            pass
+    ```
+  </Tab>
+</Tabs>
+
+## Error Types
+
+| Error Type | Description |
+|------------|-------------|
+| `EnSyncConnectionError` | Connection or authentication issues |
+| `EnSyncPublishError` | Problems publishing events |
+| `EnSyncSubscriptionError` | Subscription-related errors |
+| `EnSyncGenericError` | Other errors |

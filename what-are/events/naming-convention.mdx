@@ -1,0 +1,76 @@
+---
+title: 'Naming Convention'
+description: 'Best practices for naming events'
+---
+
+## Event Naming Format
+
+Event names use a path-like structure with forward slashes:
+
+```
+resource/action
+```
+
+### Examples
+
+- `order/created`
+- `payment/completed`
+- `inventory/updated`
+- `user/deleted`
+
+## Naming Guidelines
+
+### Use Lowercase
+
+```
+✅ order/created
+❌ Order/Created
+❌ ORDER/CREATED
+```
+
+### Use Past Tense
+
+Events represent things that have already happened:
+
+```
+✅ order/created
+✅ payment/completed
+❌ order/create
+❌ payment/complete
+```
+
+### Be Specific
+
+```
+✅ order/shipped
+✅ order/delivered
+❌ order/status-changed
+```
+
+### Use Hierarchies
+
+Organize related events under common prefixes:
+
+```
+order/created
+order/updated
+order/cancelled
+order/shipped
+order/delivered
+```
+
+## Wildcards in Subscriptions
+
+Subscribers can use wildcards to match multiple events:
+
+```javascript
+// Subscribe to all order events
+await client.subscribe("order/*");
+
+// Subscribe to all events
+await client.subscribe("*");
+```
+
+## Versioning
+
+See the [Tips](/what-are/events/tips) page for event versioning strategies.

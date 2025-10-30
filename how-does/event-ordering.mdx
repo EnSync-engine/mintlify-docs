@@ -1,0 +1,34 @@
+---
+title: 'Handle Event Ordering'
+description: 'How EnSync guarantees ordered event delivery'
+---
+
+## Queue per Event Type
+
+Each partner (`appId`) has a **separate queue for each event type** (`eventId`). Events within `order/created` are ordered, but `order/created` and `order/updated` have independent queues.
+
+## Parallel Processing
+
+Multiple workers can process events from the same queue simultaneously:
+
+- Worker 1 pulls event 1 → starts processing
+- Worker 2 pulls event 2 → starts processing
+- Worker 3 pulls event 3 → starts processing
+
+Events are **pulled in order** but **processed concurrently**.
+
+## Automatic Failover
+
+If a worker fails to complete processing within ~1 minute, the event returns to the queue for any worker to pick up.
+
+## Ordering Guarantees
+
+| Scenario | Ordered? |
+|----------|----------|
+| Same event type (e.g., `order/created`) | ✅ Yes |
+| Different event types (e.g., `order/created` vs `order/updated`) | ❌ No |
+| Multiple workers on same event type | ✅ Yes (pulled in order) |
+
+<Note>
+No head-of-line blocking: slow events don't block the queue since multiple workers process concurrently.
+</Note>

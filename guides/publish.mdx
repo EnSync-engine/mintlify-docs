@@ -1,0 +1,35 @@
+---
+title: 'Publish a Message'
+description: 'Send events to one or multiple partners'
+---
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    await client.publish(
+      "order/created",
+      ["partner-app-id"],
+      { orderId: "123", amount: 5000 }
+    );
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    await client.publish(
+      "order/created",
+      ["partner-app-id"],
+      {"order_id": "123", "amount": 5000}
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `eventName` | `string` | Yes | Event path (e.g., `order/created`) |
+| `recipients` | `string[]` | Yes | Array of partner appIds |
+| `payload` | `object` | Yes | Event data (JSON-serializable) |

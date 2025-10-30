@@ -1,0 +1,86 @@
+---
+title: "List Workspaces"
+api: "GET /workspace"
+description: "Retrieves a list of workspaces with optional filtering"
+---
+
+### Query Parameters
+
+<ParamField query="name" type="string">
+  The name of the workspace to filter
+</ParamField>
+
+<ParamField query="id" type="string">
+  The id of the workspace to filter
+</ParamField>
+
+<ParamField query="pageIndex" type="integer" required>
+  Page index (minimum: 0)
+</ParamField>
+
+<ParamField query="limit" type="integer" required>
+  Number of results per page (1-100)
+</ParamField>
+
+<ParamField query="order" type="string" required>
+  Sort order: `ASC`, `DESC`, `asc`, or `desc`
+</ParamField>
+
+<ParamField query="orderBy" type="string" required>
+  Field to sort by: `name` or `createdAt`
+</ParamField>
+
+### Response
+
+<ResponseField name="resultsLength" type="integer">
+  Number of results returned
+</ResponseField>
+
+<ResponseField name="results" type="array">
+  Array of workspace objects
+  <Expandable title="Workspace Object">
+    <ResponseField name="id" type="integer">
+      Workspace ID
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Workspace name
+    </ResponseField>
+    <ResponseField name="path" type="string">
+      Full path of the workspace
+    </ResponseField>
+    <ResponseField name="parentId" type="integer">
+      Parent workspace ID
+    </ResponseField>
+    <ResponseField name="createdAt" type="string">
+      Creation timestamp
+    </ResponseField>
+    <ResponseField name="children" type="array">
+      List of child workspaces
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://config.gms.ensync.cloud/v1/workspace?pageIndex=0&limit=10&order=ASC&orderBy=name" \
+  -H "X-API-KEY: your-api-key"
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "resultsLength": 2,
+  "results": [
+    {
+      "id": 1,
+      "name": "production",
+      "path": "/production",
+      "parentId": 0,
+      "createdAt": "2024-01-15T10:30:00Z",
+      "children": []
+    }
+  ]
+}
+```
+</ResponseExample>

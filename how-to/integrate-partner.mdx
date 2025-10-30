@@ -1,0 +1,78 @@
+---
+title: "Integrate a Partner"
+description: "Connect a new partner to your EnSync platform"
+---
+
+## Overview
+
+This guide covers self-service partner integration using integration pages. For manual onboarding, see [Manually Onboard a Partner](/how-to/manual-onboard-partner).
+
+## Self-Service Integration
+
+### 1. Share Integration Page
+
+Send your partner the integration page URL:
+```
+https://ensync.cloud/integrate/{integration-id}
+```
+
+### 2. Partner Onboards Themselves
+
+The partner:
+1. Visits the integration page
+2. Browses available events
+3. Clicks "Connect"
+4. Receives their credentials (appKey, appSecret, appId)
+5. Subscribes to events they need
+
+### 3. Receive Webhook Notification
+
+When the partner connects, EnSync sends a webhook to your system with:
+- Partner's appId
+- Connection timestamp
+- Subscribed events
+
+### 4. Start Publishing Events
+
+Begin publishing events to the partner's appId:
+
+```javascript
+await client.publish(
+  "order/created",
+  ["partner-app-id"],  // From webhook
+  orderData
+);
+```
+
+## Verification
+
+After integration, verify the connection:
+
+### Check Integration Status
+
+In the EnSync Dashboard:
+1. Navigate to **Integrations** tab
+2. View list of onboarded partners
+3. Check partner status (active/inactive)
+4. Review connection timestamp
+
+### Test Event Delivery
+
+1. Check **Logs** dashboard for connection events
+2. Publish a test event to the partner
+3. Confirm partner receives the event
+4. If bidirectional, have partner publish a test event
+
+## Troubleshooting
+
+**Partner not receiving events:**
+- Verify appId is correct in publish calls
+- Check partner's receive permissions
+- Review Logs for delivery errors
+
+**Connection failures:**
+- Verify credentials are correct
+- Check app hasn't been deleted
+- Ensure no workers are using old credentials
+
+For more help, see [Apps Troubleshooting](/what-are/apps/troubleshooting).

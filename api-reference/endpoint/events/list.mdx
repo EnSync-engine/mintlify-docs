@@ -1,0 +1,82 @@
+---
+title: "List Event Definitions"
+api: "GET /event"
+description: "Retrieves a list of event definitions with optional filtering"
+---
+
+### Query Parameters
+
+<ParamField query="name" type="string">
+  The name of the event to filter
+</ParamField>
+
+<ParamField query="pageIndex" type="integer" required>
+  Page index (minimum: 0)
+</ParamField>
+
+<ParamField query="limit" type="integer" required>
+  Number of results per page (1-100)
+</ParamField>
+
+<ParamField query="order" type="string" required>
+  Sort order: `ASC`, `DESC`, `asc`, or `desc`
+</ParamField>
+
+<ParamField query="orderBy" type="string" required>
+  Field to sort by: `name` or `createdAt`
+</ParamField>
+
+### Response
+
+<ResponseField name="resultsLength" type="integer">
+  Number of results returned
+</ResponseField>
+
+<ResponseField name="results" type="array">
+  Array of event definition objects
+  <Expandable title="Event Definition Object">
+    <ResponseField name="id" type="integer">
+      Event definition ID
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Event name (e.g., `order/created`)
+    </ResponseField>
+    <ResponseField name="payload" type="object">
+      Event payload schema
+    </ResponseField>
+    <ResponseField name="createdAt" type="string">
+      Creation timestamp
+    </ResponseField>
+    <ResponseField name="updatedAt" type="string">
+      Last update timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://config.gms.ensync.cloud/v1/event?pageIndex=0&limit=10&order=DESC&orderBy=createdAt" \
+  -H "X-API-KEY: your-api-key"
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "resultsLength": 2,
+  "results": [
+    {
+      "id": 1,
+      "name": "order/created",
+      "payload": {
+        "orderId": "string",
+        "amount": "number",
+        "customerId": "string"
+      },
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    }
+  ]
+}
+```
+</ResponseExample>

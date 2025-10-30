@@ -1,0 +1,86 @@
+---
+title: Event Types
+description: Understanding event types and naming conventions in EnSync
+---
+
+## Event Types Overview
+
+Events in EnSync follow a structured naming convention that helps organize and categorize different types of messages flowing through the system. A well-designed event naming system makes your integration ecosystem more intuitive and easier to manage.
+
+## Event Naming Structure
+
+Event names use a path-like structure to organize related events:
+
+- `order/created`
+- `order/updated`
+- `order/shipped`
+- `payment/completed`
+- `user/registered`
+
+This hierarchical structure helps quickly understand your event catalog and find specific events.
+
+## Event Naming Best Practices
+
+**Use clear, descriptive names:**
+- Good: `order/shipped`, `payment/failed`, `user/updated`
+- Avoid: `event1`, `data`, `msg`
+
+**Group related events with prefixes:**
+- All order events: `order/created`, `order/updated`, `order/cancelled`
+- All payment events: `payment/initiated`, `payment/completed`, `payment/refunded`
+
+**Use consistent verb tenses:**
+- Past tense for completed actions: `order/created`, `payment/completed`
+- Present tense for ongoing states: `inventory/low`, `system/healthy`
+
+**Keep names concise:**
+- Partners will type these names in their code
+- Shorter names are easier to remember and less error-prone
+
+## Event Versioning
+
+If you need to make breaking changes to an event (like changing field types or removing fields), consider creating a new version:
+
+- Current: `order/created`
+- New version: `order/created/v2`
+
+This allows:
+- Existing partners to continue using the old version
+- New partners to adopt the improved version
+- Gradual migration without breaking existing integrations
+
+Document the differences between versions in each event's description.
+
+## Common Event Types
+
+While you can create any event types that make sense for your business, here are some common categories:
+
+### Order Events
+- `order/created` - A new order has been placed
+- `order/updated` - Order details have been modified
+- `order/cancelled` - An order has been cancelled
+- `order/shipped` - An order has been shipped
+- `order/delivered` - An order has been delivered
+
+### Payment Events
+- `payment/initiated` - A payment process has started
+- `payment/completed` - A payment has been successfully processed
+- `payment/failed` - A payment attempt has failed
+- `payment/refunded` - A refund has been issued
+
+### User Events
+- `user/registered` - A new user has signed up
+- `user/updated` - User information has been changed
+- `user/deleted` - A user account has been removed
+
+### Inventory Events
+- `inventory/updated` - Stock levels have changed
+- `inventory/low` - Stock has fallen below threshold
+- `inventory/replenished` - New stock has been added
+
+## Next Steps
+
+After defining your event types:
+1. Configure [event permissions](/components/event-permissions) for your apps
+2. Create apps that will publish these events
+3. Set up integration pages to expose events to partners

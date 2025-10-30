@@ -1,0 +1,196 @@
+---
+title: Event Management
+description: Creating, editing, and managing events in EnSync
+icon: "gear"
+---
+
+## Creating Events
+
+Creating new events in EnSync is straightforward and only takes a few steps.
+
+<Steps>
+  <Step title="Navigate to Events Section">
+    From the EnSync dashboard, click on "Events" in the main navigation menu.
+  </Step>
+  
+  <Step title="Click Create New Event">
+    Click the "Create New Event" button in the top-right corner of the Events page.
+  </Step>
+  
+  <Step title="Enter Event Details">
+    In the modal that appears, enter the event details:
+    
+    **Event Name:**
+    Enter a name following the recommended format (e.g., `order/created`). This is required and will be used by apps and integrations to publish and subscribe to this event.
+    
+    **Description:**
+    Provide a clear explanation of what this event represents, when it's triggered, and what information it contains. This helps partners understand how to use the event.
+    
+    <Frame>
+      <img src="/images/event-creation-form.png" alt="Event Creation Form" />
+    </Frame>
+  </Step>
+  
+  <Step title="Define Schema (Optional)">
+    If you want to define a schema for this event:
+    
+    1. Click "Add Schema"
+    2. For each field in your event payload:
+       - Enter the field name (e.g., `order_id`)
+       - Select the data type (string, integer, boolean, etc.)
+       - Add a description (optional)
+    3. For nested objects, click "Add Object" and define its fields
+    4. For arrays, click "Add Array" and define its item structure
+    
+    The schema helps partners understand what data to expect in the event payload.
+  </Step>
+  
+  <Step title="Create the Event">
+    Click the "Create Event" button at the bottom of the modal to create your event.
+  </Step>
+  
+  <Step title="View Event Details">
+    After creation, you'll see a success message and the event will appear in your events list. Click on it to view details, including code snippets for publishing and subscribing.
+  </Step>
+</Steps>
+
+## Viewing Event Details
+
+Click on any event in your event list to open its details modal. This modal shows:
+
+**Event Information:**
+- Full event name
+- Description (if provided)
+- Schema definition (if provided)
+- When the event was created
+
+**Code Snippets:**
+- Examples in multiple programming languages showing how to publish this event
+- Sample payload based on your schema
+- Authentication setup instructions
+
+**Actions:**
+- Edit the event description or schema
+- Delete the event (with warnings about dependent integrations)
+- Copy the event name for use in your code
+
+## Editing Events
+
+When you click "Edit" on an event, you can modify:
+
+<AccordionGroup>
+  <Accordion icon="pen" title="Description">
+    Update the explanation of what this event represents. Changes are visible immediately to anyone viewing your event catalog.
+  </Accordion>
+  
+  <Accordion icon="table-list" title="Schema">
+    You can add, remove, or modify fields in the schema. The schema editor shows a visual interface where you can:
+    - Add new fields with their data types
+    - Change existing field types
+    - Remove fields you no longer need
+    - Nest objects for complex data structures
+    
+    **Important:** Changing a schema doesn't affect messages already sent. It only impacts how partners understand future messages and what they should expect.
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  You cannot change an event's name after creation. If you need a different name, create a new event and consider deprecating the old one.
+</Warning>
+
+## Deleting Events
+
+When you delete an event, a confirmation modal appears with important warnings:
+
+**What happens when you delete:**
+- The event is removed from your event catalog
+- Partners can no longer subscribe to this event
+- Apps can no longer publish this event
+- Existing integrations using this event will stop working
+
+**Before deleting:**
+- Check which partners are subscribed to this event
+- Notify partners that this event will be discontinued
+- Update any apps that publish this event
+- Consider deprecating the event first (update description to mark as deprecated) before fully removing it
+
+## Event Versioning
+
+If you need to make breaking changes to an event (like changing field types or removing fields), consider creating a new version instead of modifying the existing one:
+
+<Steps>
+  <Step title="Create a New Event">
+    Create a new event with a versioned name (e.g., `order/created/v2`)
+  </Step>
+  
+  <Step title="Document the Differences">
+    In the description, clearly explain how this version differs from the previous one
+  </Step>
+  
+  <Step title="Update Your Apps">
+    Configure your apps to publish to both versions during a transition period
+  </Step>
+  
+  <Step title="Notify Partners">
+    Let partners know about the new version and provide migration guidance
+  </Step>
+  
+  <Step title="Monitor Adoption">
+    Track which partners have migrated to the new version
+  </Step>
+  
+  <Step title="Eventually Deprecate">
+    Once all partners have migrated, you can deprecate the old version
+  </Step>
+</Steps>
+
+## Schema Best Practices
+
+<AccordionGroup>
+  <Accordion icon="minimize" title="Start simple">
+    Begin with basic fields and add complexity only when needed. A simple schema is easier for partners to implement.
+  </Accordion>
+  
+  <Accordion icon="repeat" title="Use consistent field names">
+    If you use `customer_email` in one event, use it in all events. Don't switch between `customer_email`, `user_email`, and `email`.
+  </Accordion>
+  
+  <Accordion icon="ruler" title="Document units and formats">
+    In the description, clarify:
+    - Currency amounts (are they in cents or dollars?)
+    - Date formats (ISO 8601 timestamps?)
+    - ID formats (integers or UUIDs?)
+  </Accordion>
+  
+  <Accordion icon="circle-check" title="Consider optional vs required">
+    While EnSync doesn't enforce required fields, document in your description which fields will always be present and which might be absent.
+  </Accordion>
+</AccordionGroup>
+
+## Monitoring Event Usage
+
+From the Events page, you can see:
+- How many partners are subscribed to each event
+- How many messages have been published for each event
+- Which apps are publishing each event
+
+This helps you:
+- Identify your most popular events
+- Find unused events that might be candidates for removal
+- Understand which events drive the most integration value
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Event Types" icon="tag" href="/events/types">
+    Learn about event naming conventions
+  </Card>
+  
+  <Card title="Event Permissions" icon="shield-check" href="/events/permissions">
+    Control which apps can publish and receive events
+  </Card>
+  
+  <Card title="Integration Pages" icon="handshake" href="/integrations/index">
+    Expose events to external partners
+  </Card>
+</CardGroup>

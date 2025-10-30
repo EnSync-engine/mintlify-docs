@@ -1,0 +1,60 @@
+---
+title: "vs. Apache Kafka"
+description: "Compare EnSync with Apache Kafka event streaming"
+---
+
+## EnSync vs. Event Streaming Platforms (Apache Kafka)
+
+| **Criteria** | **Apache Kafka** | **EnSync** |
+|-------------|-----------------|------------|
+| **Primary Use Case** | High-throughput event streaming, data pipelines | B2B partner ecosystem integration |
+| **Integration Model** | Topic-based streaming | Partner-centric workspaces |
+| **Partner Onboarding** | Manual topic/consumer setup, complex configuration | Self-service in 15 minutes |
+| **Scalability** | Horizontal partitioning (optimized for extreme throughput) | Horizontal scaling (optimized for partner integration) |
+| **Message Delivery** | At-least-once (configurable to exactly-once) | Guaranteed delivery + 90-day replay |
+| **Message Ordering** | Partition-level ordering only | Ordered delivery per event type |
+| **Access Control** | ACLs per topic (complex to manage) | Workspace-based + granular permissions |
+| **Partner Visibility** | Limited (requires custom tooling) | Full observability dashboard per partner |
+| **Message Retention** | Configurable (days to weeks, storage-dependent) | 90 days (configurable) |
+| **Replay Capability** | Consumer offset management (complex) | Built-in 90-day replay (simple) |
+| **Schema Management** | Schema Registry (separate component) | Structured events with versioning (built-in) |
+| **Bidirectional Communication** | Requires separate topics | Native bidirectional events |
+| **Partner Self-Service** | No | Embedded onboarding page |
+| **Developer Experience** | Steep learning curve, ops-heavy | Lightweight SDK, consistent API |
+| **Operational Complexity** | High (ZooKeeper, brokers, monitoring) | Low (managed service) |
+| **Time to First Integration** | Days to weeks | Minutes |
+| **Maintenance Burden** | High (cluster management, rebalancing) | Low (centralized, managed) |
+| **Cost Model** | Infrastructure + operational overhead | Platform fee (scales with usage) |
+| **Best For** | High-volume event streaming, analytics, data pipelines | B2B partner integrations at scale |
+
+## Bottom Line
+
+**Kafka streams data internally. EnSync connects external partners.**
+
+They can work together—partners integrate with your Kafka-powered platform via EnSync.
+
+## When to Choose Kafka
+
+- You need extreme-scale event streaming for analytics
+- You're building data pipelines or event sourcing
+- You need internal event streaming at massive scale
+- You have dedicated ops team for cluster management
+
+## When to Choose EnSync
+
+- You're integrating with external business partners
+- You need high throughput optimized for partner integration
+- You want partners to self-onboard without complex setup
+- You need partner-specific isolation and observability
+- You want managed service with low operational overhead
+
+## Using Both Together
+
+EnSync and Kafka complement each other:
+- Use Kafka internally for high-throughput event streaming
+- Use EnSync to expose your platform to external partners
+- Partners integrate with your Kafka-powered platform via EnSync's simple SDK
+
+## Sales Positioning
+
+*"Kafka streams data. EnSync connects ecosystems. We're not replacing Kafka—we're enabling partners to integrate with your Kafka-powered platform."*

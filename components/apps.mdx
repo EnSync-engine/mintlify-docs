@@ -38,40 +38,33 @@ A unique authentication credential generated when you create an app. This key is
 
 ### Public Key
 
-Part of EnSync's hybrid encryption system. This public key is used to encrypt messages that only the intended recipient can decrypt. When your app receives encrypted messages, it uses the corresponding private key to decrypt them.
+Part of EnSync's hybrid encryption system. Your app's public key is shared with other apps and integrators who want to send encrypted messages to your app. 
 
-The public key can be safely shared and is used by other systems to encrypt messages destined for your app.
+**Important:** You only need your app's public key if you plan to receive encrypted messages. When sending messages to other apps or integrators, you'll use *their* public key to encrypt the message, not your own. Your app's public key is only used by others who want to send messages to you.
 
 ### Decrypt Key (Private Key)
 
-The private half of the encryption key pair. This key is used to decrypt messages that were encrypted with your app's public key.
+The private half of the encryption key pair. This key is used by your app to decrypt incoming messages that were encrypted with your app's public key.
 
 **Critical:** Store this key securely. Anyone with access to this key can decrypt messages intended for your app. Like the app key, it's shown only once during creation.
 
-### Send Permissions
+**When to use:** You only need the decrypt key when receiving encrypted messages. When sending messages, you'll use the recipient's public key for encryption, not your decrypt key.
 
-A list of events this app is authorized to publish to EnSync. When you configure send permissions, you're defining which event types this app can trigger.
+### Permissions
 
-For example, if your order management app has send permission for:
-- `order/created`
-- `order/updated`
-- `order/shipped`
+Apps have two types of permissions that control which events they can interact with:
 
-It can publish these events to EnSync, and any partners subscribed to these events will receive them.
+<CardGroup cols={2}>
+  <Card title="Send Permissions" icon="paper-plane">
+    Controls which events the app can publish to EnSync
+  </Card>
+  
+  <Card title="Receive Permissions" icon="inbox">
+    Controls which events the app can subscribe to and receive
+  </Card>
+</CardGroup>
 
-**Apps cannot publish events they don't have permission for.** Attempting to do so will result in an authorization error.
-
-### Receive Permissions
-
-A list of events this app is authorized to subscribe to and receive from EnSync. When you configure receive permissions, you're defining which event types this app will be notified about.
-
-For example, if your shipping service has receive permission for:
-- `payment/completed`
-- `order/ready_to_ship`
-
-It will receive notifications whenever these events are published by other apps or partners.
-
-**Apps only receive events they have permission for.** Even if an event is published to EnSync, your app won't receive it unless it's in the receive permissions list.
+For detailed information about event permissions, see the [Event Permissions](/components/event-permissions) documentation.
 
 ---
 
@@ -296,7 +289,11 @@ Establish a connection to EnSync using:
 - List of events to subscribe to (must match your receive permissions)
 - Callback URL or WebSocket connection to receive events
 
-**Decrypting Messages:**
+**Encrypting & Decrypting Messages:**
+When sending encrypted events:
+- Use the recipient's public key to encrypt the message payload
+- You don't need your own public key to send messages
+
 When receiving encrypted events:
 - Use your decrypt key (private key) to decrypt the message payload
 - EnSync SDKs handle this automatically if configured with your keys

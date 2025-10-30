@@ -1,0 +1,72 @@
+---
+title: "Get Access Key Permissions"
+api: "GET /access-key/{accessKey}/permissions"
+description: "Retrieves permissions for a specific access key"
+---
+
+### Path Parameters
+
+<ParamField path="accessKey" type="string" required>
+  The access key to retrieve permissions for
+</ParamField>
+
+### Response
+
+<ResponseField name="id" type="integer">
+  Access key ID
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Access key name
+</ResponseField>
+
+<ResponseField name="key" type="string">
+  The access key value
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Key type: `ACCOUNT` or `SERVICE`
+</ResponseField>
+
+<ResponseField name="permissions" type="object">
+  Access key permissions
+  <Expandable title="Permissions">
+    <ResponseField name="send" type="array">
+      Event paths this key can publish to
+    </ResponseField>
+    <ResponseField name="receive" type="array">
+      Event paths this key can subscribe to
+    </ResponseField>
+    <ResponseField name="resources" type="object">
+      Resource-specific permissions
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="createdAt" type="string">
+  Creation timestamp
+</ResponseField>
+
+<RequestExample>
+```bash cURL
+curl -X GET "https://config.gms.ensync.cloud/v1/access-key/ensk_prod_xxxxx/permissions" \
+  -H "X-API-KEY: your-api-key"
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "id": 1,
+  "name": "Production Key",
+  "key": "ensk_prod_xxxxx",
+  "type": "SERVICE",
+  "permissions": {
+    "send": ["order/*", "inventory/*"],
+    "receive": ["payment/*"],
+    "resources": {}
+  },
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+</ResponseExample>

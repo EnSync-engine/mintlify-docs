@@ -1,0 +1,104 @@
+---
+title: 'Schemas'
+description: 'Defining event payload schemas'
+---
+
+## Event Definitions vs Events
+
+- **Event Definition**: The schema/template that defines what an event should look like
+- **Event**: The actual message published at runtime with real data
+
+## Event Schemas
+
+Event schemas define the structure and types of data in your event payloads. When an event definition exists, EnSync validates the payload before publishing:
+
+- **Validation**: Events that don't match the schema will be rejected
+- **Documentation**: Clear contracts between publishers and subscribers
+
+## Creating Event Definitions
+
+Event definitions are created in the EnSync Dashboard. You can also create them programmatically via the API (see [API Reference](/api-reference/endpoint/events/create)).
+
+Example event definition:
+
+```json
+{
+  "name": "order/created",
+  "payload": {
+    "orderId": "string",
+    "customerId": "string",
+    "amount": "number",
+    "items": "array",
+    "createdAt": "string"
+  }
+}
+```
+
+Once created, you can publish events that match this definition:
+
+```javascript
+// The actual event published at runtime
+await client.publish(
+  "order/created",  // Matches the event definition name
+  ["partner-app-id"],
+  {
+    orderId: "12345",
+    customerId: "cust-789",
+    amount: 99.99,
+    items: [{ id: 1, name: "Product" }],
+    createdAt: "2024-01-15T10:30:00Z"
+  }
+);
+```
+
+## Schema Types
+
+Common types used in schemas:
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `string` | Text data | `"order-123"` |
+| `number` | Integer values | `42` |
+| `float` | Decimal values | `99.99` |
+| `boolean` | True/false | `true` |
+| `array` | List of items | `[1, 2, 3]` |
+| `object` | Nested structure | `{"address": {...}}` |
+
+## Schema Validation
+
+EnSync validates **first-level fields only**. Deeply nested structures are not validated.
+
+```bash
+# ✅ Valid schema - first level only
+{
+  "name": "order/created",
+  "payload": {
+    "orderId": "string",
+    "amount": "number",
+    "shippingAddress": "object"  // Use "object" type, don't specify nested fields
+  }
+}
+
+# ❌ Invalid - EnSync doesn't validate nested structure
+{
+  "name": "order/created",
+  "payload": {
+    "orderId": "string",
+    "shippingAddress": {
+      "street": "string",  // Nested fields not validated
+      "city": "string"
+    }
+  }
+}
+```
+
+## Best Practices
+
+- **First-level validation only**: Use `"object"` type for nested structures
+- **Use consistent types**: Don't mix strings and numbers for the same field
+- **Document nested structures separately**: Provide documentation for object contents
+- **Version your schemas**: Use event name versioning when making breaking changes
+
+<Note>
+If no event definition exists for an event name, EnSync accepts any valid JSON payload. Once a definition exists, payloads must match the schema or publishing will fail.
+</Note>

@@ -1,0 +1,184 @@
+---
+title: "Manually Onboard a Partner"
+description: "Step-by-step guide for manual partner onboarding"
+---
+
+## Overview
+
+Manual onboarding is useful when partners need assistance, custom configuration, or when self-service isn't available. This guide walks through the complete process.
+
+## Prerequisites
+
+- Access to EnSync Dashboard
+- Partner's contact information
+- List of events partner needs to receive
+- List of events partner will publish (if bidirectional)
+
+## Steps
+
+### 1. Collect Partner Information
+
+Use the partner onboarding form in the EnSync Dashboard to collect:
+- Partner company name
+- Contact information
+- Events they need to receive
+- Events they will publish (if bidirectional)
+- Any special requirements
+
+### 2. Create Partner App
+
+The dashboard automatically creates an app and generates:
+- appKey (for authentication)
+- appId (public identifier)
+- appSecret (for decryption)
+
+### 3. Securely Share Credentials
+
+Send the partner their credentials through a secure channel:
+
+**Share with partner:**
+- appKey (for authentication)
+- appSecret (for decryption)
+
+**Security best practices:**
+- Use encrypted email or secure file sharing
+- Never share via plain email or Slack
+- Consider using password-protected documents
+- Share credentials separately from instructions
+
+### 4. Provide Integration Instructions
+
+Send the partner:
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const { EnSyncClient } = require('@ensync/node');
+
+    const client = await EnSyncClient.create({
+      appKey: "their-app-key",
+      appSecret: "their-app-secret"
+    });
+
+    // Subscribe to events
+    await client.subscribe("order/*", {
+      autoAck: false
+    });
+
+    client.on(async (event) => {
+      console.log("Received:", event.eventName, event.payload);
+      await event.ack();
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    from ensync import EnSyncClient
+
+    client = await EnSyncClient.create(
+        app_key="their-app-key",
+        app_secret="their-app-secret"
+    )
+
+    # Subscribe to events
+    await client.subscribe("order/*", auto_ack=False)
+
+    async def handle_event(event):
+        print(f"Received: {event.event_name}", event.payload)
+        await event.ack()
+
+    client.on(handle_event)
+    ```
+  </Tab>
+</Tabs>
+
+### 5. Share Your appId (If Bidirectional)
+
+If the partner will publish events to you:
+
+1. Get your appId from your app in the Dashboard
+2. Share it with the partner
+3. Provide example of how to publish:
+
+```javascript
+await client.publish(
+  "shipment/updated",
+  ["your-app-id"],  // Your appId
+  shipmentData
+);
+```
+
+### 5. Test the Integration
+
+**Send test event to partner:**
+```javascript
+await client.publish(
+  "test/event",
+  ["partner-app-id"],
+  { message: "Test event" }
+);
+```
+
+**Verify in Logs:**
+1. Open Logs dashboard
+2. Filter by partner's app name
+3. Confirm event was delivered
+4. Check for any errors
+
+**Have partner confirm receipt:**
+- Partner should see the test event in their logs
+- Partner should successfully process and acknowledge it
+
+### 7. Go Live
+
+Once testing is successful:
+1. Remove test event subscriptions
+2. Start publishing real events
+3. Monitor Logs for first few hours
+4. Confirm partner is processing events correctly
+
+## Post-Onboarding
+
+### Monitor Partner Activity
+
+In the EnSync Dashboard:
+- Navigate to **Integrations** tab to view onboarded partners
+- Check partner status (active/inactive)
+- Review Logs for delivery status
+- Monitor error rates
+- Review event throughput
+
+### Update Permissions
+
+If partner needs access to additional events:
+1. Navigate to Apps section
+2. Find partner's app
+3. Update send/receive permissions
+4. No need to regenerate credentials
+
+### Rotate Credentials
+
+If credentials are compromised:
+1. Create new app in the Dashboard
+2. Share new credentials with partner
+3. Partner updates their configuration
+4. Delete old app after transition
+
+## Troubleshooting
+
+**Partner can't connect:**
+- Verify credentials are correct (no typos)
+- Check app hasn't been deleted
+- Ensure partner is using correct SDK version
+
+**Partner not receiving events:**
+- Verify you're using correct appId in publish calls
+- Check partner's receive permissions include the event
+- Review Logs for delivery errors
+
+**Permission errors:**
+- Verify partner's send/receive permissions
+- Check event path matches exactly (case-sensitive)
+- Ensure event definition exists (if using schemas)
+
+For more help, see [Apps Troubleshooting](/what-are/apps/troubleshooting) or contact **support@ensync.cloud**.

@@ -1,0 +1,36 @@
+---
+title: 'Overview'
+description: 'Understanding events in EnSync'
+---
+
+## What Are Events?
+
+Events are messages published and delivered through EnSync at runtime. They represent actions or state changes in your system (e.g., `order/created`, `payment/completed`, `inventory/updated`).
+
+**Event Definitions** are optional schemas that define the expected structure of events. **Events** are the actual messages published with real data. If an event definition exists, EnSync validates the payload before publishing.
+
+## Event Structure
+
+Every event in EnSync contains:
+
+- **eventName**: The event path (e.g., `order/created`)
+- **payload**: Your custom data
+- **idem**: Unique event ID for idempotency
+- **block**: Block ID for ordering
+- **timestamp**: When the event was created
+- **sender**: The appId of the publisher
+- **metadata**: System-generated metadata including `$internal` fields
+
+## Event Flow
+
+1. **Publish**: Service provider publishes an event to specific recipients
+2. **Queue**: EnSync queues the event per recipient's appId and eventId
+3. **Deliver**: EnSync pushes events one at a time to subscribers
+4. **Process**: Subscriber processes and acknowledges/defers/discards
+
+## Key Features
+
+- **Ordered delivery**: Events are delivered in order per event type
+- **At-least-once delivery**: Events are guaranteed to be delivered
+- **90-day retention**: Events are stored for replay and debugging
+- **End-to-end encryption**: All events are encrypted in transit and at rest

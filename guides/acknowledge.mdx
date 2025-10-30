@@ -1,0 +1,48 @@
+---
+title: 'Acknowledging Messages'
+description: 'Confirm successful event processing'
+---
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const subscription = await client.subscribe("payment/process", {
+      autoAck: false
+    });
+
+    subscription.on(async (event) => {
+      await processPayment(event.payload);
+      await subscription.ack(event.idem, event.block);
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    subscription = await client.subscribe("payment/process", {
+      "auto_ack": False
+    })
+
+    async def handle_payment(event):
+        await process_payment(event.payload)
+        await subscription.ack(event.idem, event.block)
+
+    subscription.on(handle_payment)
+    ```
+  </Tab>
+</Tabs>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `idem` | `string` | Yes | Unique event ID |
+| `block` | `string` | Yes | Block ID from event |
+
+## Auto vs Manual ACK
+
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| `autoAck: true` | Events ACKed when handler completes | Simple processing |
+| `autoAck: false` | Manual ACK required | Critical workflows, custom retry logic |

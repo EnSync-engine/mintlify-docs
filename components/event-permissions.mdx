@@ -1,0 +1,145 @@
+---
+title: Event Permissions
+description: Managing event permissions for apps in EnSync
+---
+
+## Event Permissions Overview
+
+Event permissions control which events an app can publish (send) or receive. This permission system ensures that apps only have access to the events they need, following the principle of least privilege.
+
+## Permission Types
+
+EnSync uses two types of permissions for events:
+
+<CardGroup cols={2}>
+  <Card title="Send Permissions" icon="paper-plane">
+    A list of events an app is authorized to publish to EnSync. When you configure send permissions, you're defining which event types this app can trigger.
+  </Card>
+  
+  <Card title="Receive Permissions" icon="inbox">
+    A list of events an app is authorized to subscribe to and receive from EnSync. When you configure receive permissions, you're defining which event types this app will be notified about.
+  </Card>
+</CardGroup>
+
+## Send Permissions
+
+Send permissions determine which events an app can publish to the EnSync platform.
+
+For example, if your order management app has send permission for:
+- `order/created`
+- `order/updated`
+- `order/shipped`
+
+It can publish these events to EnSync, and any partners subscribed to these events will receive them.
+
+**Important:** Apps cannot publish events they don't have permission for. Attempting to do so will result in an authorization error.
+
+## Receive Permissions
+
+Receive permissions determine which events an app can subscribe to and receive from the EnSync platform.
+
+For example, if your shipping service has receive permission for:
+- `payment/completed`
+- `order/ready_to_ship`
+
+It will receive notifications whenever these events are published by other apps or partners.
+
+**Important:** Apps only receive events they have permission for. Even if an event is published to EnSync, your app won't receive it unless it's in the receive permissions list.
+
+## Managing Permissions
+
+### Setting Permissions During App Creation
+
+When creating a new app:
+
+1. In the **Send Events** section, select which events this app should be allowed to publish
+2. In the **Receive Events** section, select which events this app should be allowed to receive
+3. You can search for events by typing in the search box to quickly find specific events
+
+### Updating Permissions
+
+To modify an app's permissions:
+
+1. Click the three-dot menu next to an app and select "Edit"
+2. Update the **Send Permissions** to add or remove events the app can publish
+3. Update the **Receive Permissions** to add or remove events the app can receive
+4. Click "Save" to apply your changes
+
+Changes take effect immediately:
+- Adding an event permission: App can immediately publish or receive it
+- Removing an event permission: App can no longer publish or receive it
+
+## Permission Audit Process
+
+Regular permission audits help maintain security and efficiency:
+
+<Steps>
+  <Step title="Review Current Permissions">
+    List all send and receive permissions for each app
+  </Step>
+  
+  <Step title="Compare with Actual Usage">
+    Check analytics to see which events are actually being used
+  </Step>
+  
+  <Step title="Identify Unnecessary Permissions">
+    Note permissions that haven't been used in the last 30-90 days
+  </Step>
+  
+  <Step title="Remove Unused Permissions">
+    Edit the app to remove permissions that aren't needed
+  </Step>
+  
+  <Step title="Document Changes">
+    Record what permissions were removed and why
+  </Step>
+  
+  <Step title="Monitor Impact">
+    Watch analytics to ensure removing permissions didn't break anything
+  </Step>
+</Steps>
+
+## Best Practices
+
+<Check>
+  **Follow least privilege principle** - Only grant permissions for events the app actually needs
+</Check>
+
+<Check>
+  **Regularly audit permissions** - Review and remove unnecessary permissions quarterly
+</Check>
+
+<Check>
+  **Document permission decisions** - Keep records of why certain permissions were granted
+</Check>
+
+<Check>
+  **Group related permissions** - Keep permissions organized by functional area
+</Check>
+
+<Check>
+  **Test after changes** - Verify app functionality after modifying permissions
+</Check>
+
+## Troubleshooting Permission Issues
+
+If you encounter permission-related errors:
+
+### App Can't Publish Events
+
+- Verify the app has send permission for that specific event
+- Check that the event name matches exactly (case-sensitive)
+- Ensure the app key being used is correct and not expired
+
+### App Not Receiving Events
+
+- Verify the app has receive permission for that specific event
+- Check that the app is actively connected and subscribing
+- Ensure other apps/partners are actually publishing that event
+
+## Next Steps
+
+After configuring event permissions:
+1. Integrate your apps with the EnSync platform
+2. Monitor app activity through the analytics dashboard
+3. Regularly review and adjust permissions as your needs evolve

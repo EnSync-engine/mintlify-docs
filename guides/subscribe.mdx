@@ -1,0 +1,67 @@
+---
+title: 'Subscribe to Messages'
+description: 'Receive events from partners in real-time'
+---
+
+## Usage
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const subscription = await client.subscribe("order/*", {
+      autoAck: false
+    });
+
+    subscription.on(async (event) => {
+      console.log("Received:", event.payload);
+      await subscription.ack(event.idem, event.block);
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    subscription = await client.subscribe("order/*", {
+      "auto_ack": False
+    })
+
+    async def handle_event(event):
+        print(f"Received: {event.payload}")
+        await subscription.ack(event.idem, event.block)
+
+    subscription.on(handle_event)
+    ```
+  </Tab>
+</Tabs>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `eventName` | `string` | Yes | Event path (supports wildcards: `order/*`) |
+| `options` | `object` | No | Subscription options |
+
+## Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `autoAck` | `boolean` | `true` | Auto-acknowledge events |
+| `appSecretKey` | `string` | `null` | Custom decryption key |
+
+## Event Structure
+
+```javascript
+{
+  idem: "unique-event-id",
+  block: "block-id",
+  eventName: "order/created",
+  payload: { /* your data */ },
+  timestamp: 1634567890123,
+  sender: "sender's appId",
+  metadata: {
+    $internal: {
+      // EnSync internal metadata
+      // e.g., message_size, replay_info, etc.
+    }
+  }
+}
+```

@@ -1,0 +1,92 @@
+---
+title: 'Overview'
+description: 'Understanding apps in EnSync'
+---
+
+## What Are Apps?
+
+Apps in EnSync represent your services or applications that publish and subscribe to events. Each app has unique credentials for authentication and encryption.
+
+## App Components
+
+Every app consists of three key components:
+
+| Component | Type | Purpose |
+|-----------|------|---------|
+| **appId** | Public identifier | Identifies your app in the EnSync network |
+| **appKey** | Secret credential | Authenticates your SDK client connections |
+| **appSecret** | Private key | Decrypts events sent to your app |
+
+## Creating Apps
+
+Apps are created in the EnSync Dashboard or programmatically via the API.
+
+When you create an app, you receive:
+- appKey (for authentication)
+- appId (public identifier)
+- appSecret (for decryption)
+
+See [Create Access Key](/api-reference/endpoint/access-keys/create) in the API Reference for programmatic creation.
+
+## How Apps Work
+
+### Publishing Events
+
+When you publish an event, you specify recipient appIds:
+
+```javascript
+await client.publish(
+  "order/created",
+  ["partner-app-id-1", "partner-app-id-2"],
+  { orderId: "123", amount: 99.99 }
+);
+```
+
+EnSync encrypts the event for each recipient using their appId.
+
+### Subscribing to Events
+
+Your app subscribes to events using its appKey:
+
+```javascript
+const client = await EnSyncClient.create({
+  appKey: "your-app-key",
+  appSecret: "your-app-secret"
+});
+
+await client.subscribe("payment/*");
+```
+
+EnSync decrypts events using your appSecret.
+
+## App Permissions
+
+Apps have two types of permissions:
+
+- **send**: Event paths this app can publish to
+- **receive**: Event paths this app can subscribe to
+
+```json
+{
+  "send": ["order/*", "inventory/*"],
+  "receive": ["payment/*", "refund/*"]
+}
+```
+
+<Note>
+Permissions are enforced by EnSync. Attempting to publish or subscribe to unauthorized event paths will fail.
+</Note>
+
+## Multiple Workers
+
+You can run multiple workers (client instances) with the same appKey to scale horizontally. EnSync coordinates event delivery across workers automatically.
+
+```javascript
+// Worker 1
+const client1 = await EnSyncClient.create({ appKey, appSecret });
+
+// Worker 2 (same appKey)
+const client2 = await EnSyncClient.create({ appKey, appSecret });
+
+// Both workers receive events in parallel
+```

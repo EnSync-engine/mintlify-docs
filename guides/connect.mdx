@@ -1,0 +1,105 @@
+---
+title: 'Connect to EnSync'
+description: 'Initialize the engine and create an authenticated client'
+---
+
+## Installation
+
+<Tabs>
+  <Tab title="Node.js">
+    ```bash
+    npm install ensync-client-sdk
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```bash
+    pip install ensync-sdk
+    ```
+  </Tab>
+</Tabs>
+
+## Basic Connection
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const { EnSyncEngine } = require('ensync-client-sdk');
+
+    // Initialize engine (gRPC with TLS)
+    const engine = new EnSyncEngine("grpcs://node.gms.ensync.cloud");
+    // Alternative Websocket:
+    // const engine = new EnSyncEngine("wss://node.gms.ensync.cloud");
+
+    // Create authenticated client
+    const client = await engine.createClient(process.env.APP_KEY, {
+      appSecretKey: process.env.APP_SECRET_KEY
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    from ensync_sdk import EnSyncEngine
+
+    # Initialize engine (gRPC with TLS)
+    engine = EnSyncEngine("node.gms.ensync.cloud")
+
+    # Create authenticated client
+    client = await engine.create_client(os.environ.get("APP_KEY"), {
+      "app_secret_key": os.environ.get("APP_SECRET_KEY")
+    })
+    ```
+  </Tab>
+</Tabs>
+
+## Connection Options
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    const engine = new EnSyncEngine("grpcs://node.gms.ensync.cloud", {
+      heartbeatInterval: 30000,
+      reconnectInterval: 5000,
+      maxReconnectAttempts: 5
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    engine = EnSyncEngine("node.gms.ensync.cloud", {
+      "reconnect_interval": 5000,
+      "max_reconnect_attempts": 10
+    })
+    ```
+  </Tab>
+</Tabs>
+
+## Closing Connections
+
+Always close connections when done to free resources:
+
+<Tabs>
+  <Tab title="Node.js">
+    ```javascript
+    // Close just this client
+    await client.close();
+
+    // Close client and engine (if you have no other clients)
+    await client.close(true);
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    # Close just this client
+    await client.close()
+
+    # Close client and engine (if you have no other clients)
+    await client.close(close_engine=True)
+    ```
+  </Tab>
+</Tabs>
+
+## Best Practices
+
+- Store credentials in environment variables, never hardcode them
+- Use secure TLS connections in production (`grpcs://` or `wss://`)
+- Close connections when done to free resources

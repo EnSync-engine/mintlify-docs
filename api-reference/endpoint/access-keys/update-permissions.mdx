@@ -1,0 +1,45 @@
+---
+title: "Update Access Key Permissions"
+api: "POST /access-key/{accessKey}/permissions"
+description: "Updates permissions for a specific access key"
+---
+
+### Path Parameters
+
+<ParamField path="accessKey" type="string" required>
+  The access key to update permissions for
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="send" type="array">
+  Array of event paths this key can publish to
+</ParamField>
+
+<ParamField body="receive" type="array">
+  Array of event paths this key can subscribe to
+</ParamField>
+
+<ParamField body="resources" type="object">
+  Resource-specific permissions
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST "https://config.gms.ensync.cloud/v1/access-key/ensk_prod_xxxxx/permissions" \
+  -H "X-API-KEY: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "send": ["order/*", "inventory/*", "shipping/*"],
+    "receive": ["payment/*", "refund/*"]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "message": "Permissions updated successfully"
+}
+```
+</ResponseExample>

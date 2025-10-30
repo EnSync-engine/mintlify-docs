@@ -1,0 +1,30 @@
+---
+title: "Create Workspace"
+api: "POST /workspace"
+description: "Creates a new workspace"
+---
+
+### Body Parameters
+
+<ParamField body="name" type="string" required>
+  Name for the workspace
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST "https://config.gms.ensync.cloud/v1/workspace" \
+  -H "X-API-KEY: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "production"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "message": "Workspace created successfully"
+}
+```
+</ResponseExample>

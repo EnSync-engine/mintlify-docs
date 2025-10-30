@@ -1,0 +1,107 @@
+---
+title: 'App ID'
+description: 'Understanding appId identifiers'
+---
+
+## What is appId?
+
+The **appId** is a public identifier for your app in the EnSync network. It's used by publishers to specify which apps should receive their events and is also your app's public key used for encryption.
+
+## Usage
+
+### As a Publisher
+
+Specify recipient appIds when publishing events:
+
+```javascript
+await client.publish(
+  "order/created",
+  ["partner-app-id-1", "partner-app-id-2"],  // Recipient appIds
+  { orderId: "123", amount: 99.99 }
+);
+```
+
+### As a Subscriber
+
+Your appId is automatically included in received events:
+
+```javascript
+subscription.on(async (event) => {
+  console.log("Sender:", event.sender);  // Sender's appId
+  await event.ack();
+});
+```
+
+## Getting Your appId
+
+You receive your appId when creating a SERVICE access key in the EnSync Dashboard or via the API.
+
+The response includes:
+- `accessKey` (your appKey)
+- `service_key_pair.public_key` (your appId)
+- `service_key_pair.private_key` (your appSecret)
+
+See [Create Access Key](/api-reference/endpoint/access-keys/create) for details.
+
+## Sharing Your appId
+
+Your appId is **public** and safe to share. Publishers need your appId to send events to your app.
+
+### What to Share
+
+✅ **Share with publishers:**
+- Your appId (public key)
+- Event paths you want to receive
+
+❌ **Never share:**
+- Your appKey (authentication credential)
+- Your appSecret (private decryption key)
+
+## Finding Partner appIds
+
+To publish events to a partner, you need their appId. You receive partner appIds through:
+
+1. **Webhook**: EnSync sends the partner's appId via webhook when they onboard using your integration page
+2. **Documentation**: Listed in integration guides
+3. **Direct communication**: Exchanged via email or support
+4. **EnSync Dashboard**: View connected partners and their appIds
+
+## Event Routing
+
+EnSync uses appIds to route events:
+
+```javascript
+// Publisher (your appId: "app-123")
+await client.publish(
+  "order/created",
+  ["partner-app-456", "partner-app-789"],  // Target appIds
+  orderData
+);
+
+// EnSync creates separate queues:
+// - Queue for partner-app-456
+// - Queue for partner-app-789
+
+// Each partner receives the event independently
+```
+
+## Multiple Apps
+
+You can create multiple apps (SERVICE keys) for different purposes:
+
+```
+production-app-id     → Production environment
+staging-app-id        → Staging environment
+development-app-id    → Development environment
+```
+
+Each app has its own:
+- appId (public identifier)
+- appKey (authentication)
+- appSecret (decryption)
+- Permissions (send/receive)
+- Event queues
+
+<Note>
+Use different apps per environment to isolate event flows and prevent cross-environment issues.
+</Note>
