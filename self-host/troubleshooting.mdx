@@ -1,0 +1,107 @@
+---
+title: 'Troubleshooting'
+description: 'Resolve common deployment issues'
+---
+
+## Services Won't Start
+
+**Symptom**: Containers exit immediately
+
+**Solution**:
+```bash
+# Check logs
+docker-compose -f compose.yml logs master-node
+
+# Verify network exists
+docker network ls | grep ensync-network
+
+# Recreate network if needed
+docker-compose -f docker-compose.network.yml down
+docker-compose -f docker-compose.network.yml up -d
+```
+
+## Database Connection Errors
+
+**Symptom**: `Connection refused` or `Authentication failed`
+
+**Solution**:
+```bash
+# Verify database is running
+docker-compose -f docker-compose.db.yml ps
+
+# Check database health
+docker exec ensync_storage pg_isready -U es_engine
+
+# Test connection
+docker exec ensync_storage psql -U es_engine -d ensync -c "SELECT 1"
+
+# Verify credentials in .env
+```
+
+## Valkey Connection Issues
+
+**Symptom**: `NOAUTH Authentication required` or `Connection timeout`
+
+**Solution**:
+```bash
+# Test Valkey connection
+docker exec valkey-master valkey-cli -a your_password PING
+
+# Check replication status
+docker exec valkey-master valkey-cli -a your_password INFO replication
+
+# Verify password matches in .env and docker-compose.db.yml
+```
+
+## Health Checks
+
+Check service health:
+
+```bash
+# Master node health
+curl http://localhost:8082/health
+
+# Prometheus metrics
+curl http://localhost:8082/metrics
+```
+
+**Health Response**:
+```json
+{
+  "status": "healthy",
+  "timestamp": 1234567890,
+  "valkey": "connected",
+  "database": "connected"
+}
+```
+
+**Status Codes**:
+- `200 OK` - All systems healthy
+- `503 Service Unavailable` - Degraded (some services down)
+- `500 Internal Server Error` - Unhealthy
+
+## Performance Issues
+
+**Symptom**: Slow event processing or high latency
+
+**Check**:
+```bash
+# View resource usage
+docker stats
+
+# Check event queue depth
+curl http://localhost:8082/metrics | grep queue
+
+# Review logs for errors
+docker-compose -f compose.yml logs --tail=100 master-node
+```
+
+**Solutions**:
+- Increase `ENSYNC_BATCH_SIZE` for higher throughput
+- Scale thread pools (`WORKER_GROUP_SIZE`, `CALL_GROUP_SIZE`)
+- Add more CPU/RAM resources
+- Check database query performance
+
+<Info>
+EnSync exposes Prometheus metrics at `/metrics` for monitoring and alerting.
+</Info>

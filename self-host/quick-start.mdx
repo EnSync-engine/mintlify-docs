@@ -1,0 +1,101 @@
+---
+title: 'Quick Start'
+description: 'Deploy EnSync in minutes'
+---
+
+## Using the Deployment Script (Recommended)
+
+Download and run the single-file deployment script:
+
+```bash
+# Download the script
+curl -o deploy-ensync.sh https://your-domain.com/deploy-ensync.sh
+chmod +x deploy-ensync.sh
+
+# Create .env file with your secrets
+cat > .env << EOF
+PS_STORAGE_PASSWORD=your_secure_password_here
+VALKEY_PASSWORD=your_valkey_password_here
+ENSYNC_CONFIG_INTERNAL_COMMS_KEY=your_32_char_secret_key_here
+EOF
+
+# Start EnSync
+./deploy-ensync.sh
+
+# Stop EnSync
+./deploy-ensync.sh down
+```
+
+## Using Local Compose Files
+
+If you have the repository cloned:
+
+```bash
+# Create .env file
+cat > .env << EOF
+PS_STORAGE_USER=es_engine
+PS_STORAGE_PASSWORD=your_secure_password_here
+VALKEY_PASSWORD=your_valkey_password_here
+ENSYNC_CONFIG_INTERNAL_COMMS_KEY=your_32_char_secret_key_here
+EOF
+
+# Use the startup script
+./start-ensync.sh
+
+# Or manually start services
+docker-compose -f docker-compose.network.yml up -d
+docker-compose -f docker-compose.db.yml up -d
+docker-compose -f compose.yml up -d
+```
+
+## Verify Installation
+
+```bash
+# Check service health
+curl http://localhost:8082/health
+
+# Check metrics
+curl http://localhost:8082/metrics
+
+# View logs
+docker-compose -f compose.yml logs -f master-node
+```
+
+## Deployment Script Features
+
+- **GitHub Integration** - Fetches latest compose files automatically
+- **Version Control** - Pin specific component versions
+- **Local Development** - Use local files with `ENSYNC_USE_LOCAL=true`
+- **Automatic Fallback** - Uses embedded configs if GitHub unavailable
+
+### Deployment Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ENSYNC_GITHUB_URL` | GitHub base URL | Location of compose files |
+| `ENSYNC_USE_LOCAL` | `false` | Use local files instead of fetching |
+| `ENSYNC_MASTER_VERSION` | `latest` | Master node version |
+| `ENSYNC_CONFIG_VERSION` | `latest` | Config manager version |
+| `ENV_FILE` | `.env` | Path to environment file |
+
+## Version Management
+
+Control which versions to deploy:
+
+```bash
+# Use latest versions
+./deploy-ensync.sh
+
+# Specify master node version
+ENSYNC_MASTER_VERSION=0.0.12 ./deploy-ensync.sh
+
+# Specify both versions
+ENSYNC_MASTER_VERSION=0.0.12 ENSYNC_CONFIG_VERSION=1.2.0 ./deploy-ensync.sh
+```
+
+Pin versions in `.env` for production:
+
+```bash
+ENSYNC_MASTER_VERSION=0.0.12
+ENSYNC_CONFIG_VERSION=1.2.0
+```

@@ -1,0 +1,161 @@
+---
+title: 'Architecture'
+description: 'Understanding EnSync components and how they work together'
+---
+
+EnSync is built on a distributed architecture with four core components that work together to provide reliable event streaming.
+
+## Master Node
+
+The **Master Node** is the event processing engine that handles all client connections and event routing.
+
+### Responsibilities
+
+- **Client Management** - Accepts WebSocket and HTTP connections from partners
+- **Event Publishing** - Receives events and routes them to appropriate queues
+- **Event Delivery** - Pushes events to subscribed clients one at a time
+- **Backpressure Control** - Waits for acknowledgment before sending next event
+- **Event Lifecycle** - Manages acknowledge, defer, and discard operations
+
+### Key Features
+
+- **Need-based Push Model** - Delivers one event at a time, waiting for client processing
+- **Automatic Retry** - Returns unacknowledged events to queue after timeout (~1 minute)
+- **Connection Pooling** - Manages thousands of concurrent client connections
+- **Metrics Export** - Exposes Prometheus metrics at `/metrics` endpoint
+
+### Configuration
+
+Runs on port **8082** (HTTP/WebSocket) and **50051** (internal gRPC). Configure via environment variables like `ENSYNC_BATCH_SIZE`, `ENSYNC_TIME_LIMIT`, and thread pool settings.
+
+---
+
+## Config Manager
+
+The **Config Manager** provides the management API for configuring EnSync.
+
+### Responsibilities
+
+- **App Management** - Create and manage app credentials (appKey, appSecret)
+- **Event Definitions** - Define event schemas and permissions
+- **Access Control** - Manage which apps can publish/subscribe to events
+- **Workspace Management** - Organize apps and events into workspaces
+
+### API Endpoints
+
+- `/apps` - Manage applications
+- `/events` - Define event types and schemas
+- `/access-keys` - Control API access
+- `/service-keys` - Manage service authentication
+
+### Integration
+
+The master node communicates with config manager via `ENSYNC_CONFIG_MANAGER_URL` to validate credentials and check permissions. Secured with `ENSYNC_CONFIG_INTERNAL_COMMS_KEY`.
+
+---
+
+## Cache Layer (Valkey)
+
+**Valkey** (Redis-compatible) provides high-performance caching and temporary storage.
+
+### Responsibilities
+
+- **Event Queues** - Stores events awaiting delivery (one queue per eventId per appId)
+- **Client State** - Tracks active connections and subscriptions
+- **Deferred Events** - Temporarily stores events with delivery delays
+- **Session Management** - Maintains WebSocket session state
+
+### Architecture
+
+- **Master-Replica Setup** - One master for writes, replica for read scaling
+- **In-Memory Storage** - Sub-millisecond access times
+- **Automatic Failover** - Replica promotes to master if primary fails
+
+### Configuration
+
+Configure via `VALKEY_PASSWORD`, `REDIS_POOL_MAX_SIZE`, and `REDIS_TIMEOUT`. Default TTL is 90 days for cached data.
+
+---
+
+## Persistent Storage (PostgreSQL/Citus)
+
+**PostgreSQL** with **Citus** extension provides durable event storage and analytics.
+
+### Responsibilities
+
+- **Event Persistence** - Stores all published events permanently
+- **Event History** - Enables event replay and audit trails
+- **Analytics** - Supports queries for monitoring and reporting
+- **Partitioning** - Automatically partitions events by time (default: 6 hours)
+
+### Why Citus?
+
+Citus distributes PostgreSQL across multiple nodes for horizontal scaling. Events are sharded by `appId` and `eventId` for parallel processing.
+
+### Configuration
+
+Configure via `PS_STORAGE_USER`, `PS_STORAGE_PASSWORD`, and `PG_URL`. Partition interval controlled by `ENSYNC_PARTITION_HOURS`.
+
+---
+
+## How Components Work Together
+
+### Publishing Flow
+
+1. Client publishes event to **Master Node** (port 8082)
+2. Master Node validates credentials with **Config Manager**
+3. Event written to **PostgreSQL** for persistence
+4. Event queued in **Valkey** for delivery
+5. Master Node returns success to publisher
+
+### Subscription Flow
+
+1. Client subscribes to event type via **Master Node**
+2. Master Node validates permissions with **Config Manager**
+3. Master Node checks **Valkey** for queued events
+4. First event pushed to client via WebSocket
+5. Master Node waits for acknowledgment
+6. On `ack`, event marked complete; next event delivered
+7. On `defer`, event moved to deferred queue with delay
+8. On `discard`, event removed from queue
+
+### Event Ordering
+
+- Each `appId` has a **separate queue per eventId** in Valkey
+- Events within same queue delivered in order
+- Multiple workers can process different events concurrently
+- Ordering guaranteed **per event type**, not across types
+
+---
+
+## Network Isolation
+
+All components run in an isolated Docker network:
+
+- **Master Node** - Exposed on ports 8082, 50051
+- **Config Manager** - Internal only (port 8080)
+- **Valkey** - Internal only (port 6379)
+- **PostgreSQL** - Internal only (port 5432)
+
+Only the master node is accessible externally. All internal communication uses the private Docker network.
+
+---
+
+## Scaling Considerations
+
+### Vertical Scaling
+
+- Increase CPU/RAM for master node
+- Scale thread pools (`WORKER_GROUP_SIZE`, `CALL_GROUP_SIZE`)
+- Increase `REDIS_POOL_MAX_SIZE` for more connections
+
+### Horizontal Scaling
+
+- Run multiple master nodes behind load balancer
+- Valkey master-replica for read scaling
+- Citus distributes PostgreSQL across nodes
+- Each master node shares same Valkey and PostgreSQL
+
+<Info>
+EnSync's architecture separates concerns: master node handles real-time delivery, Valkey provides fast queuing, and PostgreSQL ensures durability.
+</Info>

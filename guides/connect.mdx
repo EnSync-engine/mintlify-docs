@@ -51,6 +51,19 @@ description: 'Initialize the engine and create an authenticated client'
   </Tab>
 </Tabs>
 
+## Authentication vs Event Targeting
+
+**App Key authenticates your connection**, while **Client ID (appId) targets event delivery**:
+
+- **App Key**: Authenticates who you are when connecting to EnSync
+- **Client ID**: Identifies the recipient when publishing events (this is your appId)
+
+When you publish an event, you specify recipient Client IDs. When partners publish to you, they use your Client ID. Everyone publishes and subscribes on the **same bidirectional connection**.
+
+<Info>
+Events are always published to specific Client IDs. Even if multiple partners subscribe to the same event type, they only receive events explicitly addressed to their Client ID.
+</Info>
+
 ## Connection Options
 
 <Tabs>

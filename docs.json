@@ -57,7 +57,8 @@
                   "what-are/apps/tips",
                   "what-are/apps/troubleshooting"
                 ]
-              }
+              },
+              "what-are/permissions-and-subscriptions"
             ]
           },
           {
@@ -101,20 +102,6 @@
             "pages": [
               "legal/sla",
               "legal/support-policy"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Self Host",
-        "groups": [
-          {
-            "group": "Config Manager",
-            "pages": [
-              "config-manager/index",
-              "config-manager/apps",
-              "config-manager/event-definitions",
-              "config-manager/automation"
             ]
           }
         ]

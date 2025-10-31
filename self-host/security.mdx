@@ -1,0 +1,58 @@
+---
+title: 'Security'
+description: 'Secure your EnSync deployment'
+---
+
+## Change Default Passwords
+
+<Warning>
+Change all default passwords before production deployment
+</Warning>
+
+Generate secure passwords:
+
+```bash
+# Generate secure passwords
+openssl rand -base64 32
+
+# Update .env file
+PS_STORAGE_PASSWORD=<generated_password>
+VALKEY_PASSWORD=<generated_password>
+ENSYNC_CONFIG_INTERNAL_COMMS_KEY=<generated_password>
+```
+
+## Network Security
+
+Configure firewall to allow only required ports:
+
+- **8082** - HTTP API and WebSocket connections
+- **50051** - gRPC (internal communication)
+
+Internal services (PostgreSQL, Valkey) are isolated via Docker network and not exposed externally.
+
+## Access Control
+
+### Internal Communication Key
+
+The `ENSYNC_CONFIG_INTERNAL_COMMS_KEY` authenticates communication between master node and config manager. Use a strong, unique key:
+
+```bash
+# Generate a 32-character key
+openssl rand -base64 24
+```
+
+### Database Credentials
+
+Use strong passwords for database access. Rotate credentials periodically in your `.env` file.
+
+## Best Practices
+
+1. **Use strong passwords** - Minimum 24 characters, random generation
+2. **Rotate credentials** - Change passwords every 90 days
+3. **Limit network access** - Use firewall rules to restrict ports
+4. **Monitor logs** - Watch for authentication failures
+5. **Keep updated** - Apply security patches promptly
+
+<Info>
+EnSync does not expose SSL/TLS by default. Use a reverse proxy (nginx, Traefik) for HTTPS termination in production.
+</Info>

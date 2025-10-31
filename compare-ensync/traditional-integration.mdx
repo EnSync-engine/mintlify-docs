@@ -13,7 +13,7 @@ description: "Compare EnSync with traditional partner integration approaches"
 | **Message Delivery** | Webhooks (unreliable) or polling (expensive) | Guaranteed delivery + automatic retries |
 | **Real-Time Capability** | Polling (minutes delay) or unreliable webhooks | True real-time (milliseconds) |
 | **Message Ordering** | Not guaranteed | Ordered delivery per event type |
-| **Access Control** | Custom implementation per integration | Workspace-based + granular permissions |
+| **Access Control** | Custom implementation per integration | Two-layer: permissions + subscriptions |
 | **Partner Visibility** | None (black box for partners) | Full observability dashboard per partner |
 | **Message Retention** | Not applicable | 90 days (configurable) with replay |
 | **Replay Capability** | Manual re-processing required | Built-in 90-day replay for compliance |
@@ -25,11 +25,13 @@ description: "Compare EnSync with traditional partner integration approaches"
 | **Time to First Integration** | 3-6 weeks | Minutes |
 | **Cost Model** | Per-partner development + maintenance | Platform fee (scales with usage) |
 | **Compliance/Audit** | Manual logging per integration | Full audit trails + searchable logs |
-| **Partner Ecosystem** | Siloed integrations | Connected ecosystem with network effects |
+| **Partner Ecosystem** | Siloed integrations | Connected ecosystem with multi-tenant isolation |
 
 ## Bottom Line
 
-**Traditional integration doesn't scale. EnSync does.**
+**Traditional integration is one-to-one. EnSync is one-to-many with targeted delivery.**
+
+Traditional integration doesn't scale. EnSync does.
 
 ## When to Choose Traditional Integration
 
@@ -41,9 +43,11 @@ description: "Compare EnSync with traditional partner integration approaches"
 
 - You're building a B2B platform with partner integrations
 - You plan to scale partner integrations (even starting with 1 partner)
+- You need targeted event delivery with multi-tenant isolation
 - You need high throughput for real-time partner messaging
 - You want partners to self-onboard
 - You need reliable messaging with guaranteed delivery
+- You need two-layer access control (permissions + subscriptions)
 - You want to reduce engineering overhead
 - You're thinking integration-first from day one
 

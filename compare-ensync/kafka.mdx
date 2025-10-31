@@ -13,12 +13,12 @@ description: "Compare EnSync with Apache Kafka event streaming"
 | **Scalability** | Horizontal partitioning (extreme throughput for data pipelines) | High throughput for partner integrations at scale |
 | **Message Delivery** | At-least-once (configurable to exactly-once) | Guaranteed delivery + 90-day replay |
 | **Message Ordering** | Partition-level ordering only | Ordered delivery per event type |
-| **Access Control** | ACLs per topic (complex to manage) | Workspace-based + granular permissions |
+| **Access Control** | ACLs per topic (complex to manage) | Two-layer: permissions + subscriptions |
 | **Partner Visibility** | Limited (requires custom tooling) | Full observability dashboard per partner |
 | **Message Retention** | Configurable (days to weeks, storage-dependent) | 90 days (configurable) |
 | **Replay Capability** | Consumer offset management (complex) | Built-in 90-day replay (simple) |
 | **Schema Management** | Schema Registry (separate component) | Structured events with versioning (built-in) |
-| **Bidirectional Communication** | Requires separate topics | Native bidirectional events |
+| **Bidirectional Communication** | Requires separate topics | Native bidirectional with targeted delivery |
 | **Partner Self-Service** | No | Embedded onboarding page |
 | **Developer Experience** | Steep learning curve, ops-heavy | Lightweight SDK, consistent API |
 | **Operational Complexity** | High (ZooKeeper, brokers, monitoring) | Low (managed service) |
@@ -29,7 +29,9 @@ description: "Compare EnSync with Apache Kafka event streaming"
 
 ## Bottom Line
 
-**Kafka streams data internally. EnSync connects external partners.**
+**Kafka broadcasts to topic subscribers. EnSync delivers to specific partners.**
+
+Kafka streams data internally. EnSync connects external partners.
 
 They can work together—partners integrate with your Kafka-powered platform via EnSync.
 
@@ -43,9 +45,11 @@ They can work together—partners integrate with your Kafka-powered platform via
 ## When to Choose EnSync
 
 - You're integrating with external business partners
+- You need targeted event delivery (not broadcast to all)
 - You need high throughput optimized for partner integration
 - You want partners to self-onboard without complex setup
 - You need partner-specific isolation and observability
+- You need two-layer access control (permissions + subscriptions)
 - You want managed service with low operational overhead
 
 ## Using Both Together

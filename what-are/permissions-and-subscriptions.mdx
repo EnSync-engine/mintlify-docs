@@ -1,0 +1,114 @@
+---
+title: 'Permissions & Subscriptions'
+description: 'Understanding EnSync two-layer access control'
+---
+
+EnSync uses two layers to control event access: **permissions** (what you can access) and **subscriptions** (what you want to receive).
+
+## Permissions (What You CAN Access)
+
+Permissions define which events an app is **allowed** to publish or receive. Set by the event owner.
+
+- **Publish Permission**: Can this app publish this event type?
+- **Receive Permission**: Can this app subscribe to this event type?
+
+Permissions are configured in the EnSync Dashboard or via the [Config Manager API](/api-reference/endpoint/access-keys/update-permissions).
+
+## Subscriptions (What You WANT to Receive)
+
+Subscriptions define which events an app **actively wants** to receive. Managed by the app owner via SDK.
+
+```javascript
+// Subscribe to an event type
+await client.subscribe('order.created', async (event) => {
+  console.log('Received order:', event.data);
+});
+```
+
+## How Validation Works
+
+### When Publishing
+
+1. EnSync validates the publisher has **permission** to publish that event
+2. If valid, event is sent to specified Client IDs
+3. If invalid, publish is rejected
+
+```javascript
+// You must have permission to publish 'order.created'
+await client.publish('order.created', orderData, ['partner_client_id']);
+```
+
+### When Subscribing
+
+1. EnSync validates the subscriber has **permission** to receive that event
+2. If valid, subscription succeeds
+3. If invalid, subscription fails immediately
+
+```javascript
+// Subscription only succeeds if you have receive permission
+await client.subscribe('order.created', handler);
+// ✅ Success: You have permission
+// ❌ Error: Permission denied
+```
+
+### When Delivering
+
+Events are only delivered when **all conditions are met**:
+
+1. Event is addressed to your Client ID (appId)
+2. You have **receive permission** for that event type
+3. You have an **active subscription** to that event type
+
+## Targeted Delivery Example
+
+```javascript
+// Partner A has permission + subscription to 'order.created'
+await partnerA.subscribe('order.created', handler);
+
+// You publish to Partner A's Client ID
+await client.publish('order.created', data, ['partner_a_client_id']);
+// ✅ Partner A receives it
+
+// You publish to Partner B's Client ID
+await client.publish('order.created', data, ['partner_b_client_id']);
+// ❌ Partner A does NOT receive it (not addressed to them)
+```
+
+<Warning>
+Even if you're subscribed to an event type, you only receive events explicitly addressed to your Client ID. This ensures multi-tenant data isolation.
+</Warning>
+
+## Permission vs Subscription
+
+| Aspect | Permission | Subscription |
+|--------|-----------|--------------|
+| **Who sets it** | Event owner | App owner |
+| **Controls** | What you CAN access | What you WANT to receive |
+| **Scope** | Event type level | Event type level |
+| **Validation** | At publish/subscribe time | At subscribe time |
+| **Can change** | Via Dashboard/API | Via SDK |
+
+## Managing Permissions
+
+### Via Integration Page
+
+Partners can manage their subscriptions within the permissions you've granted:
+
+1. View available events (based on your permission grants)
+2. Subscribe to events they want to receive
+3. Unsubscribe from events they no longer need
+4. View event metrics and analytics
+
+### Via Config Manager API
+
+You can programmatically manage permissions:
+
+- [Get Access Key Permissions](/api-reference/endpoint/access-keys/get-permissions)
+- [Update Access Key Permissions](/api-reference/endpoint/access-keys/update-permissions)
+
+## Best Practices
+
+1. **Grant minimum permissions** - Only give access to events partners need
+2. **Let partners manage subscriptions** - They know which events they want
+3. **Review permissions regularly** - Remove access when partnerships end
+4. **Use integration pages** - Enable partners to self-manage their subscriptions

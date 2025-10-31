@@ -1,0 +1,33 @@
+---
+title: 'Self-Hosting Overview'
+description: 'Deploy and manage your own EnSync instance'
+---
+
+EnSync can be self-hosted using Docker Compose, giving you full control over your event streaming infrastructure.
+
+## What You'll Need
+
+- Docker Engine 20.10+ and Docker Compose 2.0+
+- 2+ CPU cores, 1GB+ RAM (500MB for EnSync)
+- 50GB+ SSD storage
+- Ports 8082 (HTTP) and 50051 (gRPC) accessible
+
+## Getting Started
+
+Follow these guides to deploy EnSync:
+
+1. **[Quick Start](/self-host/quick-start)** - Get EnSync running in minutes
+2. **[Configuration](/self-host/configuration)** - Configure database, cache, and runtime settings
+3. **[Security](/self-host/security)** - Secure your deployment
+4. **[Troubleshooting](/self-host/troubleshooting)** - Resolve common issues
+
+## Architecture
+
+EnSync consists of:
+
+- **Master Node** - Event processing engine
+- **Config Manager** - API for managing apps and event definitions
+- **PostgreSQL/Citus** - Event storage and persistence
+- **Valkey** - High-performance caching layer
+
+All components run in isolated Docker containers on a shared network.

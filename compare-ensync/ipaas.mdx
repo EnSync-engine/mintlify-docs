@@ -14,12 +14,12 @@ description: "Compare EnSync with Zapier, MuleSoft, Workato, and Tray.io"
 | **Real-Time Capability** | Polling-based (minutes delay) or webhooks | True real-time (milliseconds) |
 | **Message Delivery** | Best-effort (retries vary by platform) | Guaranteed delivery + 90-day replay |
 | **Message Ordering** | Not guaranteed | Ordered delivery per event type |
-| **Access Control** | App-level permissions | Workspace-based + granular permissions |
+| **Access Control** | App-level permissions | Two-layer: permissions + subscriptions |
 | **Partner Visibility** | Workflow logs (limited) | Full observability dashboard per partner |
 | **Message Retention** | 7-30 days (varies by platform) | 90 days (configurable) |
 | **Replay Capability** | Manual re-run of workflows | Built-in 90-day replay |
 | **Schema Management** | Connector-defined schemas (inflexible) | Structured events with versioning |
-| **Bidirectional Communication** | Requires separate workflows | Native bidirectional events |
+| **Bidirectional Communication** | Requires separate workflows | Native bidirectional with targeted delivery |
 | **Event Naming** | Connector-specific naming | Path-like hierarchy (`payment/authorized`) |
 | **Developer Experience** | No-code UI (limited for complex logic) | Lightweight SDK, full programmatic control |
 | **Scalability** | Task-based pricing (expensive at scale) | Horizontal scaling (predictable pricing) |
@@ -34,7 +34,9 @@ description: "Compare EnSync with Zapier, MuleSoft, Workato, and Tray.io"
 
 ## Bottom Line
 
-**IPaaS is for connecting off-the-shelf SaaS apps. EnSync is for building your own partner ecosystem with custom integrations at scale.**
+**IPaaS broadcasts via workflows. EnSync delivers to specific partners.**
+
+IPaaS is for connecting off-the-shelf SaaS apps. EnSync is for building your own partner ecosystem with custom integrations at scale.
 
 ## When to Choose IPaaS
 
@@ -46,9 +48,11 @@ description: "Compare EnSync with Zapier, MuleSoft, Workato, and Tray.io"
 ## When to Choose EnSync
 
 - You're building a custom B2B platform or partner ecosystem
+- You need targeted event delivery with multi-tenant isolation
 - You need real-time, reliable messaging
 - You want full control over event schemas and logic
 - You need developer-first SDK and API
+- You need two-layer access control (permissions + subscriptions)
 - You want predictable pricing at scale
 
 ## Sales Positioning

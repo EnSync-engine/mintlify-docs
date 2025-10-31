@@ -1,0 +1,68 @@
+---
+title: 'Configuration'
+description: 'Configure EnSync components'
+---
+
+## Database Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PS_STORAGE_USER` | `es_engine` | PostgreSQL/Citus username |
+| `PS_STORAGE_PASSWORD` | `eseses` | PostgreSQL/Citus password |
+| `PG_URL` | `jdbc:postgresql://ensync_storage:5432/ensync` | JDBC connection URL |
+
+## Valkey/Redis Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `VALKEY_PASSWORD` | `ensync_secure_password` | Password for Valkey instances |
+| `REDIS_MASTER_HOST` | `valkey-master` | Valkey master hostname |
+| `REDIS_MASTER_PORT` | `6379` | Valkey master port |
+| `REDIS_REPLICA_HOST` | `valkey-replica` | Valkey replica hostname |
+| `REDIS_REPLICA_PORT` | `6379` | Valkey replica port |
+| `REDIS_POOL_MAX_SIZE` | `8` | Maximum connection pool size |
+| `REDIS_TIMEOUT` | `500` | Connection timeout (ms) |
+| `REDIS_DEFAULT_TTL` | `7776000` | Default TTL (90 days) |
+
+## Master Node Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `8082` | HTTP server port |
+| `ENSYNC_CONFIG_MANAGER_URL` | `http://config-manager:8080` | Config manager URL |
+| `ENSYNC_CONFIG_INTERNAL_COMMS_KEY` | Required | Internal authentication key |
+| `ENSYNC_CLEAN_UP` | `200` | Event cleanup threshold |
+| `ENSYNC_CLEAN_UP_TO` | `200` | Event cleanup target |
+| `ENSYNC_BATCH_SIZE` | `200` | Batch processing size |
+| `ENSYNC_TIME_LIMIT` | `1500` | Batch time limit (ms) |
+| `ENSYNC_PARTITION_HOURS` | `6` | Event partition interval |
+| `ENSYNC_HTTP_EXPIRY` | `8` | HTTP client expiry (minutes) |
+| `ENSYNC_WS_EXPIRY` | `240` | WebSocket client expiry (minutes) |
+
+## Thread Pool Configuration
+
+Configure via environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CONNECTION_GROUP_SIZE` | `15` | Connection thread pool size |
+| `WORKER_GROUP_SIZE` | `30` | Worker thread pool size |
+| `CALL_GROUP_SIZE` | `60` | Call handler thread pool size |
+| `INTERNAL_GRPC_PORT` | `5001` | Internal gRPC port |
+
+## Performance Tuning
+
+### Event Processing
+
+- **ENSYNC_BATCH_SIZE** - Increase for higher throughput (200-500)
+- **ENSYNC_TIME_LIMIT** - Adjust batch timeout based on workload
+- **ENSYNC_PARTITION_HOURS** - Smaller values improve query performance
+
+### Connection Pools
+
+- **REDIS_POOL_MAX_SIZE** - Scale with concurrent connections
+- **Thread pools** - Increase for high-concurrency workloads
+
+<Info>
+Start with defaults and adjust based on monitoring metrics at `/metrics` endpoint.
+</Info>
